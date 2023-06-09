@@ -37,6 +37,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.1.4.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.1.4\lib\net462\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -47,7 +53,10 @@
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -66,15 +75,99 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\Sidebar\Sidebar.xaml.cs">
+      <DependentUpon>Sidebar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Sidebar\SidebarStaff.xaml.cs">
+      <DependentUpon>SidebarStaff.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Bill.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Customer.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Furniture.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FurnitureReceipt.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FurnitureStorage.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GoodsReceipt.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GoodsStorage.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\HotelManagementDatabase.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HotelManagementDatabase.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\HotelManagementDatabase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\HotelManagementDatabase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HotelManagementDatabase.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RentalContract.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Review.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Room.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RoomCustomer.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RoomFurnituresDetail.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RoomType.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Service.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ServiceUsing.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Staff.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Trouble.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TroubleByCustomer.cs">
+      <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Helper.cs" />
+    <Page Include="Components\Filter\Filter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\MenuItem\MenuItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Search\Search.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\SideBar\SideBar.xaml">
+    <Page Include="Components\Sidebar\Sidebar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\SideBar\SidebarStaff.xaml">
+    <Page Include="Components\Sidebar\SidebarStaff.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -86,19 +179,32 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Components\Filter\Filter.xaml.cs">
+      <DependentUpon>Filter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MenuItem\MenuItem.xaml.cs">
+      <DependentUpon>MenuItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Search\Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\SideBar\SideBar.xaml.cs">
-      <DependentUpon>SideBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\SideBar\SidebarStaff.xaml.cs">
-      <DependentUpon>SidebarStaff.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="DTOs\BillDTO.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Color\Color.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Images\Images.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -118,6 +224,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="Model\HotelManagementDatabase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>HotelManagementDatabase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Model\HotelManagementDatabase.edmx.diagram">
+      <DependentUpon>HotelManagementDatabase.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -154,6 +267,70 @@
   <ItemGroup>
     <Resource Include="ViewModel\item.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\HotelManagementDatabase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HotelManagementDatabase.Context.cs</LastGenOutput>
+      <DependentUpon>HotelManagementDatabase.edmx</DependentUpon>
+    </Content>
+    <Content Include="Model\HotelManagementDatabase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>HotelManagementDatabase.edmx</DependentUpon>
+      <LastGenOutput>HotelManagementDatabase.cs</LastGenOutput>
+    </Content>
+    <Resource Include="Resources\Images\bgLogin.png" />
+    <Resource Include="Resources\Images\Button_X.png" />
+    <Resource Include="Resources\Images\checked.png" />
+    <Resource Include="Resources\Images\giuong-ngu-cao-cap-gn01-5.jpg" />
+    <Resource Include="Resources\Images\iconAdd.png" />
+    <Resource Include="Resources\Images\iconAddDP.png" />
+    <Resource Include="Resources\Images\iconChiTiet.png" />
+    <Resource Include="Resources\Images\iconDate.png" />
+    <Resource Include="Resources\Images\iconDatPhong.png" />
+    <Resource Include="Resources\Images\iconDownload.png" />
+    <Resource Include="Resources\Images\iconFace.png" />
+    <Resource Include="Resources\Images\iconFilter.png" />
+    <Resource Include="Resources\Images\iconGhiChu.png" />
+    <Resource Include="Resources\Images\iconInstargram.png" />
+    <Resource Include="Resources\Images\iconProfile.png" />
+    <Resource Include="Resources\Images\iconSua.png" />
+    <Resource Include="Resources\Images\iconTwiter.png" />
+    <Resource Include="Resources\Images\iconXoa.png" />
+    <Resource Include="Resources\Images\iconX_DP.png" />
+    <Resource Include="Resources\Images\iconZalo.png" />
+    <Resource Include="Resources\Images\icon_Bell.png" />
+    <Resource Include="Resources\Images\icon_Error.png" />
+    <Resource Include="Resources\Images\icon_Info.png" />
+    <Resource Include="Resources\Images\icon_Question.png" />
+    <Resource Include="Resources\Images\Icon_Search.png" />
+    <Resource Include="Resources\Images\icon_Succes.png" />
+    <Resource Include="Resources\Images\icon_Warning.png" />
+    <Resource Include="Resources\Images\image_luutru.png" />
+    <Resource Include="Resources\Images\image_phieuthue.png" />
+    <Resource Include="Resources\Images\image_room.png" />
+    <Resource Include="Resources\Images\Image_Start.png" />
+    <Resource Include="Resources\Images\image_tiennghi.png" />
+    <Resource Include="Resources\Images\item.txt" />
+    <Resource Include="Resources\Images\logo.png" />
+    <Resource Include="Resources\Images\LogoDark.png" />
+    <Resource Include="Resources\Images\logoGD.png" />
+    <Resource Include="Resources\Images\LogoWd.png" />
+    <Resource Include="Resources\Images\logo_hotel.png" />
+    <Resource Include="Resources\Images\NhapHang.jpg" />
+    <Resource Include="Resources\Images\plus_circle.png" />
+    <Resource Include="Resources\Images\ThemHang.jpg" />
+    <Resource Include="Resources\Images\unchecked.png" />
+    <Resource Include="Resources\Icons\zoomout.png" />
+    <Resource Include="Resources\Icons\Plus_Icon.png" />
+    <Resource Include="Resources\Icons\Logo_Dark.png" />
+    <Resource Include="Resources\Icons\dustbin.png" />
+    <Resource Include="Resources\Icons\draw.png" />
+    <Resource Include="Resources\Icons\dollar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
