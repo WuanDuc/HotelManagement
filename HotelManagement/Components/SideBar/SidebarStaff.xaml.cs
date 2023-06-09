@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HotelManagement.Components.SideBar
+namespace HotelManagement.Components.Sidebar
 {
     /// <summary>
     /// Interaction logic for SidebarStaff.xaml

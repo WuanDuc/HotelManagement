@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HotelManagement.Components.Sidebar
+namespace HotelManagement.Components.Filter
 {
     /// <summary>
-    /// Interaction logic for Sidebar.xaml
+    /// Interaction logic for Filter.xaml
     /// </summary>
-    public partial class Sidebar : UserControl
+    public partial class Filter : UserControl
     {
-        public Sidebar()
+        public Filter()
         {
             InitializeComponent();
         }
