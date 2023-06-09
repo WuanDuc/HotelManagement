@@ -75,6 +75,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\Search\Search.xaml.cs">
+      <DependentUpon>Search.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Sidebar\Sidebar.xaml.cs">
       <DependentUpon>Sidebar.xaml</DependentUpon>
     </Compile>
@@ -184,9 +187,6 @@
     </Compile>
     <Compile Include="Components\MenuItem\MenuItem.xaml.cs">
       <DependentUpon>MenuItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\Search\Search.xaml.cs">
-      <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
     <Compile Include="DTOs\BillDTO.cs" />
     <Compile Include="MainWindow.xaml.cs">
