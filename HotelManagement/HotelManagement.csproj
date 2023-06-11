@@ -193,9 +193,17 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Colors\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Color\Color.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons\Icon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Icons\Icons.xaml">
       <SubType>Designer</SubType>
@@ -204,6 +212,34 @@
     <Page Include="Resources\Images\Images.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Languages\ResourceString.en-US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Languages\ResourceString.vi-VN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Checkbox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\HeaderListViewStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceXAML\MainResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +314,12 @@
       <DependentUpon>HotelManagementDatabase.edmx</DependentUpon>
       <LastGenOutput>HotelManagementDatabase.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Styles\item.txt" />
+    <Resource Include="Resources\Languages\item.txt" />
+    <Resource Include="Resources\Fonts\item.txt" />
+    <Resource Include="Resources\EmailTemplates\EmailResetPassTemplate.txt" />
+    <Resource Include="Resources\EmailTemplates\item.txt" />
+    <Resource Include="Resources\Colors\item.txt" />
     <Resource Include="Resources\Images\bgLogin.png" />
     <Resource Include="Resources\Images\Button_X.png" />
     <Resource Include="Resources\Images\checked.png" />

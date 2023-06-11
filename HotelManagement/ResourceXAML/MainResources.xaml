@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:VM1="clr-namespace:HotelManagement.ViewModel.AdminVM"
+                xmlns:VM2="clr-namespace:HotelManagement.ViewModel.StaffVM"
+                xmlns:VM3="clr-namespace:HotelManagement.ViewModel.AdminVM.FurnitureManagementVM"   
+                xmlns:VM4="clr-namespace:HotelManagement.ViewModel.AdminVM.ServiceManagementVM"
+                xmlns:VM5="clr-namespace:HotelManagement.ViewModel.StaffVM.RoomCatalogManagementVM"
+                xmlns:VM6="clr-namespace:HotelManagement.ViewModel.AdminVM.RoomFurnitureManagementVM"
+                xmlns:VM7="clr-namespace:HotelManagement.ViewModel.SettingVM"
+                xmlns:VM8="clr-namespace:HotelManagement.ViewModel.BookingRoomManagementVM"
+                xmlns:VM9="clr-namespace:HotelManagement.ViewModel.AdminVM.RoomManagementVM"
+                xmlns:VM10="clr-namespace:HotelManagement.ViewModel.AdminVM.RoomTypeManagementVM"
+                xmlns:VM11="clr-namespace:HotelManagement.ViewModel.AdminVM.StatisticalManagementVM"
+                xmlns:VM12="clr-namespace:HotelManagement.ViewModel.HelpScreenVM"
+                xmlns:VM13="clr-namespace:HotelManagement.ViewModel.AdminVM.CustomerManagementVM"
+                xmlns:VM14="clr-namespace:HotelManagement.ViewModel.AdminVM.StaffManagementVM"
+                xmlns:VM15="clr-namespace:HotelManagement.ViewModel.AdminVM.HistoryManagementVM"
+                xmlns:VM16="clr-namespace:HotelManagement.ViewModel.AdminVM.TroubleManagementVM"
+                xmlns:VM17="clr-namespace:HotelManagement.ViewModel.StaffVM.TroubleReportVM"
+                xmlns:VM18="clr-namespace:HotelManagement.ViewModel.LoginVM"
+>
+    <VM1:AdminVM x:Key="AdminVM"/>
+    <VM2:StaffVM x:Key="StaffVM"/>
+    <VM3:FurnitureManagementVM x:Key="FurnitureManagementVM"/>
+    <VM4:ServiceManagementVM x:Key="ServiceManagementVM"/>
+    <VM5:RoomCatalogManagementVM x:Key="RoomCatalogManagementVM" />
+    <VM6:RoomFurnitureManagementVM x:Key="RoomFurnitureManagementVM"/>
+    <VM7:SettingVM x:Key="SettingVM"/>
+    <VM8:BookingRoomManagementVM x:Key="BookingRoomManagementVM"/>
+    <VM9:RoomManagementVM x:Key="RoomManagementVM"/>
+    <VM10:RoomTypeManagementVM x:Key="RoomTypeManagementVM"/>
+    <VM11:StatisticalManagementVM x:Key="StatisticalManagementVM"/>
+    <VM12:HelpScreenVM x:Key="HelpScreenVM"/>
+    <VM13:CustomerManagementVM x:Key="CustomerManagementVM"/>
+    <VM14:StaffManagementVM x:Key="StaffManagementVM"/>
+    <VM15:HistoryManagementVM x:Key="HistoryManagementVM"/>
+    <VM16:TroubleManagementVM x:Key="TroubleManagementVM"/>
+    <VM17:TroubleReportVM x:Key="TroubleReportVM"/>
+    <VM18:ForgotPassVM x:Key="ForgotPassVM"/>
+    <VM18:LoginVM x:Key="LoginVM"/>
+
+</ResourceDictionary>
