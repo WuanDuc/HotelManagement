@@ -153,7 +153,10 @@
     <Compile Include="Model\TroubleByCustomer.cs">
       <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Constant.cs" />
     <Compile Include="Utilities\Helper.cs" />
+    <Compile Include="Utilities\RegexUtilities.cs" />
+    <Compile Include="Utilities\RelyCommand.cs" />
     <Page Include="Components\Filter\Filter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -204,6 +207,14 @@
     <Page Include="Resources\Images\Images.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utilities\AdminDataTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Utilities\StaffDataTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
