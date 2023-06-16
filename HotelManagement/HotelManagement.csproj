@@ -84,6 +84,12 @@
     <Compile Include="Components\Sidebar\SidebarStaff.xaml.cs">
       <DependentUpon>SidebarStaff.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DTOs\CustomerDTO.cs" />
+    <Compile Include="DTOs\FurnitureDTO.cs" />
+    <Compile Include="DTOs\FurnituresRoomDTO.cs" />
+    <Compile Include="DTOs\RoomFurnituresDetailDTO.cs" />
+    <Compile Include="DTOs\RoomSettingDTO.cs" />
+    <Compile Include="DTOs\RoomTypeDTO.cs" />
     <Compile Include="Model\Bill.cs">
       <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
     </Compile>
