@@ -161,6 +161,90 @@
       <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Helper.cs" />
+    <Compile Include="View\Admin\CustomerManagement\AddCustomerWindow.xaml.cs">
+      <DependentUpon>AddCustomerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\CustomerManagement\CustomerManagementPage.xaml.cs">
+      <DependentUpon>CustomerManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\CustomerManagement\EditCustomerWindow.xaml.cs">
+      <DependentUpon>EditCustomerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\FurnitureManagement\FurnitureAddWindow.xaml.cs">
+      <DependentUpon>FurnitureAddWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\FurnitureManagement\FurnitureEditWindow.xaml.cs">
+      <DependentUpon>FurnitureEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\FurnitureManagement\FurnitureImportWindow.xaml.cs">
+      <DependentUpon>FurnitureImportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\FurnitureManagement\FurnitureInfoWindow.xaml.cs">
+      <DependentUpon>FurnitureInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\FurnitureManagement\FurnitureManagementPage.xaml.cs">
+      <DependentUpon>FurnitureManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\FurnitureManagement\ImportListWD.xaml.cs">
+      <DependentUpon>ImportListWD.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\HistoryManagement\BillDetail.xaml.cs">
+      <DependentUpon>BillDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\HistoryManagement\ExportManagementPage.xaml.cs">
+      <DependentUpon>ExportManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\HistoryManagement\HistoryManagementPage.xaml.cs">
+      <DependentUpon>HistoryManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\HistoryManagement\ImportManagementPage.xaml.cs">
+      <DependentUpon>ImportManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomFurnitureManagement\RoomFurnitureDeleteWindow.xaml.cs">
+      <DependentUpon>RoomFurnitureDeleteWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomFurnitureManagement\RoomFurnitureImportWindow.xaml.cs">
+      <DependentUpon>RoomFurnitureImportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomFurnitureManagement\RoomFurnitureInfoWindow.xaml.cs">
+      <DependentUpon>RoomFurnitureInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomFurnitureManagement\RoomFurnitureManagementPage.xaml.cs">
+      <DependentUpon>RoomFurnitureManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomManagement\AddNewRoom.xaml.cs">
+      <DependentUpon>AddNewRoom.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomManagement\EditRoom.xaml.cs">
+      <DependentUpon>EditRoom.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomManagement\EditRoomType.xaml.cs">
+      <DependentUpon>EditRoomType.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomManagement\NoteRoom.xaml.cs">
+      <DependentUpon>NoteRoom.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomManagement\NoteRoomType.xaml.cs">
+      <DependentUpon>NoteRoomType.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomManagement\RoomManagement.xaml.cs">
+      <DependentUpon>RoomManagement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomManagement\RoomManagementPage.xaml.cs">
+      <DependentUpon>RoomManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomManagement\RoomTypeManagementPage.xaml.cs">
+      <DependentUpon>RoomTypeManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomTypeManagement\EditRoomType.xaml.cs">
+      <DependentUpon>EditRoomType.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomTypeManagement\NoteRoomType.xaml.cs">
+      <DependentUpon>NoteRoomType.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\RoomTypeManagement\RoomTypeManagementPage.xaml.cs">
+      <DependentUpon>RoomTypeManagementPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="Components\Filter\Filter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -245,6 +329,118 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ResourceXAML\MainResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\CustomerManagement\AddCustomerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\CustomerManagement\CustomerManagementPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\CustomerManagement\EditCustomerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\FurnitureManagement\FurnitureAddWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\FurnitureManagement\FurnitureEditWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\FurnitureManagement\FurnitureImportWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\FurnitureManagement\FurnitureInfoWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\FurnitureManagement\FurnitureManagementPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\FurnitureManagement\ImportListWD.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\HistoryManagement\BillDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\HistoryManagement\ExportManagementPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\HistoryManagement\HistoryManagementPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\HistoryManagement\ImportManagementPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomFurnitureManagement\RoomFurnitureDeleteWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomFurnitureManagement\RoomFurnitureImportWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomFurnitureManagement\RoomFurnitureInfoWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomFurnitureManagement\RoomFurnitureManagementPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomManagement\AddNewRoom.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomManagement\EditRoom.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomManagement\EditRoomType.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomManagement\NoteRoom.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomManagement\NoteRoomType.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomManagement\RoomManagement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomManagement\RoomManagementPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomManagement\RoomTypeManagementPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomTypeManagement\EditRoomType.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomTypeManagement\NoteRoomType.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Admin\RoomTypeManagement\RoomTypeManagementPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
