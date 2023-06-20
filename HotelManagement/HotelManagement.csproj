@@ -147,6 +147,12 @@
     <Compile Include="Model\Service.cs">
       <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Services\BookingRoomService.cs" />
+    <Compile Include="Model\Services\OverviewStatisticService.cs" />
+    <Compile Include="Model\Services\ServiceHelper.cs" />
+    <Compile Include="Model\Services\ServiceUsingHelper.cs" />
+    <Compile Include="Model\Services\StaffService.cs" />
+    <Compile Include="Model\Services\TroubleService.cs" />
     <Compile Include="Model\ServiceUsing.cs">
       <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
     </Compile>
