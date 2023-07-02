@@ -84,6 +84,10 @@
     <Compile Include="Components\Sidebar\SidebarStaff.xaml.cs">
       <DependentUpon>SidebarStaff.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DTOs\BookingRoomManagementDTO.cs" />
+    <Compile Include="DTOs\RentalContractDTO.cs" />
+    <Compile Include="DTOs\RoomCustomerDTO.cs" />
+    <Compile Include="DTOs\RoomDTO.cs" />
     <Compile Include="DTOs\ServiceDTO.cs" />
     <Compile Include="DTOs\ServiceTypeDTO.cs" />
     <Compile Include="DTOs\ServiceUsingDTO.cs" />
