@@ -37,7 +37,7 @@ namespace HotelManagement.Model.Services
             {
                 List<FurnituresRoomDTO> furnituresRoomDTOs = new List<FurnituresRoomDTO>();
 
-                using(HotelManagementEntities db = new HotelManagementEntities())
+                using (HotelManagementEntities db = new HotelManagementEntities())
                 {
                     furnituresRoomDTOs = await (
                         from room in db.Rooms
@@ -56,10 +56,10 @@ namespace HotelManagement.Model.Services
 
                     furnituresRoomDTOs.ForEach(item =>
                     {
-                        if(item.RoomStatus == ROOM_STATUS.RENTING)
+                        if (item.RoomStatus == ROOM_STATUS.RENTING)
                         {
                             RentalContract renContract = db.RentalContracts.FirstOrDefault(i => i.RoomId == item.RoomId && i.Validated == true);
-                            if(renContract != null)
+                            if (renContract != null)
                             {
                                 item.CustomerName = renContract.Customer.CustomerName;
                                 item.CustomerQuantity = renContract.RoomCustomers.Count();
@@ -72,9 +72,9 @@ namespace HotelManagement.Model.Services
                     return (true, "Thành công", furnituresRoomDTOs);
                 }
             }
-            catch(EntityException e)
+            catch (EntityException e)
             {
-                return (false, "Mất kết nối cơ sở dữ liệu" ,null);
+                return (false, "Mất kết nối cơ sở dữ liệu", null);
             }
             catch (Exception e)
             {
@@ -157,16 +157,16 @@ namespace HotelManagement.Model.Services
                 return (false, "Lỗi hệ thống", null);
             }
         }
-        
+
         public async Task<(bool, string, List<FurnitureDTO>)> ImportListFurnitureToRoom(ObservableCollection<FurnitureDTO> orderList, FurnituresRoomDTO roomFurnitureSelected)
         {
             try
             {
                 using (HotelManagementEntities db = new HotelManagementEntities())
                 {
-                    int Length = orderList.Count; 
+                    int Length = orderList.Count;
                     List<FurnitureDTO> listFurniture = new List<FurnitureDTO>();
-                    
+
                     for (int i = 0; i < Length; i++)
                     {
                         FurnitureDTO temp = new FurnitureDTO(orderList[i]);
@@ -231,7 +231,7 @@ namespace HotelManagement.Model.Services
                 using (HotelManagementEntities db = new HotelManagementEntities())
                 {
                     int lengh = DeleteList.Count();
-                    for(int i = 0; i <lengh; i++ )
+                    for (int i = 0; i < lengh; i++)
                     {
                         FurnitureDTO temp = DeleteList[i];
                         RoomFurnituresDetail roomFurnituresDetail = await db.RoomFurnituresDetails.FirstOrDefaultAsync(item => item.RoomId == roomFurnitureSelectedID && item.FurnitureId == temp.FurnitureID);
@@ -242,7 +242,7 @@ namespace HotelManagement.Model.Services
                             db.RoomFurnituresDetails.Remove(roomFurnituresDetail);
                         else
                             roomFurnituresDetail.Quantity -= temp.DeleteInRoomQuantity;
-                    }    
+                    }
 
                     await db.SaveChangesAsync();
                     return (true, "Xóa tiện nghi thành công");
@@ -271,9 +271,9 @@ namespace HotelManagement.Model.Services
                                                    select new RoomFurnituresDetailDTO
                                                    {
                                                        RoomId = roomId,
-                                                       FurnitureId= a.FurnitureId,
-                                                       FurnitureName= b.FurnitureName,
-                                                       FurnitureType= b.FurnitureType,
+                                                       FurnitureId = a.FurnitureId,
+                                                       FurnitureName = b.FurnitureName,
+                                                       FurnitureType = b.FurnitureType,
                                                        Quantity = a.Quantity,
                                                        FurnitureAvatarData = b.FurnitureAvatar
                                                    }
@@ -285,13 +285,13 @@ namespace HotelManagement.Model.Services
                     return listRoomFurniture;
                 }
 
-               
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
         }
-        
+
     }
 }

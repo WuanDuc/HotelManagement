@@ -37,7 +37,7 @@ namespace HotelManagement.Model.Services
             private set { _ins = value; }
         }
 
-        public async Task<(bool , string ,List<FurnitureDTO>)> GetAllFurniture()
+        public async Task<(bool, string, List<FurnitureDTO>)> GetAllFurniture()
         {
             try
             {
@@ -60,11 +60,11 @@ namespace HotelManagement.Model.Services
                     listFurniture[i].SetAvatar();
                 return (true, "", listFurniture);
             }
-            catch(EntityException e)
+            catch (EntityException e)
             {
                 return (false, "Mất kết nối cơ sở dữ liệu", null);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return (false, "Lỗi hệ thống", null);
             }
@@ -87,7 +87,7 @@ namespace HotelManagement.Model.Services
             {
                 using (HotelManagementEntities db = new HotelManagementEntities())
                 {
-                   var list = await db.Furnitures.Select(x => x.FurnitureType).ToListAsync();
+                    var list = await db.Furnitures.Select(x => x.FurnitureType).ToListAsync();
                     list.Insert(0, "Tất cả");
                     return list;
                 }
@@ -109,7 +109,7 @@ namespace HotelManagement.Model.Services
                         return (false, "Đã có tiện nghi trong cơ sở  dữ liệu");
 
                     Furniture furniture = await db.Furnitures.FirstOrDefaultAsync(item => item.FurnitureId == furnitureSelected.FurnitureID);
-                    if(furniture == null) 
+                    if (furniture == null)
                     {
                         return (false, "Không tìm thấy tiện nghi");
                     }
@@ -122,11 +122,11 @@ namespace HotelManagement.Model.Services
                     return (true, "Cập nhật thành công");
                 }
             }
-            catch(EntityException ex) 
+            catch (EntityException ex)
             {
                 return (false, "Mất kết nối cơ sở dữ liệu");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return (false, "Lỗi hệ thống");
             }
@@ -138,7 +138,7 @@ namespace HotelManagement.Model.Services
                 using (HotelManagementEntities db = new HotelManagementEntities())
                 {
                     Furniture furniture = await db.Furnitures.FirstOrDefaultAsync(item => item.FurnitureName == furnitureSelected.FurnitureName && item.FurnitureType == furnitureSelected.FurnitureType);
-                    
+
                     if (furniture != null)
                     {
                         return (false, "Đã có tiện nghi trong cơ sở dữ liệu", "-1");
@@ -184,7 +184,7 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using(HotelManagementEntities db = new HotelManagementEntities())
+                using (HotelManagementEntities db = new HotelManagementEntities())
                 {
                     Furniture furniture = await db.Furnitures.FirstOrDefaultAsync(item => item.FurnitureId == furnitureSelected.FurnitureID);
                     if (furniture == null)
@@ -195,9 +195,9 @@ namespace HotelManagement.Model.Services
 
                     await db.SaveChangesAsync();
                     return (true, "Xóa tiện nghi thành công");
-                }    
+                }
             }
-            catch(EntityException e)
+            catch (EntityException e)
             {
                 return (false, "Mất kết nối cơ sở dữ liệu");
             }
@@ -206,12 +206,12 @@ namespace HotelManagement.Model.Services
                 return (false, "Lỗi hệ thống");
             }
         }
-        
+
         public async Task<(bool, string)> ImportFurniture(FurnitureDTO furnitureSelected, string importPrice, string importQuantity)
         {
             try
             {
-                using(HotelManagementEntities db = new HotelManagementEntities())
+                using (HotelManagementEntities db = new HotelManagementEntities())
                 {
                     Furniture furniture = await db.Furnitures.FirstOrDefaultAsync(item => item.FurnitureId == furnitureSelected.FurnitureID);
                     if (furniture == null)
@@ -250,9 +250,9 @@ namespace HotelManagement.Model.Services
                     furniture.FurnitureStorage.QuantityFurniture = furniture.FurnitureStorage.QuantityFurniture + int.Parse(importQuantity);
                     await db.SaveChangesAsync();
                     return (true, "Nhập sản phẩm thành công");
-                }    
+                }
             }
-            catch(EntityException e)
+            catch (EntityException e)
             {
                 return (false, "Mất kết nối cơ sở dữ liệu");
             }
@@ -293,7 +293,7 @@ namespace HotelManagement.Model.Services
                         FurnitureDTO temp = orderList[i];
                         Furniture furniture = await db.Furnitures.FirstOrDefaultAsync(item => item.FurnitureId == temp.FurnitureID);
                         if (furniture == null)
-                            return (false, "Không tìm thấy tiện nghi " + furniture.FurnitureName + " trong cơ sở dữ liệu",null);
+                            return (false, "Không tìm thấy tiện nghi " + furniture.FurnitureName + " trong cơ sở dữ liệu", null);
 
                         mainID = getID(++ID);
 
@@ -309,7 +309,7 @@ namespace HotelManagement.Model.Services
                         db.FurnitureReceipts.Add(furnitureReceipt);
                         furniture.FurnitureStorage.QuantityFurniture = furniture.FurnitureStorage.QuantityFurniture + temp.ImportQuantity;
                         listFurniture[i].Quantity = (int)furniture.FurnitureStorage.QuantityFurniture;
-                    }    
+                    }
                     await db.SaveChangesAsync();
                     return (true, "Nhập tiện nghi thành công", listFurniture);
                 }

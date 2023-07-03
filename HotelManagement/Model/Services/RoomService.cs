@@ -87,8 +87,8 @@ namespace HotelManagement.Model.Services
 
                     if (r != null)
                     {
-                                 
-                            return (false, $"Phòng {r.RoomNumber} đã tồn tại!", null);
+
+                        return (false, $"Phòng {r.RoomNumber} đã tồn tại!", null);
 
                     }
                     else
@@ -144,7 +144,7 @@ namespace HotelManagement.Model.Services
                 using (var context = new HotelManagementEntities())
                 {
                     Room room = await (from p in context.Rooms
-                                       where p.RoomId == Id 
+                                       where p.RoomId == Id
                                        select p).FirstOrDefaultAsync();
                     if (room == null)
                     {
@@ -264,11 +264,11 @@ namespace HotelManagement.Model.Services
                         var sql1 = $@"Update [RentalContract] SET Validated = 0  WHERE RentalContractId IN ({t})";
                         await context.Database.ExecuteSqlCommandAsync(sql1);
                     }
-                    
+
 
 
                     list1 = await context.RentalContracts.ToListAsync();
-                    var roomListId = list1.Where(x => x.CheckOutDate + x.StartTime <= DateTime.Today + DateTime.Now.TimeOfDay 
+                    var roomListId = list1.Where(x => x.CheckOutDate + x.StartTime <= DateTime.Today + DateTime.Now.TimeOfDay
                     && roomRentingList.Contains(x.RoomId) == false).Select(x => x.RoomId).ToList();
                     t = "";
                     for (int i = 0; i < roomListId.Count; i++)
@@ -286,7 +286,7 @@ namespace HotelManagement.Model.Services
                         sql2 = $@"Update [Room] SET RoomStatus = N'{ROOM_STATUS.READY}'  WHERE RoomId  IN ({t})";
                         await context.Database.ExecuteSqlCommandAsync(sql2);
                     }
-                   
+
 
                     list1 = await context.RentalContracts.ToListAsync();
                     roomListId = list1.Where(x => x.CheckOutDate + x.StartTime > DateTime.Today + DateTime.Now.TimeOfDay && x.StartDate + x.StartTime <= DateTime.Today + DateTime.Now.TimeOfDay && roomRentingList.Contains(x.RoomId) == false && x.Validated == true).Select(x => x.RoomId).ToList();
@@ -305,7 +305,7 @@ namespace HotelManagement.Model.Services
                         sql2 = $@"Update [Room] SET RoomStatus = N'{ROOM_STATUS.BOOKED}'  WHERE RoomId  IN ({t})";
                         await context.Database.ExecuteSqlCommandAsync(sql2);
                     }
-                   
+
 
                 }
             }
@@ -332,7 +332,7 @@ namespace HotelManagement.Model.Services
                                           join cu in context.Customers
                                           on c.CustomerId equals cu.CustomerId into pi
                                           from cu in pi.DefaultIfEmpty()
-                                          where r.RoomTypeId == RoomTypeId 
+                                          where r.RoomTypeId == RoomTypeId
                                           orderby r.RoomId
                                           select new RoomSettingDTO
                                           {
@@ -388,7 +388,7 @@ namespace HotelManagement.Model.Services
                             foreach (var item2 in item)
                             {
                                 RentalContract r = await context.RentalContracts.FindAsync(item2.RentalContractId);
-                                if (item2.StartDate + item2.StartTime <= t && t < item2.CheckOutDate + item2.StartTime && r.Validated==true)
+                                if (item2.StartDate + item2.StartTime <= t && t < item2.CheckOutDate + item2.StartTime && r.Validated == true)
                                 {
                                     roomList2.Add(item2);
                                     flat = true;
@@ -418,7 +418,7 @@ namespace HotelManagement.Model.Services
                             item.CheckOutDate = null;
                             item.CustomerId = null;
                             item.CustomerName = null;
-                            item.RentalContractId= null;
+                            item.RentalContractId = null;
                         }
                     }
                     return roomList2;
@@ -463,7 +463,7 @@ namespace HotelManagement.Model.Services
                     Room room = await context.Rooms.FindAsync(roomId);
                     RentalContract rentalContract = await context.RentalContracts.FindAsync(rentalContractId);
                     string mess = "";
-                    if (room.RoomStatus == ROOM_STATUS.BOOKED) 
+                    if (room.RoomStatus == ROOM_STATUS.BOOKED)
                     {
                         room.RoomStatus = ROOM_STATUS.RENTING;
                         mess = "Nhận phòng thành công!";
@@ -477,10 +477,10 @@ namespace HotelManagement.Model.Services
                     }
                     await context.SaveChangesAsync();
                     return (true, mess);
-                    
+
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return (false, "Lỗi hệ thống!");
             }
@@ -492,7 +492,7 @@ namespace HotelManagement.Model.Services
                 using (var context = new HotelManagementEntities())
                 {
                     Room room = await context.Rooms.FindAsync(roomId);
-                    room.RoomCleaningStatus= roomCleaningStatus;
+                    room.RoomCleaningStatus = roomCleaningStatus;
                     await context.SaveChangesAsync();
                     return (true, "Cập nhật thành công!");
 
@@ -507,4 +507,4 @@ namespace HotelManagement.Model.Services
     }
 }
 
-        
+
