@@ -62,12 +62,12 @@ namespace HotelManagement.Utilities
         {
             using (var context = new HotelManagementEntities())
             {
-                foreach (var staff in context.Staffs)
+                foreach(var staff in context.Staffs)
                 {
                     if (staff.Email == currentEmail) return true;
                 }
                 return false;
-            }
+            } 
         }
 
         internal static string GetEmailTemplatePath(string rESET_PASSWORD_FILE)
@@ -92,5 +92,5 @@ namespace HotelManagement.Utilities
             return Math.Round(value, 2, MidpointRounding.AwayFromZero).ToString("P", CultureInfo.InvariantCulture);
         }
     }
-
+    
 }

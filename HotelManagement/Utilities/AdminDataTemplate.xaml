@@ -1,0 +1,71 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:FurnitureVM="clr-namespace:HotelManagement.ViewModel.AdminVM.FurnitureManagementVM"
+                    xmlns:FurnitureView="clr-namespace:HotelManagement.View.Admin.FurnitureManagement"
+                    xmlns:ServiceVM="clr-namespace:HotelManagement.ViewModel.AdminVM.ServiceManagementVM"
+                    xmlns:ServiceView="clr-namespace:HotelManagement.View.Admin.ServiceManagement"
+                    xmlns:BookingRoomVM="clr-namespace:HotelManagement.ViewModel.BookingRoomManagementVM"
+                    xmlns:BookingRoomView="clr-namespace:HotelManagement.View.BookingRoomManagement"
+                    xmlns:RoomView="clr-namespace:HotelManagement.View.Admin.RoomManagement"
+                    xmlns:RoomVM="clr-namespace:HotelManagement.ViewModel.AdminVM.RoomManagementVM"
+                    xmlns:RoomTypeView="clr-namespace:HotelManagement.View.Admin.RoomTypeManagement"
+                    xmlns:RoomTypeVM="clr-namespace:HotelManagement.ViewModel.AdminVM.RoomTypeManagementVM"
+                    xmlns:StatiscalView="clr-namespace:HotelManagement.View.Admin.StatisticalManagement"
+                    xmlns:StatiscalVM="clr-namespace:HotelManagement.ViewModel.AdminVM.StatisticalManagementVM"
+                    xmlns:HelpScreenView="clr-namespace:HotelManagement.View.HelpScreen"
+                    xmlns:HelpScreenVM="clr-namespace:HotelManagement.ViewModel.HelpScreenVM"
+                    xmlns:RoomFurnitureVM="clr-namespace:HotelManagement.ViewModel.AdminVM.RoomFurnitureManagementVM"
+                    xmlns:RoomFurnitureView="clr-namespace:HotelManagement.View.Admin.RoomFurnitureManagement"
+                    xmlns:SettingVM="clr-namespace:HotelManagement.ViewModel.SettingVM"
+                    xmlns:SettingView="clr-namespace:HotelManagement.View.SettingManagement"
+                    xmlns:CustomerView="clr-namespace:HotelManagement.View.Admin.CustomerManagement"
+                    xmlns:CustomerVM="clr-namespace:HotelManagement.ViewModel.AdminVM.CustomerManagementVM"
+                    xmlns:StaffView="clr-namespace:HotelManagement.View.Admin.StaffManagement"
+                    xmlns:StaffVM="clr-namespace:HotelManagement.ViewModel.AdminVM.StaffManagementVM"
+                    xmlns:HistoryView="clr-namespace:HotelManagement.View.Admin.HistoryManagement"
+                    xmlns:HistoryVM="clr-namespace:HotelManagement.ViewModel.AdminVM.HistoryManagementVM"
+                    xmlns:TroubleView="clr-namespace:HotelManagement.View.Admin.TroubleManagement"
+                    xmlns:TroubleVM="clr-namespace:HotelManagement.ViewModel.AdminVM.TroubleManagementVM"
+                    
+>
+    <DataTemplate DataType="{x:Type FurnitureVM:FurnitureManagementVM}">
+        <FurnitureView:FurnitureManagementPage></FurnitureView:FurnitureManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type ServiceVM:ServiceManagementVM}">
+        <ServiceView:ServiceManagementPage></ServiceView:ServiceManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type BookingRoomVM:BookingRoomManagementVM}">
+        <BookingRoomView:BookingRoomManagementPage></BookingRoomView:BookingRoomManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type RoomVM:RoomManagementVM}">
+        <RoomView:RoomManagement></RoomView:RoomManagement>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type RoomTypeVM:RoomTypeManagementVM}">
+        <RoomTypeView:RoomTypeManagementPage></RoomTypeView:RoomTypeManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type StatiscalVM:StatisticalManagementVM}">
+        <StatiscalView:StatisticalManagementPage></StatiscalView:StatisticalManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type HelpScreenVM:HelpScreenVM}">
+        <HelpScreenView:HelpScreen></HelpScreenView:HelpScreen>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type RoomFurnitureVM:RoomFurnitureManagementVM}">
+        <RoomFurnitureView:RoomFurnitureManagementPage></RoomFurnitureView:RoomFurnitureManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type SettingVM:SettingVM}">
+        <SettingView:SettingPage></SettingView:SettingPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type CustomerVM:CustomerManagementVM}">
+        <CustomerView:CustomerManagementPage></CustomerView:CustomerManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type StaffVM:StaffManagementVM}">
+        <StaffView:StaffManagementPage></StaffView:StaffManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type HistoryVM:HistoryManagementVM}">
+        <HistoryView:HistoryManagementPage></HistoryView:HistoryManagementPage>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type TroubleVM:TroubleManagementVM}">
+        <TroubleView:TroubleManagementPage></TroubleView:TroubleManagementPage>
+    </DataTemplate>
+
+</ResourceDictionary>
