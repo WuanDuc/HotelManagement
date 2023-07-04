@@ -1,4 +1,5 @@
-﻿using HotelManagement.View.Admin;
+﻿using CinemaManagementProject.Utilities;
+using HotelManagement.View.Admin;
 using HotelManagement.View.HelpScreen;
 using HotelManagement.ViewModel.AdminVM;
 using System;

@@ -43,6 +43,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.1.4.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.1.4\lib\net462\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -204,8 +210,22 @@
     <Compile Include="ViewModel\AdminVM\StatisticalManagementVM\StatisticalManagementVM.cs" />
     <Compile Include="ViewModel\AdminVM\TroubleManagementVM\EditConverter.cs" />
     <Compile Include="ViewModel\AdminVM\TroubleManagementVM\TroubleManagementVM.cs" />
+    <Compile Include="ViewModel\BaseVM.cs" />
     <Compile Include="ViewModel\BookingRoomManagementVM\BookingRoomManagementVM.cs" />
     <Compile Include="ViewModel\BookingRoomManagementVM\BookingVM.cs" />
+    <Compile Include="ViewModel\HelpScreenVM\HelpScreenVM.cs" />
+    <Compile Include="ViewModel\LoginVM\ForgotPassVM.cs" />
+    <Compile Include="ViewModel\LoginVM\LoginVM.cs" />
+    <Compile Include="ViewModel\SettingVM\SettingVM.cs" />
+    <Compile Include="ViewModel\StaffVM\RoomCatalogManagementVM\RoomCatalogManagementVM.cs" />
+    <Compile Include="ViewModel\StaffVM\RoomCatalogManagementVM\RoomInfoVM\RoomInfoVM.cs" />
+    <Compile Include="ViewModel\StaffVM\RoomCatalogManagementVM\RoomOrderVM\RoomOrderVM.cs" />
+    <Compile Include="ViewModel\StaffVM\RoomCatalogManagementVM\RoomPaymentVM\RoomPaymentVM.cs" />
+    <Compile Include="ViewModel\StaffVM\StaffVM.cs" />
+    <Compile Include="ViewModel\StaffVM\TroubleReportVM\AddTroubleReportVM.cs" />
+    <Compile Include="ViewModel\StaffVM\TroubleReportVM\EditConverter.cs" />
+    <Compile Include="ViewModel\StaffVM\TroubleReportVM\EditTroubleReportVM.cs" />
+    <Compile Include="ViewModel\StaffVM\TroubleReportVM\TroubleReportVM.cs" />
     <Compile Include="View\Admin\AdminWindow.xaml.cs">
       <DependentUpon>AdminWindow.xaml</DependentUpon>
     </Compile>
@@ -387,6 +407,57 @@
     </Compile>
     <Compile Include="View\Login\PositionPage.xaml.cs">
       <DependentUpon>PositionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingManagement\ConfirmWindow.xaml.cs">
+      <DependentUpon>ConfirmWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingManagement\ResetPassWindow.xaml.cs">
+      <DependentUpon>ResetPassWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingManagement\SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomCatalogManagementPage.xaml.cs">
+      <DependentUpon>RoomCatalogManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomInfo\AddCusWindow.xaml.cs">
+      <DependentUpon>AddCusWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomInfo\EditCusWindow.xaml.cs">
+      <DependentUpon>EditCusWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomInfo\RoomCustomerInfo.xaml.cs">
+      <DependentUpon>RoomCustomerInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomInfo\RoomFurnitureInfo.xaml.cs">
+      <DependentUpon>RoomFurnitureInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomInfo\RoomRentalContractInfo.xaml.cs">
+      <DependentUpon>RoomRentalContractInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomInfo\RoomWindow.xaml.cs">
+      <DependentUpon>RoomWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomOrder\RoomOrderCleaning.xaml.cs">
+      <DependentUpon>RoomOrderCleaning.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomOrder\RoomOrderLaundry.xaml.cs">
+      <DependentUpon>RoomOrderLaundry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomOrder\RoomOrderProducts.xaml.cs">
+      <DependentUpon>RoomOrderProducts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomPayment\OptionPayment.xaml.cs">
+      <DependentUpon>OptionPayment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomPayment\RoomBill.xaml.cs">
+      <DependentUpon>RoomBill.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\RoomCatalogManagement\RoomPayment\RoomGroupPayment.xaml.cs">
+      <DependentUpon>RoomGroupPayment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Staff\StaffWindow.xaml.cs">
+      <DependentUpon>StaffWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Components\Filter\Filter.xaml">
       <SubType>Designer</SubType>
@@ -723,6 +794,74 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\SettingManagement\ConfirmWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingManagement\ResetPassWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingManagement\SettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomCatalogManagementPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomInfo\AddCusWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomInfo\EditCusWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomInfo\RoomCustomerInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomInfo\RoomFurnitureInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomInfo\RoomRentalContractInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomInfo\RoomWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomOrder\RoomOrderCleaning.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomOrder\RoomOrderLaundry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomOrder\RoomOrderProducts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomPayment\OptionPayment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomPayment\RoomBill.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\RoomCatalogManagement\RoomPayment\RoomGroupPayment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Staff\StaffWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -856,7 +995,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="View\Staff\TroubleReport\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
