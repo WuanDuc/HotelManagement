@@ -3,10 +3,527 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HotelManagement.View.Staff.RoomCatalogManagement.RoomOrder"
+        xmlns:local="clr-namespace:HotelManagement.View.Staff.RoomCatalogManagement.RoomOrder" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:Search="clr-namespace:HotelManagement.Components.Search"
         mc:Ignorable="d"
-        Title="RoomOrderProducts" Height="450" Width="800">
-    <Grid>
-        
+        WindowStyle="None"
+        Title="RoomOrderProducts"
+        Name="OrderProductWD"
+        Background="Transparent"
+        AllowsTransparency="True"
+        Width="1190" Height="790"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{StaticResource RoomCatalogManagementVM}"
+        MouseDown="Window_MouseDown">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding FirstLoadOrderProductPage}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Width="1170" Height="770" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10 10 10 10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="White" RadiusX="10" RadiusY="10">
+            <Rectangle.Effect>
+                <DropShadowEffect
+                    BlurRadius="5"
+                    Color="Black"
+                    ShadowDepth="4"
+                    Opacity=".25"
+                    Direction="270"    
+                />
+            </Rectangle.Effect>
+        </Rectangle>
+        <!--Top control-->
+        <Grid x:Name="TopControl" Grid.Row="0">
+            <StackPanel x:Name="IconApp" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20 0 0 0">
+                <Image Source="{StaticResource LogoDarkIcon}" Width="30" Height="30" HorizontalAlignment="Center"/>
+                <TextBlock Text="SaiGon Hotel" FontSize="14" FontFamily="{StaticResource MaterialDesignFont}" FontWeight="SemiBold" Foreground="#777777" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Name="Title" Text="THÊM DỊCH VỤ" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" FontFamily="{StaticResource MaterialDesignFont}" Foreground="{StaticResource PrimaryBackgroundColor}"/>
+            <Rectangle Height="6" VerticalAlignment="Bottom" Margin="20 0 20 0" Fill="{StaticResource PrimaryBackgroundColor}" RadiusX="3" RadiusY="3"/>
+        </Grid>
+
+        <!--Content-->
+        <Grid x:Name="ContentItems" Grid.Row="1" Margin="20 10 20 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="820*"/>
+                <ColumnDefinition Width="410*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Margin="0 0 10 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Danh sách dịch vụ" VerticalAlignment="Center" Margin="30 0 0 0" FontSize="24" FontWeight="Bold" FontFamily="{StaticResource MaterialDesignFont}" Foreground="#C95D3B"></TextBlock>
+                <Rectangle Grid.Row="1" Grid.RowSpan="2" Fill="White" RadiusX="15" RadiusY="15">
+                    <Rectangle.Effect>
+                        <DropShadowEffect
+                            BlurRadius="15"
+                            Color="Black"
+                            Opacity="0.25"
+                            ShadowDepth="4"
+                            Direction="270"
+                        />
+                    </Rectangle.Effect>
+                </Rectangle>
+                <Grid Name="TopFilter" VerticalAlignment="Center" Grid.Row="1"  Margin="35 10 35 10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Search:Search 
+                            x:Name="SearchBox"
+                                Width="350" Height="38"
+                                FontSize="14"
+                                IconSize="18"
+                                Corner="10"
+                                Margin="0 0 38 0"
+                                IndicatorBrush="{StaticResource LightBlue_Search}"
+                                SearchTextChange="Search_SearchTextChange"
+                            />
+                        <StackPanel Width="205" Height="38" Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FilterOutline" VerticalAlignment="Center" Width="20" Height="20" Margin="0 0 12 0"/>
+                            <Border CornerRadius="10" Width="173" Background="White">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                BlurRadius="10"
+                                Color="Black"
+                                ShadowDepth="4"
+                                Opacity=".25"
+                                Direction="270"
+                            />
+                                </Border.Effect>
+                                <ComboBox Background="Transparent" FontSize="14" FontFamily="{StaticResource MaterialDesignFont}" FontWeight="Regular" ItemsSource="{Binding CurrentListFurnitureType}" SelectedItem="{Binding SelectedItemFilter}" BorderBrush="#1D242E" Foreground="#1D242E" Padding="10 11 10 10" Style="{StaticResource MaterialDesignComboBox}" BorderThickness="0" VerticalAlignment="Stretch">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding SelectionFilterChangeCM}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <ComboBoxItem Content="Tất cả" IsSelected="True" Tag="All"/>
+                                    <ComboBoxItem Content="Đồ ăn"  Tag="Food"/>
+                                    <ComboBoxItem Content="Nước uống" Tag="Drink"/>
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                <ListBox Grid.Row="2" Name="ListViewProducts" Margin="0 10 0 0" ItemsSource="{Binding ProductList}" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedProduct}" 
+                            materialDesign:ListBoxItemAssist.ShowSelection="False"
+                         VerticalAlignment="Top">
+                    <ListBox.Resources>
+                        <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">5</sys:Double>
+                    </ListBox.Resources>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Margin" Value="0 5 0 5"/>
+                            <Setter Property="Height" Value="267"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="IsSelected" Value="True"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3" Margin="0"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <ListBoxItem HorizontalAlignment="Center" Background="Transparent" Cursor="Hand">
+                                <Grid Width="190">
+                                    <Grid.InputBindings>
+                                        <MouseBinding Command="{Binding ElementName=ListViewProducts, Path=DataContext.SelectedProductToBillCM}"
+                                                                  MouseAction="LeftClick" />
+                                    </Grid.InputBindings>
+                                    <Grid x:Name="Image" Height="244" Width="190" HorizontalAlignment="Left">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25"/>
+                                            <RowDefinition Height="1.2*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="190"/>
+                                            <!--<ColumnDefinition Width="*"/>-->
+                                        </Grid.ColumnDefinitions>
+                                        <Rectangle 
+                                    x:Name="BackLayer"
+                                    Width="190" 
+                                    Fill="White"
+                                    RadiusX="20"
+                                    RadiusY="20"
+                                    Grid.Row="1"
+                                    Grid.RowSpan="2"
+                                >
+                                            <Rectangle.Effect>
+                                                <DropShadowEffect 
+                                            BlurRadius="10"
+                                            Color="Black"
+                                            ShadowDepth="4"
+                                            Opacity=".25"
+                                            Direction="270"
+                                        />
+                                            </Rectangle.Effect>
+                                        </Rectangle>
+                                        <Grid 
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    VerticalAlignment="Top"
+                                >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="14*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                    >
+                                                <Ellipse
+                                            Width="140"
+                                            Height="140"
+                                            Fill="#D9D9D9" 
+                                        >
+                                                    <Ellipse.Effect>
+                                                        <DropShadowEffect 
+                                                    BlurRadius="10"
+                                                    Color="Black"
+                                                    ShadowDepth="4"
+                                                    Opacity=".25"
+                                                    Direction="270"
+                                                />
+                                                    </Ellipse.Effect>
+                                                </Ellipse>
+                                                <Border CornerRadius="140" Width="140" Height="140" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                    <Border.Background>
+                                                        <ImageBrush x:Name="ProductAvatar" Stretch="UniformToFill" ImageSource="{Binding ServiceAvatar}"/>
+                                                    </Border.Background>
+                                                </Border>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid 
+                                    Width="40"
+                                    Grid.Column="1"
+                                    Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,-20,0"
+                                >
+                                        </Grid>
+                                        <Grid
+                                    Grid.Row="3"
+                                >
+                                            <StackPanel>
+                                                <Label
+                                            Content="{Binding ServiceName}" 
+                                            HorizontalAlignment="Center" 
+                                            FontSize="23"
+                                            FontWeight="Bold"
+                                            FontFamily="{StaticResource MaterialDesignFont}"
+                                        />
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                    <Label Content="Số lượng" FontSize="15" FontFamily="{StaticResource MaterialDesignFont}"></Label>
+                                                    <Label Content="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontFamily="{StaticResource MaterialDesignFont}"></Label>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                    <Label Content="Giá" FontSize="15" FontFamily="{StaticResource MaterialDesignFont}"></Label>
+                                                    <Label Content="{Binding ServicePrice}" FontSize="15" FontFamily="{StaticResource MaterialDesignFont}"></Label>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+
+                            </ListBoxItem>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            <Grid Grid.Column="1" Margin="10 0 0 0">
+                <Grid x:Name="Bill">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="2.2*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Dịch vụ đã chọn" Margin="30 0 0 0" Grid.Row="0" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" FontFamily="{StaticResource MaterialDesignFont}" Foreground="#C95D3B"></TextBlock>
+                    <Grid Grid.Row="1">
+                        <Border CornerRadius="15" Background="White">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Color="Black"
+                                    ShadowDepth="4"
+                                    Opacity=".25"
+                                    Direction="270"
+                                />
+                            </Border.Effect>
+                            <ListBox ScrollViewer.VerticalScrollBarVisibility="Hidden" 
+                                ItemsSource="{Binding OrderList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                x:Name="BillStack"
+                                SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:ListBoxItemAssist.ShowSelection="False"
+                                materialDesign:ListBoxAssist.IsToggle="False"
+                                Margin="0,3,0,5"
+                            >
+                                <ListBox.Resources>
+                                    <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">5</sys:Double>
+                                </ListBox.Resources>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Height" Value="105"/>
+                                        <Setter Property="Margin" Value="0,2,0,0"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                    <ContentPresenter/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="IsSelected" Value="True"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="1" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="98" Margin="10,5,10,0" HorizontalAlignment="Stretch">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="2.3*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Rectangle Grid.Column="0" Fill="White" Grid.ColumnSpan="2" RadiusX="10" RadiusY="10">
+                                                <Rectangle.Effect>
+                                                    <DropShadowEffect
+                                                        BlurRadius="4"
+                                                        Color="Black"
+                                                        ShadowDepth="4"
+                                                        Opacity=".25"
+                                                        Direction="270"
+                                                    />
+                                                </Rectangle.Effect>
+                                            </Rectangle>
+                                            <Grid Grid.Column="0">
+                                                <Ellipse
+                                                        Width="80"
+                                                        Height="80"
+                                                        Fill="#D9D9D9" 
+                                                    >
+                                                    <Ellipse.Effect>
+                                                        <DropShadowEffect 
+                                                            BlurRadius="10"
+                                                            Color="Black"
+                                                            ShadowDepth="4"
+                                                            Opacity=".25"
+                                                            Direction="270"
+                                                        />
+                                                    </Ellipse.Effect>
+                                                </Ellipse>
+                                                <Border CornerRadius="80" Width="80" Height="80" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                    <Border.Background>
+                                                        <ImageBrush Stretch="UniformToFill" ImageSource="{Binding ServiceAvatar}"/>
+                                                    </Border.Background>
+                                                </Border>
+                                            </Grid>
+                                            <Grid Grid.Column="1">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock
+                                                        FontFamily="{StaticResource MaterialDesignFont}"
+                                                        Foreground="Black"
+                                                        FontWeight="SemiBold"
+                                                        FontSize="24" 
+                                                        VerticalAlignment="Center" 
+                                                        Margin="14,0,0,0"
+                                                        Text="{Binding ServiceName}"
+                                                    ></TextBlock>
+                                                <Grid Grid.Row="2" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid x:Name="SetupCount" HorizontalAlignment="Left" Margin="14,0,0,0">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Button x:Name="DecreaseIndex" Grid.Column="0" Width="15" Height="25" BorderThickness="0" Padding="0,0,0,4" Foreground="White" Background="#E71A0F" Content="-">
+                                                                <Button.InputBindings>
+                                                                    <MouseBinding Command="{Binding ElementName=BillStack, Path=DataContext.DecreaseQuantityOrderItemCM}"
+                                                                            MouseAction="LeftClick" />
+                                                                </Button.InputBindings>
+                                                            </Button>
+                                                            <TextBox
+                                                                    x:Name="Count"
+                                                                    Grid.Column="1"
+                                                                    HorizontalAlignment="Center"
+                                                                    VerticalAlignment="Center"
+                                                                    FontFamily="{StaticResource MaterialDesignFont}"
+                                                                    FontSize="18"
+                                                                    BorderThickness="1"
+                                                                    Height="25" Padding="6,2,6,0"
+                                                                    Text="{Binding ImportQuantity}"
+                                                                    Margin="2,0,2,0"
+                                                                ></TextBox>
+                                                            <Button x:Name="InceaseIndex" Grid.Column="2" Width="15" Height="25" BorderThickness="0" Padding="0,0,0,4" Foreground="White" Background="#E71A0F" Content="+">
+                                                                <Button.InputBindings>
+                                                                    <MouseBinding Command="{Binding ElementName=BillStack, Path=DataContext.IncreaseQuantityOrderItemCM}"
+                                                                    MouseAction="LeftClick" />
+                                                                </Button.InputBindings>
+                                                            </Button>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                    <Grid Grid.Column="1" Width="100">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="3*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image Grid.Column="0" Source="{StaticResource DollarIcon}" Width="20" Height="20">
+
+                                                        </Image>
+                                                        <TextBlock 
+                                                                FontFamily="{StaticResource MaterialDesignFont}"
+                                                                FontWeight="Regular"
+                                                                FontSize="16"
+                                                                Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0"
+                                                                Text="{Binding ServicePrice}"
+                                                            >
+                                                        </TextBlock>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                            <Border x:Name="DeleteElement" Cursor="Hand" Width="20" Height="20" Background="White" CornerRadius="20" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0">
+                                                <Border.InputBindings>
+                                                    <MouseBinding Command="{Binding ElementName=BillStack, Path=DataContext.DeleteItemInBillStackCM}"
+                                                                    MouseAction="LeftClick" />
+                                                </Border.InputBindings>
+                                                <materialDesign:PackIcon Kind="Minimize" Width="20" Height="20"/>
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Row="2" Margin="0,20,0,0">
+                        <StackPanel>
+                            <Grid>
+                                <TextBlock 
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    FontFamily="{StaticResource MaterialDesignFont}"
+                                    FontSize="28"
+                                    FontWeight="Medium"
+                                    Margin="40,0,0,0"
+                                    Height="32"
+                                    Text="Tổng"
+                                    ></TextBlock>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                    <TextBlock
+                                        x:Name="TotalPrice"
+                                        FontFamily="{StaticResource MaterialDesignFont}"
+                                        FontSize="28"
+                                        FontWeight="Medium"
+                                        Text="{Binding SumOrder}"
+                                    ></TextBlock>
+                                    <TextBlock Margin="5,0,25,0" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center">đ</TextBlock>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Margin="0,80,15,0">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                                    <Button Name="SaveButton" Cursor="Hand" Width="80" Grid.Row="1" Height="40" materialDesign:ButtonAssist.CornerRadius="5" Background="{StaticResource PrimaryBackgroundColor}">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="Width" Value="32"/>
+                                                <Setter Property="Height" Value="32"/>
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Opacity" Value="0.8"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseCaptured" Value="True">
+                                                        <Setter Property="Opacity" Value="0.5"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+
+                                        </Button.Style>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding AddOrderProductCM}" CommandParameter="{Binding ElementName=OrderProductWD}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <TextBlock Text="Thêm" Foreground="White" FontSize="15" FontFamily="{StaticResource MaterialDesignFont}" FontWeight="Regular"></TextBlock>
+                                    </Button>
+                                    <Button Name="CloseButton" Cursor="Hand" Margin="20 0 0 0" Width="80" Height="40" materialDesign:ButtonAssist.CornerRadius="5" Background="#EC4242">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Opacity" Value="0.8"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseCaptured" Value="True">
+                                                        <Setter Property="Opacity" Value="0.5"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+
+                                        </Button.Style>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding CloseOrderProductWindowCM}" CommandParameter="{Binding ElementName=OrderProductWD}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <TextBlock Text="Đóng" Foreground="White" FontSize="15" FontFamily="{StaticResource MaterialDesignFont}" FontWeight="Regular"></TextBlock>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
