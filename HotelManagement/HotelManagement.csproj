@@ -157,10 +157,17 @@
     <Compile Include="Model\Service.cs">
       <DependentUpon>HotelManagementDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Services\BillService.cs" />
     <Compile Include="Model\Services\BookingRoomService.cs" />
+    <Compile Include="Model\Services\FurnitureService.cs" />
+    <Compile Include="Model\Services\FurnituresRoomService.cs" />
     <Compile Include="Model\Services\OverviewStatisticService.cs" />
+    <Compile Include="Model\Services\RentalCotractService.cs" />
+    <Compile Include="Model\Services\RoomCustomerService.cs" />
+    <Compile Include="Model\Services\RoomService.cs" />
     <Compile Include="Model\Services\ServiceHelper.cs" />
     <Compile Include="Model\Services\ServiceUsingHelper.cs" />
+    <Compile Include="Model\Services\SettingService.cs" />
     <Compile Include="Model\Services\StaffService.cs" />
     <Compile Include="Model\Services\TroubleService.cs" />
     <Compile Include="Model\Services\CustomerService.cs" />
@@ -180,6 +187,9 @@
     <Compile Include="Utilities\Helper.cs" />
     <Compile Include="Utilities\RegexUtilities.cs" />
     <Compile Include="Utilities\RelyCommand.cs" />
+    <Compile Include="Utils\Constants.cs" />
+    <Compile Include="Utils\EmailFormat.cs" />
+    <Compile Include="Utils\RegexUtilities.cs" />
     <Compile Include="ViewModel\AdminVM\AdminVM.cs" />
     <Compile Include="ViewModel\AdminVM\ServiceManagementVM\EditServiceManagement.cs" />
     <Compile Include="ViewModel\AdminVM\ServiceManagementVM\ImportServiceVM.cs" />
