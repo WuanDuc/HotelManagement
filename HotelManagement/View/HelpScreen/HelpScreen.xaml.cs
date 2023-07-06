@@ -17,7 +17,7 @@ namespace HotelManagement.View.HelpScreen
     /// <summary>
     /// Interaction logic for HelpScreen.xaml
     /// </summary>
-    public partial class HelpScreen : Window
+    public partial class HelpScreen : Page
     {
         public HelpScreen()
         {

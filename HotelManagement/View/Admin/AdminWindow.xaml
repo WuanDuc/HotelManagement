@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HotelManagement.View.Admin" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:components="clr-namespace:HotelManagement.Components"
+        xmlns:components="clr-namespace:HotelManagement.Components.MenuItem"
         mc:Ignorable="d"
         xmlns:Search="clr-namespace:HotelManagement.Components.Search" 
 

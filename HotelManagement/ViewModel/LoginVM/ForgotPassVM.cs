@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Net.Mail;
+using System.Windows.Forms;
 using System.Configuration;
 using System.Windows.Controls;
 using HotelManagement.Utilities;
@@ -14,7 +15,8 @@ using System.Windows;
 using System.IO;
 using HotelManagement.Model;
 using System.Data.Entity;
-using CinemaManagementProject.Utilities;
+using Label = System.Windows.Controls.Label;
+using MessageBox = System.Windows.MessageBox;
 
 namespace HotelManagement.ViewModel.LoginVM
 {

@@ -179,21 +179,43 @@ namespace HotelManagement.ViewModel.AdminVM.StaffManagementVM
             });
             OpenEditStaffCM = new RelayCommand<object>(p => true, async p =>
             {
-                EditStaffWindow wd = new EditStaffWindow();
-                ResetData();
-                StaffId = SelectedItem.StaffId;
-                FullName = SelectedItem.StaffName;
-                Phonenumber = SelectedItem.PhoneNumber;
-                Email = SelectedItem.Email;
-                Cccd = SelectedItem.CCCD;
-                Address = SelectedItem.StaffAddress;
-                Username = SelectedItem.Username;
-                wd.Gender.Text = SelectedItem.Gender;
-                wd.Position.Text = SelectedItem.Position;
-                wd.Birthday.Text = SelectedItem.DateOfBirth.ToString();
-                wd.Startdate.Text = SelectedItem.dateOfStart.ToString();
-                ImageSource = Helper.LoadBitmapImage(SelectedItem.Avatar);
-                wd.ShowDialog();
+                if (SelectedItem.StaffId != AdminVM.CurrentStaff.StaffId && SelectedItem.Position == "Quản lý")
+                {
+                    InfoStaffWindow info = new InfoStaffWindow();
+                    ResetData();
+                    StaffId = SelectedItem.StaffId;
+                    FullName = SelectedItem.StaffName;
+                    Phonenumber = SelectedItem.PhoneNumber;
+                    Email = SelectedItem.Email;
+                    Cccd = SelectedItem.CCCD;
+                    Address = SelectedItem.StaffAddress;
+                    Username = SelectedItem.Username;
+                    info.Gender.Text = SelectedItem.Gender;
+                    info.Position.Text = SelectedItem.Position;
+                    info.Birthday.Text = SelectedItem.DateOfBirth.ToString();
+                    info.Startdate.Text = SelectedItem.dateOfStart.ToString();
+                    ImageSource = Helper.LoadBitmapImage(SelectedItem.Avatar);
+                    info.ShowDialog();
+                }
+                else
+                {
+                    EditStaffWindow wd = new EditStaffWindow();
+                    ResetData();
+                    StaffId = SelectedItem.StaffId;
+                    FullName = SelectedItem.StaffName;
+                    Phonenumber = SelectedItem.PhoneNumber;
+                    Email = SelectedItem.Email;
+                    Cccd = SelectedItem.CCCD;
+                    Address = SelectedItem.StaffAddress;
+                    Username = SelectedItem.Username;
+                    wd.Gender.Text = SelectedItem.Gender;
+                    wd.Position.Text = SelectedItem.Position;
+                    wd.Birthday.Text = SelectedItem.DateOfBirth.ToString();
+                    wd.Startdate.Text = SelectedItem.dateOfStart.ToString();
+                    ImageSource = Helper.LoadBitmapImage(SelectedItem.Avatar);
+                    wd.ShowDialog();
+
+                }
             });
             EditStaffCM = new RelayCommand<Window>(p => { if (IsSaving) return false; return true; }, async p =>
             {
@@ -212,6 +234,21 @@ namespace HotelManagement.ViewModel.AdminVM.StaffManagementVM
             DeleteStaffCM = new RelayCommand<Window>(p => true, async p =>
             {
                 var kq = CustomMessageBox.ShowOkCancel("Bạn có chắc muốn xoá nhân viên này không?", "Cảnh báo", "OK", "Cancel", CustomMessageBoxImage.Warning);
+                if (AdminVM.CurrentStaff.StaffId == SelectedItem.StaffId)
+                {
+                    CustomMessageBox.ShowOkCancel("Bạn không thể tự xóa chính mình!", "Cảnh báo", "OK", "Cancel", CustomMessageBoxImage.Warning);
+                    return;
+                }
+                if (SelectedItem.Position == "Quản lý")
+                {
+                    CustomMessageBox.ShowOkCancel("Bạn không thể xóa quản lý khác!", "Cảnh báo", "OK", "Cancel", CustomMessageBoxImage.Warning);
+                    return;
+                }
+                if (!CheckStaff(SelectedItem.StaffId))
+                {
+                    return;
+                };
+
                 if (kq == CustomMessageBoxResult.OK)
                 {
                     (bool issucced, string mess) = await StaffService.Ins.DeleteStaff(SelectedItem.StaffId);
@@ -231,7 +268,18 @@ namespace HotelManagement.ViewModel.AdminVM.StaffManagementVM
                 IsSaving = false;
             });
         }
+        private bool CheckStaff(string staffID)
+        {
+            bool issucced = StaffService.Ins.CheckStaff(SelectedItem.StaffId);
 
+            if (issucced)
+                return true;
+            else
+            {
+                CustomMessageBox.ShowOk("Không xóa được nhân viên do ràng buộc dữ liệu trên hệ thống!", "Cảnh báo", "OK", CustomMessageBoxImage.Warning);
+                return false;
+            }
+        }
         private void LoadImage()
         {
             BitmapImage _image = new BitmapImage();

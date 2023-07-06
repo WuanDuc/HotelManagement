@@ -15,7 +15,6 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;

@@ -431,7 +431,6 @@ namespace HotelManagement.ViewModel.SettingVM
                 bool isEN = !p.Text.Equals("English") ? true : false;
                 Properties.Settings.Default.isEnglish = isEN;
                 Properties.Settings.Default.Save();
-                LanguageManager.SetLanguageDictionary(isEN ? LanguageManager.ELanguage.English : LanguageManager.ELanguage.VietNamese);
             });
         }
         public void SetAvatarName(string staffName)

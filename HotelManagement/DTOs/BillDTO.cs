@@ -1,8 +1,8 @@
 ﻿using HotelManagement.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,65 +62,65 @@ namespace HotelManagement.DTOs
                 return res;
             }
         }
-        //    public IList<ServiceUsingDTO> ListListServicePayment { get; set; }
-        //    public IList<TroubleByCustomerDTO> ListTroubleByCustomer { get; set; }
+        public IList<ServiceUsingDTO> ListListServicePayment { get; set; }
+        public IList<TroubleByCustomerDTO> ListTroubleByCustomer { get; set; }
 
-        //    public double ServicePriceTemp
-        //    {
-        //        get
-        //        {
-        //            double t = 0;
-        //            foreach (var item in ListListServicePayment)
-        //            {
-        //                t += item.TotalMoney;
-        //            }
-        //            return t;
-        //        }
+        public double ServicePriceTemp
+        {
+            get
+            {
+                double t = 0;
+                foreach (var item in ListListServicePayment)
+                {
+                    t += item.TotalMoney;
+                }
+                return t;
+            }
 
-        //    }
-        //    public string ServicePriceTempStr
-        //    {
-        //        get
-        //        {
-        //            return Helper.FormatVNMoney(ServicePriceTemp);
-        //        }
+        }
+        public string ServicePriceTempStr
+        {
+            get
+            {
+                return Helper.FormatVNMoney(ServicePriceTemp);
+            }
 
-        //    }
-        //    public double TroublePriceTemp
-        //    {
-        //        get
-        //        {
-        //            double t = 0;
-        //            foreach (var item in ListTroubleByCustomer)
-        //            {
-        //                t += (double)item.PredictedPrice;
-        //            }
-        //            return t;
-        //        }
-        //    }
-        //    public string TroublePriceTempStr
-        //    {
-        //        get
-        //        {
-        //            return Helper.FormatVNMoney(TroublePriceTemp);
-        //        }
+        }
+        public double TroublePriceTemp
+        {
+            get
+            {
+                double t = 0;
+                foreach (var item in ListTroubleByCustomer)
+                {
+                    t += (double)item.PredictedPrice;
+                }
+                return t;
+            }
+        }
+        public string TroublePriceTempStr
+        {
+            get
+            {
+                return Helper.FormatVNMoney(TroublePriceTemp);
+            }
 
-        //    }
-        //    public double TotalPriceTemp
-        //    {
-        //        get
-        //        {
-        //            return ServicePriceTemp + TroublePriceTemp + DayNumber * (double)RoomPrice;
-        //        }
-        //    }
-        //    public string TotalPriceTempStr
-        //    {
-        //        get
-        //        {
-        //            return Helper.FormatVNMoney(TotalPriceTemp);
-        //        }
+        }
+        public double TotalPriceTemp
+        {
+            get
+            {
+                return ServicePriceTemp + TroublePriceTemp + DayNumber * (double)RoomPrice;
+            }
+        }
+        public string TotalPriceTempStr
+        {
+            get
+            {
+                return Helper.FormatVNMoney(TotalPriceTemp);
+            }
 
-        //    }
+        }
 
     }
 }

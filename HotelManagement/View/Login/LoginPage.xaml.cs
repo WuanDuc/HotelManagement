@@ -23,6 +23,10 @@ namespace HotelManagement.View.Login
         public LoginPage()
         {
             InitializeComponent();
+            if (Properties.Settings.Default.isRemidUserAndPass)
+            {
+                PasswordBox.Password = Properties.Settings.Default.userPassSetting;
+            }
         }
     }
 }
