@@ -1,0 +1,153 @@
+﻿<Window x:Class="HotelManagement.View.HelpScreen.Frequently_asked_questions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HotelManagement.View.HelpScreen"
+        mc:Ignorable="d"
+        x:Name="faq"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        DataContext="{StaticResource HelpScreenVM}"
+        Title="Frequently_asked_questions" 
+        Height="650" Width="800">
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="85*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="20*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" 
+                   Source="{StaticResource LogoDark}" 
+                   Height="90" Width="90"/>
+            <Label Grid.Column="1" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   Content="CÂU HỎI THƯỜNG GẶP" 
+                   FontSize="24" 
+                   Foreground="#009099" 
+                   FontWeight="Bold"/>
+            <Button Grid.Column="2" 
+                    BorderThickness="0" 
+                    Background="Transparent" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top" 
+                    Margin="0 10 10 0" 
+                    Height="50" Width="50" 
+                    HorizontalContentAlignment="Center" 
+                    VerticalContentAlignment="Center"
+                    Command="{Binding CloseCM}"
+                    CommandParameter="{Binding ElementName=faq}">
+                <Image Source="{StaticResource Button_X}" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"  
+                       Height="26" Width="30" />
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="20 0 20 0" >
+            <Border CornerRadius="4" Background="#009099"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="20" >
+            <Border CornerRadius="6" Background="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15*"/>
+                        <RowDefinition Height="85*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Việc bạn sử dụng ứng dụng này đồng nghĩa với việc bạn đồng ý với những thỏa thuận dưới đây. Nếu bạn không đồng ý, xin vui lòng không sử dụng ứng dụng."
+                                   FontSize="19"
+                                   Focusable="False"
+                                   Grid.Row="0"
+                                   Margin="20 10 20 10"
+                                   TextWrapping="Wrap"
+                                   Foreground="Black"
+                                   FontStyle="Italic"
+                                   FontWeight="DemiBold"/>
+
+                    <Grid Grid.Row="1">
+                        <Border CornerRadius="10" 
+                                BorderBrush="#000000"
+                                Background="Transparent" 
+                                BorderThickness="2"
+                                Margin="20 0 20 20">
+                            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                                <StackPanel Orientation="Vertical">
+
+                                    <TextBlock Text="1. Giao dịch thẻ tín dụng không thành công ?" 
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Margin="20,10,0,0"
+                                               Focusable="False"
+                                               Foreground="Black"
+                                               TextDecorations="Underline"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Width="660"
+                                               Text="Trong một số trường hợp tiến trình thanh toán có thể kéo dài hơn bình thường. Nếu giao dịch đầu tiên không thành công, bạn hãy nhờ nhân viên kiểm tra tình trạng đặt chỗ trong trình mục Đặt phòng cũng như danh mục lịch sử hóa đơn. Sau khi chắc chắn rằng giao dịch thanh toán của bạn không thành công, bạn có thể tiến hành thanh toán lại. Hãy đảm bảo rằng bạn nhập chính xác thông tin thẻ tín dụng."
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               Margin="0 10 0 0"
+                                               Focusable="False"
+                                               FontStyle="Italic"
+                                               Foreground="Black"/>
+
+                                    <TextBlock Text="2. Làm sao để biết SaiGonHotel app đã nhận khoản thanh toán đặt chỗ của tôi hay chưa ?" 
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Margin="20,10,0,0"
+                                               Focusable="False"
+                                               Foreground="Black"
+                                               TextDecorations="Underline"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Width="660"
+                                               Text="Nếu đăng nhập tài khoản SaiGonHotel, bạn có thể nhờ nhân viên xem tình trạng đặt chỗ của mình trong mục Quản lý đặt phòng. Hoặc bạn có thể liên hệ với bên SaiGonHotel thông qua hotline 1900 1986 hoặc các nền tảng mạng xã hội như Zalo, FaceBook, Instargram, Twiter."
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               Margin="0 10 0 0"
+                                               Focusable="False"
+                                               FontStyle="Italic"
+                                               Foreground="Black"/>
+
+                                    <TextBlock Text="3. Cách thanh toán cho việc đặt phòng của tôi ?" 
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Margin="20,10,0,0"
+                                               Focusable="False"
+                                               Foreground="Black"
+                                               TextDecorations="Underline"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Width="660"
+                                               Text="Sau khi điền xong chi tiết đặt phòng bạn, cac thông tin về dịch vụ bạn muốn sử dụng đi kèm thì vui lòng chọn thanh toán, sau đó tiến hành thanh toán."
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               Margin="0 10 0 0"
+                                               Focusable="False"
+                                               FontStyle="Italic"
+                                               Foreground="Black"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Width="660"
+                                               Text="Vui lòng đảm bảo bạn thanh toán ngay lập tức để tránh tình trạng khách hàng quá đông thì chúng tôi phải dùng phòng đó để phục vụ cho những khách hàng ngay lúc cần thiết, điều này nhằm phục vụ mục đích kinh doanh cũng như đáp ứng nhu cầu của khách hàng theo chính sách bên chúng tôi, mong bạn chấp hành theo và tuân thủ đúng, xin cảm ơn !."
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               Margin="0 10 0 0"
+                                               Focusable="False"
+                                               FontStyle="Italic"
+                                               Foreground="Black"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

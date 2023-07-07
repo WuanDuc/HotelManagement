@@ -1,0 +1,59 @@
+﻿<Page x:Class="HotelManagement.View.Login.ChangePassPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HotelManagement.View.Login"
+      mc:Ignorable="d" 
+      DataContext="{StaticResource ForgotPassVM}"
+      d:DesignHeight="480" d:DesignWidth="320"
+      Title="ChangePassPage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      ShowsNavigationUI="False">
+
+    <Grid  Margin="20 0 20 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <materialDesign:PackIcon Name="btnback" Grid.Row="0" Kind="ArrowLeft" Height="20" Width="20">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding LoginPageCM}" CommandParameter="{Binding ElementName=btnback}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </materialDesign:PackIcon>
+        <TextBlock Grid.Row="1" Foreground="{DynamicResource PrimaryBackgroundColor}" FontFamily="{DynamicResource MaterialDesignFont}" FontSize="22" Margin="0 0 0 0" FontWeight="Medium" Text="Khôi phục mật khẩu" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <StackPanel Margin="44 0 0 0" Grid.Row="2" VerticalAlignment="Bottom">
+            <TextBlock FontSize="12" FontFamily="{DynamicResource MaterialDesignFont}" Text="Mật khẩu mới"/>
+            <Border Margin="0 5 0 0 " Height="32" Width="195" Background="White" BorderBrush="{DynamicResource PrimaryBackgroundColor}" BorderThickness="0.7" CornerRadius="4" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
+                <TextBox Text="{Binding NewPass, Mode=TwoWay}" Margin="5 0 0 0" BorderThickness="0" FontSize="15" FontWeight="Regular" Foreground="{DynamicResource SecondTextColor}"/>
+            </Border>
+        </StackPanel>
+        <StackPanel Margin="44 0 0 0" Grid.Row="3" VerticalAlignment="Bottom">
+            <TextBlock FontSize="12" FontFamily="{DynamicResource MaterialDesignFont}" Text="Nhập lại mật khẩu"/>
+            <Border Margin="0 5 0 0 " Height="32" Width="195" Background="White" BorderBrush="{DynamicResource PrimaryBackgroundColor}" BorderThickness="0.7" CornerRadius="4" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
+                <TextBox  Text="{Binding RePass, Mode=TwoWay}" Margin="5 0 0 0" BorderThickness="0" FontSize="15" FontWeight="Regular" Foreground="{DynamicResource SecondTextColor}"/>
+            </Border>
+        </StackPanel>
+        <Label Margin="42 0 0 0" Name="lbErr" Foreground="Red" FontSize="11" FontFamily="{DynamicResource MaterialDesignFont}" Grid.Row="4" VerticalAlignment="Bottom"/>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Border Margin="0 0 43 0" Height="34" Width="100" CornerRadius="5" Background="{DynamicResource PrimaryBackgroundColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                <Button Command="{Binding ConfirmCodeCM}" CommandParameter="{Binding ElementName=lbErr}" Height="34" BorderBrush="Transparent"  Width="100" Background="Transparent" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
+                    <TextBlock Text="Xác nhận" FontSize="14" FontWeight="Medium"   Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+            </Border>
+        </StackPanel>
+        <TextBlock Grid.Row="6" FontFamily="{DynamicResource MaterialDesignFont}" FontSize="12"  Text="Thời hạn và điều kiện chính sách riêng tư." HorizontalAlignment="Center"/>
+    </Grid>
+</Page>

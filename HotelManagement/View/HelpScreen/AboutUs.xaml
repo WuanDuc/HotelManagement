@@ -1,0 +1,137 @@
+﻿<Window x:Class="HotelManagement.View.HelpScreen.AboutUs"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HotelManagement.View.HelpScreen"
+        mc:Ignorable="d"
+        Title="AboutUs" Height="650" Width="800"
+        x:Name="about_us"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        DataContext="{StaticResource HelpScreenVM}">
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="85*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="20*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" 
+                   Source="{StaticResource LogoDark}" 
+                   Height="90" Width="90"/>
+            <Label Grid.Column="1" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   Content="VỀ PHÍA CHÚNG TÔI" 
+                   FontSize="24" 
+                   Foreground="#009099" 
+                   FontWeight="Bold"/>
+            <Button Grid.Column="2" 
+                    BorderThickness="0" 
+                    Background="Transparent" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top" 
+                    Margin="0 10 10 0" 
+                    Height="50" Width="50" 
+                    HorizontalContentAlignment="Center" 
+                    VerticalContentAlignment="Center"
+                    Command="{Binding CloseCM}"
+                    CommandParameter="{Binding ElementName=about_us}">
+                <Image Source="{StaticResource Button_X}" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"  
+                       Height="26" Width="30" />
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="20 0 20 0" >
+            <Border CornerRadius="4" Background="#009099"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="20" >
+            <Border CornerRadius="6" Background="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15*"/>
+                        <RowDefinition Height="85*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Việc bạn sử dụng ứng dụng này đồng nghĩa với việc bạn đồng ý với những thỏa thuận dưới đây. Nếu bạn không đồng ý, xin vui lòng không sử dụng ứng dụng."
+                                   FontSize="19"
+                                   Focusable="False"
+                                   Grid.Row="0"
+                                   Margin="20 10 20 10"
+                                   TextWrapping="Wrap"
+                                   Foreground="Black"
+                                   FontStyle="Italic"
+                                   FontWeight="DemiBold"/>
+
+                    <Grid Grid.Row="1">
+                        <Border CornerRadius="10" 
+                                BorderBrush="#000000"
+                                Background="Transparent" 
+                                BorderThickness="2"
+                                Margin="20 0 20 20">
+                            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                                <StackPanel Orientation="Vertical">
+
+                                    <TextBlock Text="BẠN PHẢI ĐỌC NHỮNG ĐIỀU KHOẢN SỬ DỤNG DƯỚI ĐÂY TRƯỚC KHI SỬ DỤNG ỨNG DỤNG NÀY. VIỆC SỬ DỤNG ỨNG DỤNG NÀY XÁC NHẬN VIỆC CHẤP THUẬN VÀ TUÂN THỦ CÁC ĐIỀU KHOẢN VÀ ĐIỀU KIỆN DƯỚI ĐÂY." 
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               TextWrapping="Wrap"
+                                               Width="660"
+                                               Margin="20,10,0,0"
+                                               Focusable="False"
+                                               Foreground="Black"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Width="660"
+                                               Text="SaiGonHotel là siêu ứng dụng du lịch và tiện ích sống hàng đầu Đông Nam Á, chúng tôi giúp bạn khám phá và mua đa dạng các loại sản phẩm dịch vụ địa phương và dịch vụ tài chính. Danh mục sản phẩm toàn diện của SaiGonHotel bao gồm các dịch vụ đặt phương tiện cũng như kho khách sạn chỗ ở lớn nhất Đông Nam Á. Không chỉ vậy, để giúp bạn thực hiện nhiều ước vọng về phong cách sống của mình, chúng tôi còn hoàn thiện các dịch vụ của mình với một loạt các điểm tham quan, hoạt động địa phương cũng như các spa chăm sóc sức khỏe và sắc đẹp. Vì vậy, bất kể lựa chọn lối sống của bạn là gì, bạn chỉ cần một cú nhấp chuột!"
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               Margin="0 10 0 0"
+                                               Focusable="False"
+                                               FontStyle="Italic"
+                                               Foreground="Black"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Width="660"
+                                               Text="SaiGonHotel tin rằng hạnh phúc có thể đến dưới nhiều hình thức đối với những người khác nhau trong những thời điểm khác nhau. Vì vậy, với uy tín của chúng tôi và kinh nghiệm hơn 10 năm, chúng tôi hứa hẹn với bạn một loạt các lựa chọn phong phú để thắp sáng trạng thái hạnh phúc của chính bạn. Cho dù bạn đang tìm kiếm một trải nghiệm thú vị hay nghỉ ngơi trong SaiGonHotel."
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               Margin="0 10 0 0"
+                                               Focusable="False"
+                                               FontStyle="Italic"
+                                               Foreground="Black"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Width="660"
+                                               Text="Với dịch vụ chăm sóc khách hàng 24/7 bằng các ngôn ngữ địa phương cũng như hơn 30 phương thức thanh toán địa phương khác nhau, SaiGonHotel đã được tải xuống hơn 100 triệu lần, trở thành ứng dụng phổ biến nhất ở khu vực Đông Nam Á."
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               Margin="0 10 0 0"
+                                               Focusable="False"
+                                               FontStyle="Italic"
+                                               Foreground="Black"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Width="660"
+                                               Text="Bạn còn chờ gì nữa mà chưa trải nghiệm ? Với tất cả các lựa chọn du lịch và phong cách sống độc đáo của bạn, như mọi khi, SaiGonHotel sẽ đồng hành cùng bạn."
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               Margin="0 10 0 0"
+                                               Focusable="False"
+                                               FontStyle="Italic"
+                                               Foreground="Black"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

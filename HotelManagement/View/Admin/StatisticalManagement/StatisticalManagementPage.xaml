@@ -1,0 +1,116 @@
+﻿<Page x:Class="HotelManagement.View.Admin.StatisticalManagement.StatisticalManagementPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HotelManagement.View.Admin.StatisticalManagement"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Title="StatisticalManagementPage"
+      d:DesignHeight="700" d:DesignWidth="1140"
+      DataContext="{StaticResource StatisticalManagementVM}"
+>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding StoreButtonNameCM}"
+                                   CommandParameter="{Binding ElementName=card1}" />
+            <i:InvokeCommandAction Command="{Binding LoadViewCM}"
+                                   CommandParameter="{Binding ElementName=mainFrame}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Left"
+                    Orientation="Horizontal"
+                    Height="57"
+                    Grid.Row="0" 
+                    Background="Transparent"
+                    VerticalAlignment="Top">
+            <materialDesign:Card  Height="57"
+                                      Background="Transparent"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                      materialDesign:ShadowAssist.ShadowEdges="Bottom"
+                                      x:Name="card1">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonBottom}"
+                                 BorderBrush="#0F2851"
+                                 VerticalAlignment="Top"
+                                 Height="40"
+                                 FontSize="18"
+                                 FontWeight="Bold"
+                                 IsChecked="True"
+                                 Content="Thống kê"
+                                 Margin="20,10,0,0"
+                                 Command="{Binding LoadAllStatisticalCM}"
+                                 CommandParameter="{Binding ElementName=card1}"/>
+
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButtonBottom}"
+                                 BorderBrush="#0F2851"
+                                 VerticalAlignment="Top"
+                                 Height="40"
+                                 FontSize="18"
+                                 FontWeight="Bold"
+                                 IsChecked ="False"
+                                 Content="Xu hướng"
+                                 Margin="20,10,0,0"
+                                 Command="{Binding LoadRoomTypeAndServiceStatiscalCM}"
+                                 CommandParameter="{Binding ElementName=card1}"/>
+                </StackPanel>
+            </materialDesign:Card>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="20 0 20 20">
+                <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Fill="White" Opacity="0.5" RadiusX="20" RadiusY="20"/>
+                <Border CornerRadius="20" Background="Transparent" >
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" Direction="270" Color="Black" ShadowDepth="4" Opacity="0.25"/>
+                    </Border.Effect>
+                    <Frame x:Name="mainFrame" Margin="0,0,0,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Loaded">
+                                <i:InvokeCommandAction Command="{Binding LoadAllStatisticalCM}"
+                                               CommandParameter="{Binding ElementName=card1}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Frame>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Grid VerticalAlignment="Top"
+              Height="760"
+              Background="Transparent"
+              Grid.RowSpan="2">
+            <ProgressBar Grid.RowSpan="2"
+                         IsIndeterminate="{Binding IsLoading}"
+                         BorderThickness="0"
+                         VerticalAlignment="Top"
+                         Margin="0,60,0,0"
+                         x:Name="load"
+                         Height="3" />
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=load,Path=IsIndeterminate}"
+                                     Value="True">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+
+                </Style>
+            </Grid.Style>
+        </Grid>
+            
+    </Grid>
+</Page>

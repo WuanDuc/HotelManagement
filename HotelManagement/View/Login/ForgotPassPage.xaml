@@ -1,0 +1,76 @@
+﻿<Page x:Class="HotelManagement.View.Login.ForgotPassPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HotelManagement.View.Login"
+      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      ShowsNavigationUI="False"
+      DataContext="{StaticResource ForgotPassVM}"
+      d:DesignHeight="480" d:DesignWidth="320"
+      Title="ForgotPassPage">
+    <Grid  Margin="20 0 20 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <materialDesign:PackIcon Name="btnback" Grid.Row="0" Kind="ArrowLeft" Height="20" Width="20" Cursor="Hand">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding LoginPageCM}" CommandParameter="{Binding ElementName=btnback}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </materialDesign:PackIcon>
+        <TextBlock Grid.Row="1" Foreground="{DynamicResource PrimaryBackgroundColor}" FontFamily="{DynamicResource MaterialDesignFont}" FontSize="22" Margin="0 0 0 0" FontWeight="Medium" Text="Khôi phục mật khẩu" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="2" Margin="43 0 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon Name="iconEmail" Grid.Column="0" Visibility="Visible" Margin="0 0 0 5" Kind="Email" Height="20" Width="20" Foreground="{DynamicResource PrimaryBackgroundColor}" VerticalAlignment="Bottom"/>
+            <materialDesign:PackIcon Name="iconCodeNum" Visibility="Collapsed" Grid.Column="0" Margin="0 0 0 5" Kind="Numbers" Height="20" Width="20" Foreground="{DynamicResource PrimaryBackgroundColor}" VerticalAlignment="Bottom"/>
+
+            <StackPanel Name="CodeNum" Grid.Column="1" VerticalAlignment="Bottom" Visibility="Collapsed">
+                <TextBlock FontSize="12" FontFamily="{DynamicResource MaterialDesignFont}" Text="Mã xác thực"/>
+                <Border Margin="0 5 0 0 " Height="32" Width="163" Background="White" BorderBrush="{DynamicResource PrimaryBackgroundColor}" BorderThickness="0.7" CornerRadius="4" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
+                    <TextBox Text="{Binding CurrentCode, Mode=TwoWay}" Margin="5 0 0 0" BorderThickness="0" FontSize="13" FontWeight="Regular" Foreground="{DynamicResource SecondTextColor}"/>
+                </Border>
+            </StackPanel>
+            <StackPanel Name="EmailKP" Grid.Column="1" VerticalAlignment="Bottom" Visibility="Visible">
+                <TextBlock FontSize="12" FontFamily="{DynamicResource MaterialDesignFont}" Text="Email khôi phục tài khoản"/>
+                <Border Margin="0 5 0 0 " Height="32" Width="163" Background="White" BorderBrush="{DynamicResource PrimaryBackgroundColor}" BorderThickness="0.7" CornerRadius="4" VerticalAlignment="Bottom" HorizontalAlignment="Left" >
+                    <TextBox Name="EmailBox" Text="{Binding CurrentEmail}" Margin="5 0 0 0" BorderThickness="0" FontSize="13" FontWeight="Regular" Foreground="{DynamicResource SecondTextColor}"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+        <Label Margin="42 0 0 0" Name="lbErr" Foreground="Red" FontSize="11" FontFamily="{DynamicResource MaterialDesignFont}" Grid.Row="3" VerticalAlignment="Bottom"/>
+        <TextBlock Name="InfoText" FontFamily="{DynamicResource MaterialDesignFont}" FontSize="12" Margin="42,17,42,0" Grid.Row="4" TextWrapping="Wrap"  Text="Chúng tôi sẽ gửi mã đặt lại mật khẩu thông qua Email đã liên kết với tài khoản trên." VerticalAlignment="Bottom"/>
+        <Grid Grid.Row="5"  VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Border Name="btnSendcode" Margin="0 0 43 0" Height="34" Width="100" CornerRadius="5" Background="{DynamicResource PrimaryBackgroundColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                <Button Command="{Binding SendCodeCM}" CommandParameter="{Binding ElementName=lbErr}" Height="34" BorderBrush="Transparent"  Width="100" Background="Transparent" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="Button_Click" >
+                    <TextBlock Text="Gửi mã" FontSize="14" FontWeight="Medium"   Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+            </Border>
+            <Border Name="btnCheckcode" Visibility="Collapsed" Margin="0 0 43 0" Height="34" Width="100" CornerRadius="5" Background="{DynamicResource PrimaryBackgroundColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                <Button Command="{Binding CheckCodeCM}" CommandParameter="{Binding ElementName=lbErr}" Height="34" BorderBrush="Transparent"  Width="100" Background="Transparent" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="Button_Click" >
+                    <TextBlock Text="Xác nhận" FontSize="14" FontWeight="Medium"   Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+            </Border>
+        </Grid>
+        <TextBlock Grid.Row="6" FontFamily="{DynamicResource MaterialDesignFont}" FontSize="12"  Text="Thời hạn và điều kiện chính sách riêng tư." HorizontalAlignment="Center"/>
+        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                        Height="50"
+                                        Width="50" Margin="0 150 0 0"
+                                        IsIndeterminate="{Binding IsLoadding}"/>
+    </Grid>
+
+</Page>
