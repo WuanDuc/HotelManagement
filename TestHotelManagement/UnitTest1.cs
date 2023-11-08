@@ -1,3 +1,4 @@
+
 namespace TestHotelManagement
 {
     public class UnitTest1
@@ -5,7 +6,7 @@ namespace TestHotelManagement
         [Fact]
         public void Test1()
         {
-
+            
         }
     }
 }

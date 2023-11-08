@@ -1066,6 +1066,7 @@
     <Resource Include="ViewModel\item.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HotelManagementDatabase.sql" />
     <Content Include="Model\HotelManagementDatabase.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>HotelManagementDatabase.Context.cs</LastGenOutput>
