@@ -12,39 +12,41 @@ namespace HotelManagement.Model.Services
 {
     public class RoomTypeService
     {
-        public RoomTypeService() { }
+        public RoomTypeService(HotelManagementEntities context) { 
+            _context = context;
+        }
         private static RoomTypeService _ins;
         public static RoomTypeService Ins
         {
             get
             {
                 if (_ins == null)
-                    _ins = new RoomTypeService();
+                    _ins = new RoomTypeService(new HotelManagementEntities());
                 return _ins;
             }
             private set { _ins = value; }
         }
+
+        private HotelManagementEntities _context;
         // Take all RoomType 
         public async Task<List<RoomTypeDTO>> GetAllRoomType()
         {
             try
             {
-                using (HotelManagementEntities db = new HotelManagementEntities())
-                {
-                    List<RoomTypeDTO> RoomTypeDTOs = await (
-                        from rt in db.RoomTypes
-                        select new RoomTypeDTO
-                        {
-                            // DTO = db
-                            RoomTypeId = rt.RoomTypeId,
-                            RoomTypeName = rt.RoomTypeName,
-                            RoomTypePrice = (double)rt.Price,
-                            RoomTypeNote = rt.Note,
-                        }
-                    ).ToListAsync();
-                    RoomTypeDTOs.Reverse();
-                    return RoomTypeDTOs;
-                }
+                List<RoomTypeDTO> RoomTypeDTOs = await (
+                    from rt in _context.RoomTypes
+                    select new RoomTypeDTO
+                    {
+                        // DTO = db
+                        RoomTypeId = rt.RoomTypeId,
+                        RoomTypeName = rt.RoomTypeName,
+                        RoomTypePrice = (double)rt.Price,
+                        RoomTypeNote = rt.Note,
+                    }
+                ).ToListAsync();
+                RoomTypeDTOs.Reverse();
+                return RoomTypeDTOs;
+
             }
             catch (Exception e)
             {

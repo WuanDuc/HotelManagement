@@ -341,7 +341,7 @@ namespace HotelManagement.ViewModel.AdminVM.StaffManagementVM
                     break;
             }
         }
-        private (bool isvalid, string mess) IsValidData(Operation oper)
+        public (bool isvalid, string mess) IsValidData(Operation oper)
         {
             if (oper == Operation.CREATE || oper == Operation.UPDATE_PASSWORD)
             {
@@ -364,7 +364,7 @@ namespace HotelManagement.ViewModel.AdminVM.StaffManagementVM
             return (true, null);
         }
 
-        private (bool isv, string err) IsValidAge(DateTime birthday)
+        public (bool isv, string err) IsValidAge(DateTime birthday)
         {
             // Save today's date.
             var today = DateTime.Today;

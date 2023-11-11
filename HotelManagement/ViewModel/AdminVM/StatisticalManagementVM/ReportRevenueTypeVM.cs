@@ -95,7 +95,7 @@ namespace HotelManagement.ViewModel.AdminVM.StatisticalManagementVM
             RoomTypeRevenuePieChart = await OverviewStatisticService.Ins.GetDataRoomTypePieChart(year, month);
         }
         
-            public async Task ChangeServiceTypeRevenue()
+        public async Task ChangeServiceTypeRevenue()
         {
             int year = int.Parse(SelectedYear3.Substring(4));
             int month = int.Parse(SelectedMonth3.Substring(6));

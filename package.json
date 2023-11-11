@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "@stryker-mutator/core": "^7.3.0",
+    "@stryker-mutator/karma-runner": "^7.3.0"
+  }
+}
