@@ -1,18 +1,13 @@
 ﻿using HotelManagement.DTOs;
-using HotelManagement.Model;
 using HotelManagement.Model.Services;
 using HotelManagement.Utils;
 using HotelManagement.View.BookingRoomManagement;
 using HotelManagement.View.CustomMessageBoxWindow;
-using HotelManagement.ViewModel.AdminVM;
-using IronXL.Formatting;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -438,42 +433,42 @@ namespace HotelManagement.ViewModel.BookingRoomManagementVM
         }
         public void ExportToFileFunc()
         {
-            SaveFileDialog sfd = new SaveFileDialog() { Filter = "Excel Workbook|*.xlsx", ValidateNames = true };
-            if (sfd.ShowDialog() == true)
-            {
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
-                app.Visible = false;
-                Microsoft.Office.Interop.Excel.Workbook wb = app.Workbooks.Add(1);
-                Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
+            //SaveFileDialog sfd = new SaveFileDialog() { Filter = "Excel Workbook|*.xlsx", ValidateNames = true };
+            //if (sfd.ShowDialog() == true)
+            //{
+            //    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            //    Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+            //    app.Visible = false;
+            //    Microsoft.Office.Interop.Excel.Workbook wb = app.Workbooks.Add(1);
+            //    Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
 
 
-                ws.Cells[1, 1] = "Mã phiêu thuê";
-                ws.Cells[1, 2] ="Tên khách hàng";
-                ws.Cells[1, 3] = "Ngày bắt đầu thuê";
-                ws.Cells[1, 4] = "Ngày kết thúc thuê";
-                ws.Cells[1, 5] = "Tên nhân viên";
+            //    ws.Cells[1, 1] = "Mã phiêu thuê";
+            //    ws.Cells[1, 2] ="Tên khách hàng";
+            //    ws.Cells[1, 3] = "Ngày bắt đầu thuê";
+            //    ws.Cells[1, 4] = "Ngày kết thúc thuê";
+            //    ws.Cells[1, 5] = "Tên nhân viên";
 
-                int i2 = 2;
-                foreach (var item in BookingRoomList)
-                {
+            //    int i2 = 2;
+            //    foreach (var item in BookingRoomList)
+            //    {
 
-                    ws.Cells[i2, 1] = item.RentalContractId;
-                    ws.Cells[i2, 2] = item.CustomerName;
-                    ws.Cells[i2, 3] = item.StartDateStr;
-                    ws.Cells[i2, 4] = item.CheckOutDateStr;
-                    ws.Cells[i2, 5] = item.StaffName;
-                    i2++;
-                }
-                ws.SaveAs(sfd.FileName);
-                wb.Close();
-                app.Quit();
+            //        ws.Cells[i2, 1] = item.RentalContractId;
+            //        ws.Cells[i2, 2] = item.CustomerName;
+            //        ws.Cells[i2, 3] = item.StartDateStr;
+            //        ws.Cells[i2, 4] = item.CheckOutDateStr;
+            //        ws.Cells[i2, 5] = item.StaffName;
+            //        i2++;
+            //    }
+            //    ws.SaveAs(sfd.FileName);
+            //    wb.Close();
+            //    app.Quit();
 
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+            //    Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
 
-                CustomMessageBox.ShowOk("Xuất file thành công","Thông báo", "OK", CustomMessageBoxImage.Success);
+            //    CustomMessageBox.ShowOk("Xuất file thành công","Thông báo", "OK", CustomMessageBoxImage.Success);
 
-            }
+            //}
         }
         public void LoadBookingRoomListView(Operation oper = Operation.READ, RentalContractDTO r = null)
         {

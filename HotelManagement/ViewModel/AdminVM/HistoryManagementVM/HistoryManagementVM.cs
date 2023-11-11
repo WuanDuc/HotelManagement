@@ -413,109 +413,109 @@ namespace HotelManagement.ViewModel.AdminVM.HistoryManagementVM
         }
         public void ExportToFileFunc(string search)
         {
-            switch (SelectedView)
-            {
-                case 0:
-                    {
-                        using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "Excel Workbook|*.xlsx", ValidateNames = true })
-                        {
-                            if (sfd.ShowDialog() == DialogResult.OK)
-                            {
-                                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                                Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
-                                app.Visible = false;
-                                Microsoft.Office.Interop.Excel.Workbook wb = app.Workbooks.Add(1);
-                                Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
+            //switch (SelectedView)
+            //{
+            //    case 0:
+            //        {
+            //            using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "Excel Workbook|*.xlsx", ValidateNames = true })
+            //            {
+            //                if (sfd.ShowDialog() == DialogResult.OK)
+            //                {
+            //                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            //                    Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+            //                    app.Visible = false;
+            //                    Microsoft.Office.Interop.Excel.Workbook wb = app.Workbooks.Add(1);
+            //                    Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
 
-                                ws.Cells[1, 1] = "Mã đơn";
-                                ws.Cells[1, 2] = "Tên đơn";
-                                ws.Cells[1, 3] = "Số lượng";
-                                ws.Cells[1, 4] = "Tổng giá";
-                                ws.Cells[1, 5] = "Nhân viên";
-                                ws.Cells[1, 6] = "Ngày nhập";
+            //                    ws.Cells[1, 1] = "Mã đơn";
+            //                    ws.Cells[1, 2] = "Tên đơn";
+            //                    ws.Cells[1, 3] = "Số lượng";
+            //                    ws.Cells[1, 4] = "Tổng giá";
+            //                    ws.Cells[1, 5] = "Nhân viên";
+            //                    ws.Cells[1, 6] = "Ngày nhập";
 
-                                int i2 = 2;
+            //                    int i2 = 2;
 
-                                ObservableCollection<ImportProductDTO> listImportSearch = new ObservableCollection<ImportProductDTO>(ImportList.Where(item => item.ProductName.ToLower().Contains(search.ToLower())
-                                                                                                                                    || item.ImportId.ToLower().Contains(search.ToLower())
-                                                                                                                                    || item.StaffName.ToLower().Contains(search.ToLower())));
+            //                    ObservableCollection<ImportProductDTO> listImportSearch = new ObservableCollection<ImportProductDTO>(ImportList.Where(item => item.ProductName.ToLower().Contains(search.ToLower())
+            //                                                                                                                        || item.ImportId.ToLower().Contains(search.ToLower())
+            //                                                                                                                        || item.StaffName.ToLower().Contains(search.ToLower())));
 
-                                foreach (var item in listImportSearch)
-                                {
-                                    ws.Cells[i2, 1] = item.ImportId;
-                                    ws.Cells[i2, 2] = item.ProductName;
-                                    ws.Cells[i2, 3] = item.ProductImportQuantity;
-                                    ws.Cells[i2, 4] = item.ProductImportPrice;
-                                    ws.Cells[i2, 5] = item.StaffName;
-                                    ws.Cells[i2, 6] = item.CreatedDate;
+            //                    foreach (var item in listImportSearch)
+            //                    {
+            //                        ws.Cells[i2, 1] = item.ImportId;
+            //                        ws.Cells[i2, 2] = item.ProductName;
+            //                        ws.Cells[i2, 3] = item.ProductImportQuantity;
+            //                        ws.Cells[i2, 4] = item.ProductImportPrice;
+            //                        ws.Cells[i2, 5] = item.StaffName;
+            //                        ws.Cells[i2, 6] = item.CreatedDate;
 
-                                    i2++;
-                                }
-                                ws.SaveAs(sfd.FileName);
-                                wb.Close();
-                                app.Quit();
+            //                        i2++;
+            //                    }
+            //                    ws.SaveAs(sfd.FileName);
+            //                    wb.Close();
+            //                    app.Quit();
 
-                                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+            //                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
 
-                                CustomMessageBox.ShowOk("Xuất file thành công", "Thông báo", "OK", CustomMessageBoxImage.Success);
-                            }
-                        }
-                        break;
-                    }
-                case 1:
-                    {
+            //                    CustomMessageBox.ShowOk("Xuất file thành công", "Thông báo", "OK", CustomMessageBoxImage.Success);
+            //                }
+            //            }
+            //            break;
+            //        }
+            //    case 1:
+            //        {
 
-                        using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "Excel Workbook|*.xlsx", ValidateNames = true })
-                        {
-                            if (sfd.ShowDialog() == DialogResult.OK)
-                            {
-                                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                                Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
-                                app.Visible = false;
-                                Microsoft.Office.Interop.Excel.Workbook wb = app.Workbooks.Add(1);
-                                Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
-
-
-                                ws.Cells[1, 1] = "Mã hóa đơn";
-                                ws.Cells[1, 2] = "Khách hàng";
-                                ws.Cells[1, 3] = "Địa chỉ";
-                                ws.Cells[1, 4] = "Tổng tiền";
-                                ws.Cells[1, 5] = "Phí dịch vụ";
-                                ws.Cells[1, 6] = "Phí sự cố";
-                                ws.Cells[1, 7] = "Nhân viên xuất";
-                                ws.Cells[1, 8] = "Ngày xuất";
-                                int i2 = 2;
-
-                                ObservableCollection<BillDTO> listBillSearch = new ObservableCollection<BillDTO>(BillExportList.Where(item => item.BillId.ToLower().Contains(search.ToLower())
-                                                                                                    || item.CustomerName.ToLower().Contains(search.ToLower())
-                                                                                                    || item.StaffName.ToLower().Contains(search.ToLower())));
-                                foreach (var item in listBillSearch)
-                                {
-
-                                    ws.Cells[i2, 1] = item.BillId;
-                                    ws.Cells[i2, 2] = item.CustomerName;
-                                    ws.Cells[i2, 3] = item.CustomerAddress;
-                                    ws.Cells[i2, 4] = item.TotalPriceTempStr;
-                                    ws.Cells[i2, 5] = item.ServicePriceTempStr;
-                                    ws.Cells[i2, 6] = item.TroublePriceTempStr;
-                                    ws.Cells[i2, 7] = item.StaffName;
-                                    ws.Cells[i2, 8] = item.CreateDate;
+            //            using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "Excel Workbook|*.xlsx", ValidateNames = true })
+            //            {
+            //                if (sfd.ShowDialog() == DialogResult.OK)
+            //                {
+            //                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            //                    Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+            //                    app.Visible = false;
+            //                    Microsoft.Office.Interop.Excel.Workbook wb = app.Workbooks.Add(1);
+            //                    Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
 
 
-                                    i2++;
-                                }
-                                ws.SaveAs(sfd.FileName);
-                                wb.Close();
-                                app.Quit();
+            //                    ws.Cells[1, 1] = "Mã hóa đơn";
+            //                    ws.Cells[1, 2] = "Khách hàng";
+            //                    ws.Cells[1, 3] = "Địa chỉ";
+            //                    ws.Cells[1, 4] = "Tổng tiền";
+            //                    ws.Cells[1, 5] = "Phí dịch vụ";
+            //                    ws.Cells[1, 6] = "Phí sự cố";
+            //                    ws.Cells[1, 7] = "Nhân viên xuất";
+            //                    ws.Cells[1, 8] = "Ngày xuất";
+            //                    int i2 = 2;
 
-                                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-                                CustomMessageBox.ShowOk("Xuất file thành công", "Thông báo", "OK", CustomMessageBoxImage.Success);
+            //                    ObservableCollection<BillDTO> listBillSearch = new ObservableCollection<BillDTO>(BillExportList.Where(item => item.BillId.ToLower().Contains(search.ToLower())
+            //                                                                                        || item.CustomerName.ToLower().Contains(search.ToLower())
+            //                                                                                        || item.StaffName.ToLower().Contains(search.ToLower())));
+            //                    foreach (var item in listBillSearch)
+            //                    {
 
-                            }
-                        }
-                        break;
-                    }
-            }
+            //                        ws.Cells[i2, 1] = item.BillId;
+            //                        ws.Cells[i2, 2] = item.CustomerName;
+            //                        ws.Cells[i2, 3] = item.CustomerAddress;
+            //                        ws.Cells[i2, 4] = item.TotalPriceTempStr;
+            //                        ws.Cells[i2, 5] = item.ServicePriceTempStr;
+            //                        ws.Cells[i2, 6] = item.TroublePriceTempStr;
+            //                        ws.Cells[i2, 7] = item.StaffName;
+            //                        ws.Cells[i2, 8] = item.CreateDate;
+
+
+            //                        i2++;
+            //                    }
+            //                    ws.SaveAs(sfd.FileName);
+            //                    wb.Close();
+            //                    app.Quit();
+
+            //                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+            //                    CustomMessageBox.ShowOk("Xuất file thành công", "Thông báo", "OK", CustomMessageBoxImage.Success);
+
+            //                }
+            //            }
+            //            break;
+            //        }
+            //}
         }
     }
 }
