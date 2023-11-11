@@ -107,6 +107,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="StrykerOutput\2023-11-12.00-02-28\.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HotelManagement\HotelManagement.csproj">
