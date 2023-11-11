@@ -26,13 +26,26 @@ namespace HotelManagement.Model.Services
             }
             private set { _ins = value; }
         }
+        private HotelManagementEntities _context;
 
+        public BillService(HotelManagementEntities context)
+        {
+            _context = context;
+        }
         public async Task<List<BillDTO>> GetBillByListRentalContract(List<RentalContractDTO> rentalContractDTOs)
         {
             try
             {
                 using (var context = new HotelManagementEntities())
                 {
+                    if (_context == null)
+                    {
+                        _context = new HotelManagementEntities();
+                    }
+                    if (_context.Bills == null)
+                    {
+                        // return (false, "Không có nhân viên");
+                    }
                     var listRentalContractId = rentalContractDTOs.Select(x => x.RentalContractId).ToList();
 
                     var list = await context.RentalContracts.Where(x => listRentalContractId.Contains(x.RentalContractId))
