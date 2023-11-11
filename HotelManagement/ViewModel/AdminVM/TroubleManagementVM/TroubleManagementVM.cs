@@ -286,32 +286,5 @@ namespace HotelManagement.ViewModel.AdminVM.TroubleManagementVM
         {
             TroubleList = new ObservableCollection<TroubleDTO>(await TroubleService.Ins.GetAllTrouble());
         }
-
-
-        private void LoadTroubleList(Operation oper, TroubleDTO trouble = null)
-        {
-            switch (oper)
-            {
-                case Operation.CREATE:
-                    TroubleList.Add(trouble);
-                    break;
-                case Operation.UPDATE:
-                    var updtrouble = TroubleList.FirstOrDefault(s => s.StaffId == trouble.StaffId);
-                    TroubleList[TroubleList.IndexOf(updtrouble)] = trouble;
-                    break;
-                case Operation.DELETE:
-                    for (int i = 0; i < TroubleList.Count(); i++)
-                    {
-                        if (TroubleList[i].TroubleId == SelectedItem.TroubleId)
-                        {
-                            TroubleList.Remove(TroubleList[i]);
-                            break;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 }

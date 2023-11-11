@@ -17,7 +17,7 @@ namespace HotelManagement.ViewModel.AdminVM.StatisticalManagementVM
     {
         private SeriesCollection _InComeData;
         public SeriesCollection InComeData
-        {
+        {   
             get { return _InComeData; }
             set { _InComeData = value; OnPropertyChanged(); }
         }

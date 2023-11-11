@@ -11,10 +11,10 @@ namespace HotelManagement.ViewModel.AdminVM.CustomerManagementVM.Tests
     [TestClass()]
     public class CustomerManagementVMTests
     {
-        [TestMethod()]
-        public void AddNewCustomerTest()
-        {
-            Assert.Fail();
-        }
+        //[TestMethod()]
+        //public void AddNewCustomerTest()
+        //{
+        //    Assert.Fail();
+        //}
     }
 }
