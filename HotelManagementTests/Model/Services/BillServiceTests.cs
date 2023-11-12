@@ -112,6 +112,7 @@ namespace HotelManagement.Model.Services.Tests
                     TroublePrice = 10.0,
                     DiscountPrice = 5.0,
                     Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1),
                 },
                 new Bill()
                 {
@@ -122,6 +123,7 @@ namespace HotelManagement.Model.Services.Tests
                     TroublePrice = 10.0,
                     DiscountPrice = 5.0,
                     Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1),
                 }
             };
             var dataBill = billDTOs.AsQueryable();
@@ -169,6 +171,7 @@ namespace HotelManagement.Model.Services.Tests
                     TroublePrice = 10.0,
                     DiscountPrice = 5.0,
                     Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1)
                 },
                 new BillDTO()
                 {
@@ -179,6 +182,7 @@ namespace HotelManagement.Model.Services.Tests
                     TroublePrice = 10.0,
                     DiscountPrice = 5.0,
                     Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1)
                 }
             };
             List<RentalContractDTO> rentalContracts = new List<RentalContractDTO>()
@@ -215,6 +219,7 @@ namespace HotelManagement.Model.Services.Tests
                 TroublePrice = 10.0,
                 DiscountPrice = 5.0,
                 Price = 50.0,
+                CreateDate = new DateTime(2023, 1, 1)
             };
             service = new BillService(mockEntities.Object);
             var result = await service.GetBillDetails(expected.BillId);
@@ -223,15 +228,129 @@ namespace HotelManagement.Model.Services.Tests
         }
 
         [TestMethod()]
-        public void SaveBillTest()
+        public async Task SaveBillTest()
         {
-            Assert.Fail();
+            (bool, string) expected = (true, "Thanh toán thành công!");
+            BillDTO bill = new BillDTO()
+            {
+                BillId = "ID004",
+                RentalContractId = "RC001",
+                NumberOfRentalDays = 5,
+                ServicePrice = 20.0,
+                TroublePrice = 10.0,
+                DiscountPrice = 5.0,
+                Price = 50.0,
+                CreateDate = new DateTime(2023, 1, 1)
+            };
+            service = new BillService(mockEntities.Object);
+            var result = await service.SaveBill(bill);
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public void GetAllBillTest()
+        public async Task GetAllBillTestAsync()
         {
-            Assert.Fail();
+            List<BillDTO> expected = new List<BillDTO>()
+            {
+                new BillDTO()
+                {
+                    BillId = "ID001",
+                    RentalContractId = "RC001",
+                    NumberOfRentalDays = 5,
+                    ServicePrice = 20.0,
+                    TroublePrice = 10.0,
+                    DiscountPrice = 5.0,
+                    Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1)
+                },
+                new BillDTO()
+                {
+                    BillId = "ID002",
+                    RentalContractId = "RC001",
+                    NumberOfRentalDays = 5,
+                    ServicePrice = 20.0,
+                    TroublePrice = 10.0,
+                    DiscountPrice = 5.0,
+                    Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1)
+                }
+            };
+            service = new BillService(mockEntities.Object);
+            var result = await service.GetAllBill();
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod()]
+        public async Task GetAllBillByDateTestAsync()
+        {
+            List<BillDTO> expected = new List<BillDTO>()
+            {
+                new BillDTO()
+                {
+                    BillId = "ID001",
+                    RentalContractId = "RC001",
+                    NumberOfRentalDays = 5,
+                    ServicePrice = 20.0,
+                    TroublePrice = 10.0,
+                    DiscountPrice = 5.0,
+                    Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1)
+                },
+                new BillDTO()
+                {
+                    BillId = "ID002",
+                    RentalContractId = "RC001",
+                    NumberOfRentalDays = 5,
+                    ServicePrice = 20.0,
+                    TroublePrice = 10.0,
+                    DiscountPrice = 5.0,
+                    Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1)
+                }
+            };
+            service = new BillService(mockEntities.Object);
+            var result = await service.GetAllBillByDate(new DateTime(2023,1,1));
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(expected, result);
+
+        }
+
+        [TestMethod()]
+        public async Task GetAllBillByMonthTestAsync()
+        {
+            List<BillDTO> expected = new List<BillDTO>()
+            {
+                new BillDTO()
+                {
+                    BillId = "ID001",
+                    RentalContractId = "RC001",
+                    NumberOfRentalDays = 5,
+                    ServicePrice = 20.0,
+                    TroublePrice = 10.0,
+                    DiscountPrice = 5.0,
+                    Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1)
+                },
+                new BillDTO()
+                {
+                    BillId = "ID002",
+                    RentalContractId = "RC001",
+                    NumberOfRentalDays = 5,
+                    ServicePrice = 20.0,
+                    TroublePrice = 10.0,
+                    DiscountPrice = 5.0,
+                    Price = 50.0,
+                    CreateDate = new DateTime(2023,1,1)
+                }
+            };
+            service = new BillService(mockEntities.Object);
+            var result = await service.GetAllBillByMonth(1);
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(expected, result);
         }
     }
 }
