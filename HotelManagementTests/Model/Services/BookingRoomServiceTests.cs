@@ -13,6 +13,7 @@ using Castle.Core.Resource;
 using HotelManagement.ViewModel.StaffVM;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices.ComTypes;
+using HotelManagementTests.Model;
 
 namespace HotelManagement.Model.Services.Tests
 {
