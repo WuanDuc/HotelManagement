@@ -83,9 +83,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (Entities == null)
                 {
-                    var listRentalContract = await (from r in context.RentalContracts
+                    Entities = new HotelManagementEntities();
+                }
+                if (Entities.Bills == null)
+                {
+                    return null;
+                }
+                var listRentalContract = await (from r in Entities.RentalContracts
 
                                                     select new RentalContractDTO
                                                     {
@@ -106,8 +112,8 @@ namespace HotelManagement.Model.Services
                     (x.StartDate + x.StartTime >= start && x.StartDate + x.StartTime < end && x.Validated == true) ||
                     (x.StartDate + x.StartTime <= start && x.CheckOutDate + x.StartTime >= end && x.Validated == true)).Select(x => x.RoomId).ToList();
                     var listReadyRoom = await (
-                        from r in context.Rooms
-                        join temp in context.RoomTypes
+                        from r in Entities.Rooms
+                        join temp in Entities.RoomTypes
                         on r.RoomTypeId equals temp.RoomTypeId 
                         where listBusyRoomId.Contains(r.RoomId)==false
                         select new RoomDTO
@@ -122,7 +128,7 @@ namespace HotelManagement.Model.Services
                     ).ToListAsync();
                    return listReadyRoom;
 
-                }
+                
             }
             catch (Exception e)
             {
@@ -134,9 +140,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (Entities == null)
                 {
-                    var maxId = await context.RentalContracts.MaxAsync(s => s.RentalContractId);
+                    Entities = new HotelManagementEntities();
+                }
+                if (Entities.Bills == null)
+                {
+                    return (false, "Lỗi hệ thống");
+                }
+                var maxId = await Entities.RentalContracts.MaxAsync(s => s.RentalContractId);
                     string rentalId = CreateNextRentalContractId(maxId);
                     RentalContract rc = new RentalContract
                     {
@@ -150,11 +162,11 @@ namespace HotelManagement.Model.Services
                         Validated = rentalContract.Validated,
                     };
 
-                    context.RentalContracts.Add(rc);
-                    await context.SaveChangesAsync();
+                    Entities.RentalContracts.Add(rc);
+                    await Entities.SaveChangesAsync();
                     rentalContract.RentalContractId = rc.RentalContractId;
                     return (true, "Đặt phòng thành công!");
-                }
+                
             }
             catch (Exception e)
             {
@@ -165,10 +177,16 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (Entities == null)
                 {
-                    var c = await context.Customers.FirstOrDefaultAsync(x => x.CCCD == customer.CCCD);
-                    var maxId = await context.Customers.MaxAsync(s => s.CustomerId);
+                    Entities = new HotelManagementEntities();
+                }
+                if (Entities.Bills == null)
+                {
+                    return (false, "Lỗi hệ thống",null);
+                }
+                var c = await Entities.Customers.FirstOrDefaultAsync(x => x.CCCD == customer.CCCD);
+                    var maxId = await Entities.Customers.MaxAsync(s => s.CustomerId);
                     if (c != null) return (true, null,c.CustomerId);
                     else
                     {
@@ -186,11 +204,11 @@ namespace HotelManagement.Model.Services
                             Gender = customer.Gender,
                             IsDeleted = customer.IsDeleted,
                         };
-                        context.Customers.Add(newCus);
-                        await context.SaveChangesAsync();
-                        string cusId = (await context.Customers.FirstOrDefaultAsync(x => x.CCCD == customer.CCCD)).CustomerId;
+                        Entities.Customers.Add(newCus);
+                        await Entities.SaveChangesAsync();
+                        string cusId = (await Entities.Customers.FirstOrDefaultAsync(x => x.CCCD == customer.CCCD)).CustomerId;
                         return (true, "", cusId);
-                    }
+                    
                 }
             }
             catch (System.Data.Entity.Core.EntityException)
@@ -207,9 +225,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (Entities == null)
                 {
-                    RentalContract rental = await (from p in context.RentalContracts
+                    Entities = new HotelManagementEntities();
+                }
+                if (Entities.Bills == null)
+                {
+                    return (false, "Lỗi hệ thống");
+                }
+                RentalContract rental = await (from p in Entities.RentalContracts
                                        where p.RentalContractId == Id
                                        select p).FirstOrDefaultAsync();
                     if (rental == null)
@@ -219,9 +243,9 @@ namespace HotelManagement.Model.Services
 
                     rental.Room.RoomStatus = ROOM_STATUS.READY;
 
-                    context.RentalContracts.Remove(rental);
-                    await context.SaveChangesAsync();
-                }
+                    Entities.RentalContracts.Remove(rental);
+                    await Entities.SaveChangesAsync();
+                
             }
             catch (Exception)
             {
@@ -234,9 +258,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (Entities == null)
                 {
-                    RentalContract rental = await (from p in context.RentalContracts
+                    Entities = new HotelManagementEntities();
+                }
+                if (Entities.Bills == null)
+                {
+                    return (false, "Lỗi hệ thống");
+                }
+                RentalContract rental = await (from p in Entities.RentalContracts
                                                    where p.RentalContractId == Id
                                                    select p).FirstOrDefaultAsync();
                     if (rental == null)
@@ -244,29 +274,29 @@ namespace HotelManagement.Model.Services
                         return (false, "Phiếu thuê phòng này không tồn tại!");
                     }
 
-                    List<ServiceUsing> serviceUsing = await context.ServiceUsings.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
+                    List<ServiceUsing> serviceUsing = await Entities.ServiceUsings.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
 
                     if(serviceUsing != null)
-                        context.ServiceUsings.RemoveRange(serviceUsing);
+                        Entities.ServiceUsings.RemoveRange(serviceUsing);
 
-                    List<Bill> bill = await context.Bills.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
+                    List<Bill> bill = await Entities.Bills.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
 
                     if (bill != null)
-                        context.Bills.RemoveRange(bill);
+                        Entities.Bills.RemoveRange(bill);
 
-                    List<TroubleByCustomer> troubleByCus = await context.TroubleByCustomers.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
+                    List<TroubleByCustomer> troubleByCus = await Entities.TroubleByCustomers.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
 
                     if (troubleByCus != null)
-                        context.TroubleByCustomers.RemoveRange(troubleByCus);
+                        Entities.TroubleByCustomers.RemoveRange(troubleByCus);
 
-                    List<RoomCustomer> roomCus = await context.RoomCustomers.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
+                    List<RoomCustomer> roomCus = await Entities.RoomCustomers.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
 
                     if (roomCus != null)
-                        context.RoomCustomers.RemoveRange(roomCus);
+                        Entities.RoomCustomers.RemoveRange(roomCus);
 
-                    context.RentalContracts.Remove(rental);
-                    await context.SaveChangesAsync();
-                }
+                    Entities.RentalContracts.Remove(rental);
+                    await Entities.SaveChangesAsync();
+                
             }
             catch (Exception)
             {
@@ -278,10 +308,16 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (Entities == null)
                 {
-                    return (await context.RentalContracts.FindAsync(rtID)).Room.RoomStatus;
+                    Entities = new HotelManagementEntities();
                 }
+                if (Entities.Bills == null)
+                {
+                    return "";
+                }
+                return (await Entities.RentalContracts.FindAsync(rtID)).Room.RoomStatus;
+                
             }
             catch (Exception e)
             {
@@ -292,9 +328,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (Entities == null)
                 {
-                    Customer cus = await context.Customers.FirstOrDefaultAsync(x => x.CCCD == cccd);
+                    Entities = new HotelManagementEntities();
+                }
+                if (Entities.Bills == null)
+                {
+                    return (false, null);
+                }
+                Customer cus = await Entities.Customers.FirstOrDefaultAsync(x => x.CCCD == cccd);
                     if (cus != null)
                     {
                         CustomerDTO customerDTO = new CustomerDTO
@@ -316,7 +358,7 @@ namespace HotelManagement.Model.Services
                     {
                         return (false, null);
                     }
-                }
+                
             }
             catch (Exception e)
             {

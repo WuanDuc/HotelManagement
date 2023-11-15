@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 using Moq;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
+using HotelManagement.DTOs;
+using Castle.Core.Resource;
+using HotelManagement.ViewModel.StaffVM;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace HotelManagement.Model.Services.Tests
 {
@@ -62,6 +67,16 @@ namespace HotelManagement.Model.Services.Tests
                     RoomTypeId = "RT001", // Assuming you have a RoomType with this ID
                     Note = "This is a standard single room.",
                     RoomStatus = "Có sẵn",
+                    RoomCleaningStatus = "Đã dọn dẹp",
+                    RoomType = roomTypes[0]
+                },
+                new Room
+                {
+                    RoomId = "R002",
+                    RoomNumber = 101,
+                    RoomTypeId = "RT001", // Assuming you have a RoomType with this ID
+                    Note = "This is a standard single room.",
+                    RoomStatus = "Đang sử dụng",
                     RoomCleaningStatus = "Đã dọn dẹp",
                     RoomType = roomTypes[0]
                 }
@@ -251,51 +266,160 @@ namespace HotelManagement.Model.Services.Tests
         }
 
         [TestMethod()]
-        public void GetBookingListTest()
+        public async Task GetBookingListTest()
         {
-            Assert.Fail();
+            List<RentalContractDTO> expected = new List<RentalContractDTO>() {
+                new RentalContractDTO
+                {
+                    RentalContractId = "RC001",
+                    StaffName = staffDTOs[0].StaffName,
+                    CustomerName = customerDTOs[0].CustomerName,
+                    StartDate = new DateTime(2023, 1, 1),
+                    CheckOutDate = new DateTime(2023, 1, 5),
+                    StartTime = new TimeSpan(10, 0, 0),
+                    Validated = true,
+                }
+            };
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.GetBookingList();
+            //result.Reverse();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(expected[0].RentalContractId, result[0].RentalContractId);
         }
 
         [TestMethod()]
-        public void GetListReadyRoomTest()
+        public async Task GetListReadyRoomTestAsync()
         {
-            Assert.Fail();
+
+            List<RoomDTO> expected = new List<RoomDTO>()
+            {
+                new RoomDTO
+                {
+                    RoomId = "R001",
+                    RoomNumber = 101,
+                    RoomTypeId = "RT001", // Assuming you have a RoomType with this ID
+                    Note = "This is a standard single room.",
+                    RoomStatus = "Có sẵn",
+                    RoomCleaningStatus = "Đã dọn dẹp",
+                }
+            };
+            service = new BookingRoomService(mockEntities.Object);
+            DateTime dt = new DateTime(2023, 1, 1);
+            TimeSpan ts = new TimeSpan(10, 0, 0);
+            dt = dt + ts;
+            var result = await service.GetListReadyRoom(new DateTime(2023,1,1), dt, new DateTime(2023,1,5));
+            //result.Reverse();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(expected[0].RoomId, result[0].RoomId);
         }
 
         [TestMethod()]
-        public void SaveBookingTest()
+        public async Task SaveBookingTest()
         {
-            Assert.Fail();
+            var expected = (true, "Đặt phòng thành công!");
+            var test = new RentalContractDTO
+            {
+                RentalContractId = "RC002",
+                StartDate = new DateTime(2023, 1, 1),
+                StartTime = new TimeSpan(10, 0, 0),
+                CheckOutDate = new DateTime(2023, 1, 5),
+                PersonNumber = 2,
+                StaffId = "S001",
+                CustomerId = "C001",
+                RoomId = "R001",
+                Validated = true,               
+            };
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.SaveBooking(test);
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public void SaveCustomerTest()
+        public async Task SaveCustomerTest()
         {
-            Assert.Fail();
+            var expected = (true, "","C003");
+            var test = new CustomerDTO
+            {
+                CustomerId = "C003",
+                CustomerName = "Bob Smith",
+                PhoneNumber = "555555555",
+                Email = "bob.smith@example.com",
+                CCCD = "555555555",
+                DateOfBirth = new DateTime(1975, 8, 20),
+                Gender = "Male",
+                CustomerType = "Regular",
+                CustomerAddress = "789 Pine St",
+                IsDeleted = false
+            };
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.SaveCustomer(test);
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public void DeleteRentalContractBookedTest()
+        public async Task DeleteRentalContractBookedTest_Exist()
         {
-            Assert.Fail();
+            var expected = (true, "Xóa phiếu thuê phòng thành công");
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.DeleteRentalContractBooked("RC001");
+            Assert.AreEqual(expected, result);
+        }
+        [TestMethod()]
+        public async Task DeleteRentalContractBookedTest_DontExist()
+        {
+            var expected = (false, "Phiếu thuê phòng này không tồn tại!");
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.DeleteRentalContractBooked("RC003");
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public void DeleteRentalContractOutDateTest()
+        public async Task DeleteRentalContractOutDateTest_DontExist()
         {
-            Assert.Fail();
+            var expected = (false, "Phiếu thuê phòng này không tồn tại!");
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.DeleteRentalContractBooked("RC003");
+            Assert.AreEqual(expected, result);
+        }
+        [TestMethod()]
+        public async Task DeleteRentalContractOutDateTest_Exist()
+        {
+            var expected = (true, "Xóa phiếu thuê phòng thành công");
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.DeleteRentalContractBooked("RC001");
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public void GetRoomStatusByTest()
+        public async Task GetRoomStatusByTest()
         {
-            Assert.Fail();
+            var expected = "Có sẵn";
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.GetRoomStatusBy("RT001");
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public void CheckCCCDTest()
+        public async Task CheckCCCDTest()
         {
-            Assert.Fail();
+            var cus = new CustomerDTO()
+            {
+                CustomerId = "C001",
+                CustomerName = "John Doe",
+                PhoneNumber = "123456789",
+                Email = "john.doe@example.com",
+                CCCD = "123456789",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Gender = "Male",
+                CustomerType = "Regular",
+                CustomerAddress = "123 Main St",
+                IsDeleted = false,
+            };
+            var expected = (true, cus.CustomerId);
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.CheckCCCD("123456789");
+            var r = (result.Item1, result.Item2.CustomerId);
+            Assert.AreEqual(expected, result);
         }
     }
 }

@@ -402,7 +402,7 @@ namespace HotelManagement.Model.Services.Tests
             var result = await service.GetBillByListRentalContract(rentalContracts);
 
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected[0].BillId, result[0].BillId);
         }
 
         [TestMethod()]
