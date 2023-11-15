@@ -33,7 +33,7 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                List<RoomTypeDTO> RoomTypeDTOs = await (
+                List<RoomTypeDTO> RoomTypeDTOs = (
                     from rt in _context.RoomTypes
                     select new RoomTypeDTO
                     {
@@ -43,7 +43,7 @@ namespace HotelManagement.Model.Services
                         RoomTypePrice = (double)rt.Price,
                         RoomTypeNote = rt.Note,
                     }
-                ).ToListAsync();
+                ).ToList();
                 RoomTypeDTOs.Reverse();
                 return RoomTypeDTOs;
 
@@ -57,11 +57,14 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (HotelManagementEntities db = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var item = await db.RoomTypes.Where(x => x.RoomTypeName == rtn).FirstOrDefaultAsync();
-                    return item.RoomTypeId;
+                    _context = new HotelManagementEntities();
                 }
+
+                var item = _context.RoomTypes.Where(x => x.RoomTypeName == rtn).FirstOrDefault();
+                return item.RoomTypeId;
+
             }
             catch (Exception e)
             {

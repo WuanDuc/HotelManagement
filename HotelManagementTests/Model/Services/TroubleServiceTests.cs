@@ -313,10 +313,10 @@ namespace HotelManagement.Model.Services.Tests
 
             mockEntities.Setup(m => m.Staffs).Returns(mockStaff.Object);
             string staffID = null;
-            string name = null;
+            string name = "";
             service = new TroubleService(mockEntities.Object);
             var result = await service.GetStaffNameById(staffID);
-            Assert.AreEqual(name, null);
+            Assert.AreEqual(name, "");
         }
 
         [TestMethod()]
