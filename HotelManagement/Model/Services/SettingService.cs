@@ -43,11 +43,11 @@ namespace HotelManagement.Model.Services
                 {
                     return (false, "Không có nhân viên");
                 }
-                Staff staff = await _context.Staffs.FindAsync(Id);
+                Staff staff = _context.Staffs.Find(Id);
                 if (staff == null)
                     return (false, "Lỗi không tìm thấy nhân viên");
                 staff.StaffName = StaffName;
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return (true, "Lưu thông tin thành công");
             }
             catch (EntityException)
@@ -63,15 +63,18 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    Staff staff = await context.Staffs.FindAsync(Id);
-                    if (staff == null)
-                        return (false, "lỗi hệ thống");
-                    staff.Email = StaffEmail;
-                    await context.SaveChangesAsync();
-                    return (true, "Lưu thông tin thành công");
+                    _context = new HotelManagementEntities();
                 }
+
+                Staff staff = _context.Staffs.Find(Id);
+                if (staff == null)
+                    return (false, "lỗi hệ thống");
+                staff.Email = StaffEmail;
+                _context.SaveChanges();
+                return (true, "Lưu thông tin thành công");
+
             }
             catch (EntityException)
             {

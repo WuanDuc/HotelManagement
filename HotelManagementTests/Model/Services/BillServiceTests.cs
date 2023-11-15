@@ -15,6 +15,7 @@ using Castle.Core.Resource;
 using System.Data.Entity.Infrastructure;
 using System.Linq.Expressions;
 using System.Threading;
+using HotelManagementTests.Model;
 
 namespace HotelManagement.Model.Services.Tests
 {
