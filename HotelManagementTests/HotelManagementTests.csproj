@@ -88,14 +88,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Model\IDbTest.cs" />
     <Compile Include="Model\Services\BillServiceTests.cs" />
     <Compile Include="Model\Services\BookingRoomServiceTests.cs" />
     <Compile Include="Model\Services\RoomTypeServiceTests.cs" />
     <Compile Include="Model\Services\SettingServiceTests.cs" />
     <Compile Include="Model\Services\TroubleServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\AdminVM\AdminVMTests.cs" />
     <Compile Include="ViewModel\AdminVM\CustomerManagementVM\CustomerManagementVMTests.cs" />
     <Compile Include="ViewModel\AdminVM\StaffManagementVM\StaffManagementVMTests.cs" />
     <Compile Include="ViewModel\AdminVM\StatisticalManagementVM\IncomeTests.cs" />
@@ -104,8 +103,6 @@
     <Compile Include="ViewModel\AdminVM\StatisticalManagementVM\StatisticalManagementVMTests.cs" />
     <Compile Include="ViewModel\AdminVM\TroubleManagementVM\EditConverterTests.cs" />
     <Compile Include="ViewModel\AdminVM\TroubleManagementVM\StatusBrushConverterTests.cs" />
-    <Compile Include="ViewModel\AdminVM\TroubleManagementVM\TroubleManagementVMTests.cs" />
-    <Compile Include="ViewModel\BookingRoomManagementVM\BookingRoomManagementVMTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

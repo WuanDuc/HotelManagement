@@ -32,6 +32,14 @@ namespace HotelManagement.Model.Services.Tests
                     RoomTypeName = "Room Type 1",
                     Price = 100000,
                     Note = "Note",
+                },
+
+                new RoomType()
+                {
+                    RoomTypeId = "RT002",
+                    RoomTypeName = "Room Type 2",
+                    Price = 100000,
+                    Note = "Note",
                 }
             };
             var data = roomTypes.AsQueryable();
@@ -64,8 +72,8 @@ namespace HotelManagement.Model.Services.Tests
             service = new RoomTypeService(mockEntities.Object);
             var result = await service.GetAllRoomType();
 
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(expected.ToString(), result.ToString());
         }
 
         [TestMethod()]
@@ -89,15 +97,14 @@ namespace HotelManagement.Model.Services.Tests
         }
 
         [TestMethod()]
-        public void GetAllRoomTypeTest()
+        public async Task GetRoomTypeIDTest()
         {
+            string rtname = "Room Type 1";
+            string expected = "RT001";
+            service = new RoomTypeService(mockEntities.Object);
+            var result = await service.GetRoomTypeID(rtname);
 
-        }
-
-        [TestMethod()]
-        public void GetRoomTypeIDTest()
-        {
-
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]

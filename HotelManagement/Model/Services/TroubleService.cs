@@ -82,7 +82,7 @@ namespace HotelManagement.Model.Services
                 {
                     _context = new HotelManagementEntities();
                 }
-                var maxId = await _context.Troubles.MaxAsync(p => p.TroubleId);
+                var maxId = _context.Troubles.Max(p => p.TroubleId);
 
                 Trouble newtrouble = new Trouble
                 {
@@ -132,47 +132,47 @@ namespace HotelManagement.Model.Services
 
                 if (s.Status == STATUS.PREDIT)
                 {
-                    var troublebycus = await _context.TroubleByCustomers.FirstOrDefaultAsync(x => x.TroubleId == s.TroubleId);
+                    var troublebycus = _context.TroubleByCustomers.FirstOrDefault(x => x.TroubleId == s.TroubleId);
                     troublebycus.PredictedPrice = preprice;
-                    var trouble = await _context.Troubles.FindAsync(s.TroubleId);
+                    var trouble = _context.Troubles.Find(s.TroubleId);
                     trouble.Status = STATUS.PREDIT;
                 }
                 else if (s.Status == STATUS.IN_PROGRESS)
                 {
-                    var trouble = await _context.Troubles.FindAsync(s.TroubleId);
+                    var trouble = _context.Troubles.Find(s.TroubleId);
                     trouble.Status = STATUS.IN_PROGRESS;
                     trouble.FixedDate = s.FixedDate;
                     if (trouble.Reason == REASON.BYCUSTOMER)
                     {
-                        var troublebycus = await _context.TroubleByCustomers.FindAsync(s.TroubleId);
+                        var troublebycus = _context.TroubleByCustomers.Find(s.TroubleId);
                         troublebycus.PredictedPrice = preprice;
                     }
                 }
                 else if (s.Status == STATUS.DONE)
                 {
-                    var trouble = await _context.Troubles.FindAsync(s.TroubleId);
+                    var trouble = _context.Troubles.Find(s.TroubleId);
                     trouble.Status = STATUS.DONE;
                     trouble.FixedDate = s.FixedDate;
                     trouble.FinishDate = s.FinishDate;
                     trouble.Price = s.Price;
                     if (trouble.Reason == REASON.BYCUSTOMER)
                     {
-                        var troublebycus = await _context.TroubleByCustomers.FindAsync(s.TroubleId);
+                        var troublebycus = _context.TroubleByCustomers.Find(s.TroubleId);
                         troublebycus.PredictedPrice = s.Price;
                     }
 
                 }
                 else if (s.Status == STATUS.CANCLE)
                 {
-                    var trouble = await _context.Troubles.FindAsync(s.TroubleId);
+                    var trouble = _context.Troubles.Find(s.TroubleId);
                     trouble.Status = STATUS.CANCLE;
                     if (trouble.Reason == REASON.BYCUSTOMER)
                     {
-                        var troublebycus = await _context.TroubleByCustomers.FindAsync(s.TroubleId);
+                        var troublebycus = _context.TroubleByCustomers.Find(s.TroubleId);
                         troublebycus.PredictedPrice = 0;
                     }
                 }
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
             }
             catch (System.Data.Entity.Core.EntityException)
@@ -194,7 +194,7 @@ namespace HotelManagement.Model.Services
                     _context = new HotelManagementEntities();
                 }
 
-                var trouble = await _context.Troubles.FindAsync(s.TroubleId);
+                var trouble = _context.Troubles.Find(s.TroubleId);
                 trouble.Title = s.Title;
                 trouble.Avatar = s.Avatar;
                 trouble.Description = s.Description;
@@ -202,7 +202,7 @@ namespace HotelManagement.Model.Services
                 trouble.StartDate = DateTime.Now;
                 trouble.StaffId = s.StaffId;
                 trouble.Level = s.Level;
-                var tb = await _context.TroubleByCustomers.FindAsync(s.TroubleId);
+                var tb = _context.TroubleByCustomers.Find(s.TroubleId);
                 if (id != null)
                 {
                     if (tb != null)
@@ -229,7 +229,7 @@ namespace HotelManagement.Model.Services
                 }
 
 
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
             }
             catch (System.Data.Entity.Core.EntityException)
@@ -250,10 +250,11 @@ namespace HotelManagement.Model.Services
             {
                 _context = new HotelManagementEntities();
             }
-            var staff = await _context.Staffs.FindAsync(id);
-            staffname = staff.StaffName;
+            var staff = "";
+            if (_context.Staffs.Find(id) != null)
+                staff = _context.Staffs.Find(id).StaffName;
 
-            return staffname;
+            return staff;
         }
         public async Task<TroubleByCustomerDTO> GetTroubleByCus(string id)
         {
@@ -274,21 +275,23 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var listTroubleByCustomer = await context.TroubleByCustomers.Where(x=> x.RentalContractId ==rentalContractId)
-                        .Select(x=> new TroubleByCustomerDTO
-                        {
-                           RentalContractId = x.RentalContractId,
-                           TroubleId=x.TroubleId,
-                           Title = x.Trouble.Title,
-                           PredictedPrice=x.PredictedPrice,
-                           Level = x.Trouble.Level,
-                        }).ToListAsync();
-                    return listTroubleByCustomer;
+                    _context = new HotelManagementEntities();
                 }
+                var listTroubleByCustomer = _context.TroubleByCustomers.Where(x => x.RentalContractId == rentalContractId)
+                    .Select(x => new TroubleByCustomerDTO
+                    {
+                        RentalContractId = x.RentalContractId,
+                        TroubleId = x.TroubleId,
+                        Title = x.Trouble.Title,
+                        PredictedPrice = x.PredictedPrice,
+                        Level = x.Trouble.Level,
+                    }).ToList();
+                return listTroubleByCustomer;
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -298,14 +301,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-
-                   var list = await context.RentalContracts.Where(x=> x.Room.RoomStatus == ROOM_STATUS.RENTING && x.Validated==true).Select(x=> x.RentalContractId).ToListAsync();
-                    return list;
+                    _context = new HotelManagementEntities();
                 }
+
+                var list = _context.RentalContracts.Where(x => x.Room.RoomStatus == ROOM_STATUS.RENTING && x.Validated == true).Select(x => x.RentalContractId).ToList();
+                return list;
             }
-           
+
             catch (Exception)
             {
                 return (null);
