@@ -1,123 +1,20 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using HotelManagement.Model.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
-using HotelManagement.DTOs;
-using HotelManagement.ViewModel.StaffVM;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.Remoting.Contexts;
-using HotelManagement.Model.Services;
-using System.Data.Entity;
-using Castle.Core.Resource;
 using System.Data.Entity.Infrastructure;
-using System.Linq.Expressions;
-using System.Threading;
+using System.Data.Entity;
 
 namespace HotelManagement.Model.Services.Tests
 {
-    internal class TestDbAsyncQueryProvider<TEntity> : IDbAsyncQueryProvider
-    {
-        private readonly IQueryProvider _inner;
-
-        internal TestDbAsyncQueryProvider(IQueryProvider inner)
-        {
-            _inner = inner;
-        }
-
-        public IQueryable CreateQuery(Expression expression)
-        {
-            return new TestDbAsyncEnumerable<TEntity>(expression);
-        }
-
-        public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
-        {
-            return new TestDbAsyncEnumerable<TElement>(expression);
-        }
-
-        public object Execute(Expression expression)
-        {
-            return _inner.Execute(expression);
-        }
-
-        public TResult Execute<TResult>(Expression expression)
-        {
-            return _inner.Execute<TResult>(expression);
-        }
-
-        public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(Execute(expression));
-        }
-
-        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(Execute<TResult>(expression));
-        }
-    }
-
-    internal class TestDbAsyncEnumerable<T> : EnumerableQuery<T>, IDbAsyncEnumerable<T>, IQueryable<T>
-    {
-        public TestDbAsyncEnumerable(IEnumerable<T> enumerable)
-            : base(enumerable)
-        { }
-
-        public TestDbAsyncEnumerable(Expression expression)
-            : base(expression)
-        { }
-
-        public IDbAsyncEnumerator<T> GetAsyncEnumerator()
-        {
-            return new TestDbAsyncEnumerator<T>(this.AsEnumerable().GetEnumerator());
-        }
-
-        IDbAsyncEnumerator IDbAsyncEnumerable.GetAsyncEnumerator()
-        {
-            return GetAsyncEnumerator();
-        }
-
-        IQueryProvider IQueryable.Provider
-        {
-            get { return new TestDbAsyncQueryProvider<T>(this); }
-        }
-    }
-
-    internal class TestDbAsyncEnumerator<T> : IDbAsyncEnumerator<T>
-    {
-        private readonly IEnumerator<T> _inner;
-
-        public TestDbAsyncEnumerator(IEnumerator<T> inner)
-        {
-            _inner = inner;
-        }
-
-        public void Dispose()
-        {
-            _inner.Dispose();
-        }
-
-        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(_inner.MoveNext());
-        }
-
-        public T Current
-        {
-            get { return _inner.Current; }
-        }
-
-        object IDbAsyncEnumerator.Current
-        {
-            get { return Current; }
-        }
-    }
-
     [TestClass()]
-    public class BillServiceTests
+    public class BookingRoomServiceTests
     {
-        BillService service;
+        BookingRoomService service;
 
         Mock<HotelManagementEntities> mockEntities;
         Mock<DbSet<Staff>> mockStaff;
@@ -152,7 +49,7 @@ namespace HotelManagement.Model.Services.Tests
             mockRoomType.As<IDbAsyncEnumerable<RoomType>>()
                 .Setup(m => m.GetAsyncEnumerator())
                 .Returns(new TestDbAsyncEnumerator<RoomType>(dataRoomType.GetEnumerator()));
-            mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Provider).Returns( new TestDbAsyncQueryProvider<RoomType>(dataRoomType.Provider));
+            mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<RoomType>(dataRoomType.Provider));
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Expression).Returns(dataRoomType.Expression);
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.ElementType).Returns(dataRoomType.ElementType);
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.GetEnumerator()).Returns(dataRoomType.GetEnumerator());
@@ -350,205 +247,55 @@ namespace HotelManagement.Model.Services.Tests
             mockEntities.Setup(m => m.Bills).Returns(mockBill.Object);
             mockEntities.Setup(m => m.RentalContracts).Returns(mockRentalContract.Object);
 
-            service = new BillService(mockEntities.Object);
+            service = new BookingRoomService(mockEntities.Object);
         }
 
         [TestMethod()]
-        public async Task GetBillByListRentalContractTestAsync()
+        public void GetBookingListTest()
         {
-            List<RentalContractDTO> rentalContracts = new List<RentalContractDTO>()
-            {
-                new RentalContractDTO
-                {
-                    RentalContractId = "RC001",
-                    StartDate = new DateTime(2023, 1, 1),
-                    StartTime = new TimeSpan(10, 0, 0),
-                    CheckOutDate = new DateTime(2023, 1, 5),
-                    PersonNumber = 2,
-                    StaffId = "S001",
-                    CustomerId = "C001",
-                    RoomId = "R001",
-                    Validated = true
-                }
-            };
-
-            List<BillDTO> expected = new List<BillDTO>()
-            {
-                new BillDTO()
-                {
-                    BillId = "ID001",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1),
-                },
-                new BillDTO()
-                {
-                    BillId = "ID002",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                }
-            };
-            
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetBillByListRentalContract(rentalContracts);
-
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected, result);
+            Assert.Fail();
         }
 
         [TestMethod()]
-        public async Task GetBillDetailsTestAsync()
+        public void GetListReadyRoomTest()
         {
-            BillDTO expected = new BillDTO()
-            {
-                BillId = "ID001",
-                RentalContractId = "RC001",
-                NumberOfRentalDays = 5,
-                ServicePrice = 20.0,
-                TroublePrice = 10.0,
-                DiscountPrice = 5.0,
-                Price = 50.0,
-                CreateDate = new DateTime(2023, 1, 1)
-            };
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetBillDetails(expected.BillId);
-
-            Assert.AreEqual(expected, result);
+            Assert.Fail();
         }
 
         [TestMethod()]
-        public async Task SaveBillTest()
+        public void SaveBookingTest()
         {
-            (bool, string) expected = (true, "Thanh toán thành công!");
-            BillDTO bill = new BillDTO()
-            {
-                BillId = "ID004",
-                RentalContractId = "RC001",
-                NumberOfRentalDays = 5,
-                ServicePrice = 20.0,
-                TroublePrice = 10.0,
-                DiscountPrice = 5.0,
-                Price = 50.0,
-                CreateDate = new DateTime(2023, 1, 1)
-            };
-            service = new BillService(mockEntities.Object);
-            var result = await service.SaveBill(bill);
-            Assert.AreEqual(expected, result);
+            Assert.Fail();
         }
 
         [TestMethod()]
-        public async Task GetAllBillTestAsync()
+        public void SaveCustomerTest()
         {
-            List<BillDTO> expected = new List<BillDTO>()
-            {
-                new BillDTO()
-                {
-                    BillId = "ID001",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                },
-                new BillDTO()
-                {
-                    BillId = "ID002",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                }
-            };
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetAllBill();
-
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected, result);
+            Assert.Fail();
         }
 
         [TestMethod()]
-        public async Task GetAllBillByDateTestAsync()
+        public void DeleteRentalContractBookedTest()
         {
-            List<BillDTO> expected = new List<BillDTO>()
-            {
-                new BillDTO()
-                {
-                    BillId = "ID001",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                },
-                new BillDTO()
-                {
-                    BillId = "ID002",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                }
-            };
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetAllBillByDate(new DateTime(2023,1,1));
-
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected, result);
-
+            Assert.Fail();
         }
 
         [TestMethod()]
-        public async Task GetAllBillByMonthTestAsync()
+        public void DeleteRentalContractOutDateTest()
         {
-            List<BillDTO> expected = new List<BillDTO>()
-            {
-                new BillDTO()
-                {
-                    BillId = "ID001",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                },
-                new BillDTO()
-                {
-                    BillId = "ID002",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                }
-            };
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetAllBillByMonth(1);
+            Assert.Fail();
+        }
 
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected, result);
+        [TestMethod()]
+        public void GetRoomStatusByTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void CheckCCCDTest()
+        {
+            Assert.Fail();
         }
     }
 }

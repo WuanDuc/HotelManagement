@@ -88,7 +88,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Model\Services\BillServiceTests.cs" />
+    <Compile Include="Model\Services\BookingRoomServiceTests.cs" />
     <Compile Include="Model\Services\RoomTypeServiceTests.cs" />
     <Compile Include="Model\Services\SettingServiceTests.cs" />
     <Compile Include="Model\Services\TroubleServiceTests.cs" />

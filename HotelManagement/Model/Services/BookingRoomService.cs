@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,12 @@ namespace HotelManagement.Model.Services
 {
     public class BookingRoomService
     {
+        private HotelManagementEntities _entities;
+        public HotelManagementEntities Entities { get { return _entities; } set { _entities = value; } }
+        public BookingRoomService(HotelManagementEntities entities)
+        {
+            Entities = entities;
+        }
         private static BookingRoomService _ins;
         public static BookingRoomService Ins
         {
@@ -33,17 +40,23 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (HotelManagementEntities db = new HotelManagementEntities())
+                if (Entities == null)
                 {
-                    List<RentalContractDTO> RentalContractDTOs = await (
-                        from r in db.RentalContracts
-                        join s in db.Staffs
+                    Entities = new HotelManagementEntities();
+                }
+                if (Entities.Bills == null)
+                {
+                    return null;
+                }
+                List<RentalContractDTO> RentalContractDTOs = await (
+                        from r in Entities.RentalContracts
+                        join s in Entities.Staffs
                         on r.StaffId equals s.StaffId
-                        join c in db.Customers
+                        join c in Entities.Customers
                         on r.CustomerId equals c.CustomerId
-                        join room in db.Rooms
+                        join room in Entities.Rooms
                         on r.RoomId equals room.RoomId
-                        join rt in db.RoomTypes
+                        join rt in Entities.RoomTypes
                         on room.RoomTypeId equals rt.RoomTypeId
                         select new RentalContractDTO
                         {
@@ -59,7 +72,7 @@ namespace HotelManagement.Model.Services
                     RentalContractDTOs.Reverse();
                   
                     return RentalContractDTOs;
-                }
+                
             }
             catch (Exception e)
             {
