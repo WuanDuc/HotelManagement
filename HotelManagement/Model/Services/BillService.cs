@@ -20,22 +20,33 @@ namespace HotelManagement.Model.Services
             {
                 if (_ins == null)
                 {
-                    _ins = new BillService();
+                    _ins = new BillService(new HotelManagementEntities());
                 }
                 return _ins;
             }
             private set { _ins = value; }
         }
+        private HotelManagementEntities _context;
 
+        public BillService(HotelManagementEntities context)
+        {
+            _context = context;
+        }
         public async Task<List<BillDTO>> GetBillByListRentalContract(List<RentalContractDTO> rentalContractDTOs)
         {
             try
             {
-                using (var context = new HotelManagementEntities())
-                {
+                    if (_context == null)
+                    {
+                        _context = new HotelManagementEntities();
+                    }
+                    if (_context.Bills == null)
+                    {
+                        return null;
+                    }
                     var listRentalContractId = rentalContractDTOs.Select(x => x.RentalContractId).ToList();
 
-                    var list = await context.RentalContracts.Where(x => listRentalContractId.Contains(x.RentalContractId))
+                    var list = await _context.RentalContracts.Where(x => listRentalContractId.Contains(x.RentalContractId))
                          .Select(x => new BillDTO
                          {
                              RentalContractId = x.RentalContractId,
@@ -94,7 +105,6 @@ namespace HotelManagement.Model.Services
                         item.ListListServicePayment = listService;
                     }
                     return list;
-                }
             }
             catch (Exception ex)
             {
@@ -105,9 +115,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var maxBillId = await context.Bills.MaxAsync(x => x.BillId);
+                    _context = new HotelManagementEntities();
+                }
+                if (_context.Bills == null)
+                {
+                    return (false, "Lỗi hệ thống");
+                }
+                var maxBillId = await _context.Bills.MaxAsync(x => x.BillId);
                     Bill newBill = new Bill
                     {
                         BillId = CreateNextBillId(maxBillId),
@@ -119,13 +135,12 @@ namespace HotelManagement.Model.Services
                         TotalPrice = bill.TotalPrice,
                         CreateDate = bill.CreateDate,
                     };
-                    context.Bills.Add(newBill);
-                    RentalContract rental = await context.RentalContracts.FindAsync(bill.RentalContractId);
+                    _context.Bills.Add(newBill);
+                    RentalContract rental = await _context.RentalContracts.FindAsync(bill.RentalContractId);
                     rental.PersonNumber = rental.RoomCustomers.Count();
-                    await context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     return (true, "Thanh toán thành công!");
                 }
-            }
             catch (Exception ex)
             {
                 return (false, "Lỗi hệ thống");
@@ -164,9 +179,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var billList = (from b in context.Bills
+                    _context = new HotelManagementEntities();
+                }
+                if (_context.Bills == null)
+                {
+                    return null;
+                }
+                var billList = (from b in _context.Bills
                                     orderby b.CreateDate descending
                                     select new BillDTO
                                     {
@@ -211,7 +232,6 @@ namespace HotelManagement.Model.Services
                                         }).ToList()
                                     }).ToListAsync();
                     return await billList;
-                }
             }
             catch (Exception e)
             {
@@ -223,9 +243,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var billList = (from b in context.Bills
+                    _context = new HotelManagementEntities();
+                }
+                if (_context.Bills == null)
+                {
+                    return null;
+                }
+                var billList = (from b in _context.Bills
                                     where DbFunctions.TruncateTime(b.CreateDate) == date.Date
                                     orderby b.CreateDate descending
                                     select new BillDTO
@@ -271,7 +297,7 @@ namespace HotelManagement.Model.Services
                                         }).ToList()
                                     }).ToListAsync();
                     return await billList;
-                }
+                
             }
             catch (Exception e)
             {
@@ -282,9 +308,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var billList = (from b in context.Bills
+                    _context = new HotelManagementEntities();
+                }
+                if (_context.Bills == null)
+                {
+                    return null;
+                }
+                var billList = (from b in _context.Bills
                                     where ((DateTime)b.CreateDate).Year == DateTime.Now.Year && ((DateTime)b.CreateDate).Month == month
                                     orderby b.CreateDate descending
                                     select new BillDTO
@@ -330,7 +362,7 @@ namespace HotelManagement.Model.Services
                                         }).ToList()
                                     }).ToListAsync();
                     return await billList;
-                }
+                
             }
             catch (Exception e)
             {
@@ -341,9 +373,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var b = await context.Bills.FindAsync(id);
+                    _context = new HotelManagementEntities();
+                }
+                if (_context.Bills == null)
+                {
+                    return null;
+                }
+                var b = await _context.Bills.FindAsync(id);
 
                     BillDTO billdetail = new BillDTO
                     {
@@ -388,7 +426,7 @@ namespace HotelManagement.Model.Services
                         }).ToList()
                     };
                     return billdetail;
-                }
+                
             }
             catch (Exception e)
             {
