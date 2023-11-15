@@ -1,28 +1,25 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using HotelManagement.Model.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
-using HotelManagement.DTOs;
-using HotelManagement.ViewModel.StaffVM;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.Remoting.Contexts;
-using HotelManagement.Model.Services;
-using System.Data.Entity;
-using Castle.Core.Resource;
 using System.Data.Entity.Infrastructure;
-using System.Linq.Expressions;
-using System.Threading;
-using HotelManagementTests.Model;
+using System.Data.Entity;
+using HotelManagement.DTOs;
+using Castle.Core.Resource;
+using HotelManagement.ViewModel.StaffVM;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace HotelManagement.Model.Services.Tests
 {
     [TestClass()]
-    public class BillServiceTests
+    public class BookingRoomServiceTests
     {
-        BillService service;
+        BookingRoomService service;
 
         Mock<HotelManagementEntities> mockEntities;
         Mock<DbSet<Staff>> mockStaff;
@@ -57,7 +54,7 @@ namespace HotelManagement.Model.Services.Tests
             mockRoomType.As<IDbAsyncEnumerable<RoomType>>()
                 .Setup(m => m.GetAsyncEnumerator())
                 .Returns(new TestDbAsyncEnumerator<RoomType>(dataRoomType.GetEnumerator()));
-            mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Provider).Returns( new TestDbAsyncQueryProvider<RoomType>(dataRoomType.Provider));
+            mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<RoomType>(dataRoomType.Provider));
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Expression).Returns(dataRoomType.Expression);
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.ElementType).Returns(dataRoomType.ElementType);
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.GetEnumerator()).Returns(dataRoomType.GetEnumerator());
@@ -70,6 +67,16 @@ namespace HotelManagement.Model.Services.Tests
                     RoomTypeId = "RT001", // Assuming you have a RoomType with this ID
                     Note = "This is a standard single room.",
                     RoomStatus = "Có sẵn",
+                    RoomCleaningStatus = "Đã dọn dẹp",
+                    RoomType = roomTypes[0]
+                },
+                new Room
+                {
+                    RoomId = "R002",
+                    RoomNumber = 101,
+                    RoomTypeId = "RT001", // Assuming you have a RoomType with this ID
+                    Note = "This is a standard single room.",
+                    RoomStatus = "Đang sử dụng",
                     RoomCleaningStatus = "Đã dọn dẹp",
                     RoomType = roomTypes[0]
                 }
@@ -255,204 +262,163 @@ namespace HotelManagement.Model.Services.Tests
             mockEntities.Setup(m => m.Bills).Returns(mockBill.Object);
             mockEntities.Setup(m => m.RentalContracts).Returns(mockRentalContract.Object);
 
-            service = new BillService(mockEntities.Object);
+            service = new BookingRoomService(mockEntities.Object);
         }
 
         [TestMethod()]
-        public async Task GetBillByListRentalContractTestAsync()
+        public async Task GetBookingListTest()
         {
-            List<RentalContractDTO> rentalContracts = new List<RentalContractDTO>()
-            {
+            List<RentalContractDTO> expected = new List<RentalContractDTO>() {
                 new RentalContractDTO
                 {
                     RentalContractId = "RC001",
+                    StaffName = staffDTOs[0].StaffName,
+                    CustomerName = customerDTOs[0].CustomerName,
                     StartDate = new DateTime(2023, 1, 1),
-                    StartTime = new TimeSpan(10, 0, 0),
                     CheckOutDate = new DateTime(2023, 1, 5),
-                    PersonNumber = 2,
-                    StaffId = "S001",
-                    CustomerId = "C001",
+                    StartTime = new TimeSpan(10, 0, 0),
+                    Validated = true,
+                }
+            };
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.GetBookingList();
+            //result.Reverse();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(expected[0].RentalContractId, result[0].RentalContractId);
+        }
+
+        [TestMethod()]
+        public async Task GetListReadyRoomTestAsync()
+        {
+
+            List<RoomDTO> expected = new List<RoomDTO>()
+            {
+                new RoomDTO
+                {
                     RoomId = "R001",
-                    Validated = true
+                    RoomNumber = 101,
+                    RoomTypeId = "RT001", // Assuming you have a RoomType with this ID
+                    Note = "This is a standard single room.",
+                    RoomStatus = "Có sẵn",
+                    RoomCleaningStatus = "Đã dọn dẹp",
                 }
             };
-
-            List<BillDTO> expected = new List<BillDTO>()
-            {
-                new BillDTO()
-                {
-                    BillId = "ID001",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1),
-                },
-                new BillDTO()
-                {
-                    BillId = "ID002",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                }
-            };
-            
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetBillByListRentalContract(rentalContracts);
-
+            service = new BookingRoomService(mockEntities.Object);
+            DateTime dt = new DateTime(2023, 1, 1);
+            TimeSpan ts = new TimeSpan(10, 0, 0);
+            dt = dt + ts;
+            var result = await service.GetListReadyRoom(new DateTime(2023,1,1), dt, new DateTime(2023,1,5));
+            //result.Reverse();
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected[0].BillId, result[0].BillId);
+            Assert.AreEqual(expected[0].RoomId, result[0].RoomId);
         }
 
         [TestMethod()]
-        public async Task GetBillDetailsTestAsync()
+        public async Task SaveBookingTest()
         {
-            BillDTO expected = new BillDTO()
+            var expected = (true, "Đặt phòng thành công!");
+            var test = new RentalContractDTO
             {
-                BillId = "ID001",
-                RentalContractId = "RC001",
-                NumberOfRentalDays = 5,
-                ServicePrice = 20.0,
-                TroublePrice = 10.0,
-                DiscountPrice = 5.0,
-                Price = 50.0,
-                CreateDate = new DateTime(2023, 1, 1)
+                RentalContractId = "RC002",
+                StartDate = new DateTime(2023, 1, 1),
+                StartTime = new TimeSpan(10, 0, 0),
+                CheckOutDate = new DateTime(2023, 1, 5),
+                PersonNumber = 2,
+                StaffId = "S001",
+                CustomerId = "C001",
+                RoomId = "R001",
+                Validated = true,               
             };
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetBillDetails(expected.BillId);
-
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.SaveBooking(test);
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public async Task SaveBillTest()
+        public async Task SaveCustomerTest()
         {
-            (bool, string) expected = (true, "Thanh toán thành công!");
-            BillDTO bill = new BillDTO()
+            var expected = (true, "","C003");
+            var test = new CustomerDTO
             {
-                BillId = "ID004",
-                RentalContractId = "RC001",
-                NumberOfRentalDays = 5,
-                ServicePrice = 20.0,
-                TroublePrice = 10.0,
-                DiscountPrice = 5.0,
-                Price = 50.0,
-                CreateDate = new DateTime(2023, 1, 1)
+                CustomerId = "C003",
+                CustomerName = "Bob Smith",
+                PhoneNumber = "555555555",
+                Email = "bob.smith@example.com",
+                CCCD = "555555555",
+                DateOfBirth = new DateTime(1975, 8, 20),
+                Gender = "Male",
+                CustomerType = "Regular",
+                CustomerAddress = "789 Pine St",
+                IsDeleted = false
             };
-            service = new BillService(mockEntities.Object);
-            var result = await service.SaveBill(bill);
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.SaveCustomer(test);
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public async Task GetAllBillTestAsync()
+        public async Task DeleteRentalContractBookedTest_Exist()
         {
-            List<BillDTO> expected = new List<BillDTO>()
-            {
-                new BillDTO()
-                {
-                    BillId = "ID001",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                },
-                new BillDTO()
-                {
-                    BillId = "ID002",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                }
-            };
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetAllBill();
-
-            Assert.AreEqual(1, result.Count);
+            var expected = (true, "Xóa phiếu thuê phòng thành công");
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.DeleteRentalContractBooked("RC001");
+            Assert.AreEqual(expected, result);
+        }
+        [TestMethod()]
+        public async Task DeleteRentalContractBookedTest_DontExist()
+        {
+            var expected = (false, "Phiếu thuê phòng này không tồn tại!");
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.DeleteRentalContractBooked("RC003");
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public async Task GetAllBillByDateTestAsync()
+        public async Task DeleteRentalContractOutDateTest_DontExist()
         {
-            List<BillDTO> expected = new List<BillDTO>()
-            {
-                new BillDTO()
-                {
-                    BillId = "ID001",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                },
-                new BillDTO()
-                {
-                    BillId = "ID002",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                }
-            };
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetAllBillByDate(new DateTime(2023,1,1));
-
-            Assert.AreEqual(1, result.Count);
+            var expected = (false, "Phiếu thuê phòng này không tồn tại!");
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.DeleteRentalContractBooked("RC003");
             Assert.AreEqual(expected, result);
-
+        }
+        [TestMethod()]
+        public async Task DeleteRentalContractOutDateTest_Exist()
+        {
+            var expected = (true, "Xóa phiếu thuê phòng thành công");
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.DeleteRentalContractBooked("RC001");
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod()]
-        public async Task GetAllBillByMonthTestAsync()
+        public async Task GetRoomStatusByTest()
         {
-            List<BillDTO> expected = new List<BillDTO>()
-            {
-                new BillDTO()
-                {
-                    BillId = "ID001",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                },
-                new BillDTO()
-                {
-                    BillId = "ID002",
-                    RentalContractId = "RC001",
-                    NumberOfRentalDays = 5,
-                    ServicePrice = 20.0,
-                    TroublePrice = 10.0,
-                    DiscountPrice = 5.0,
-                    Price = 50.0,
-                    CreateDate = new DateTime(2023,1,1)
-                }
-            };
-            service = new BillService(mockEntities.Object);
-            var result = await service.GetAllBillByMonth(1);
+            var expected = "Có sẵn";
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.GetRoomStatusBy("RT001");
+            Assert.AreEqual(expected, result);
+        }
 
-            Assert.AreEqual(1, result.Count);
+        [TestMethod()]
+        public async Task CheckCCCDTest()
+        {
+            var cus = new CustomerDTO()
+            {
+                CustomerId = "C001",
+                CustomerName = "John Doe",
+                PhoneNumber = "123456789",
+                Email = "john.doe@example.com",
+                CCCD = "123456789",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Gender = "Male",
+                CustomerType = "Regular",
+                CustomerAddress = "123 Main St",
+                IsDeleted = false,
+            };
+            var expected = (true, cus.CustomerId);
+            service = new BookingRoomService(mockEntities.Object);
+            var result = await service.CheckCCCD("123456789");
+            var r = (result.Item1, result.Item2.CustomerId);
             Assert.AreEqual(expected, result);
         }
     }
