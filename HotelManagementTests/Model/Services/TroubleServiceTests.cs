@@ -11,6 +11,8 @@ using System.Linq;
 using System.Data.Entity;
 using HotelManagement.DTOs;
 using HotelManagement.Utilities;
+using HotelManagement.Utils;
+using System.Windows.Controls;
 
 namespace HotelManagement.Model.Services.Tests
 {
@@ -33,12 +35,91 @@ namespace HotelManagement.Model.Services.Tests
             {
                 new Trouble()
                 {
+                    TroubleId = "TB001",
                     Title = "Trouble 1",
                     Description = "Decription 1",
-                    Reason = "Reason 1"
+                    Reason = "Reason 1",
+                    Level = LEVEL.NORMAL,
                 }
             };
             var dataTrouble = troubles.AsQueryable();
+
+            List<Room> rooms = new List<Room>()
+            {
+                new Room()
+                {
+                    RoomId = "Room001",
+                    RoomStatus = ROOM_STATUS.BOOKED,
+                },
+                new Room()
+                {
+                    RoomId = "Room002",
+                    RoomStatus = ROOM_STATUS.RENTING,
+                },
+                new Room()
+                {
+                    RoomId = "Room003",
+                    RoomStatus = ROOM_STATUS.RENTING,
+                }
+            };
+            var dataR = rooms.AsQueryable();
+
+            var mockR = new Mock<DbSet<Room>>();
+            mockR.As<IQueryable<Room>>().Setup(m => m.Provider).Returns(dataR.Provider);
+            mockR.As<IQueryable<Room>>().Setup(m => m.Expression).Returns(dataR.Expression);
+            mockR.As<IQueryable<Room>>().Setup(m => m.ElementType).Returns(dataR.ElementType);
+            mockR.As<IQueryable<Room>>().Setup(m => m.GetEnumerator()).Returns(dataR.GetEnumerator());
+
+            List<RentalContract> rentalContract = new List<RentalContract>()
+            {
+                new RentalContract()
+                {
+                    RentalContractId = "RC001",
+                    CustomerId = "C001",
+                    Validated = true,
+                    Room = rooms.First(),
+                },
+                new RentalContract()
+                {
+                    RentalContractId = "RC002",
+                    CustomerId = "C001",
+                    Validated = true,
+                    Room = rooms.ElementAt(1),
+                }
+            };
+
+            var dataRental = rentalContract.AsQueryable();
+
+            List<TroubleByCustomer> troubleByCustomers = new List<TroubleByCustomer>()
+            {
+                new TroubleByCustomer()
+                {
+                    TroubleId = "TB001",
+                    RentalContractId = "RC001",
+                    TroubleByCustomerId = 1,
+                    PredictedPrice = 200000,
+                    RentalContract = rentalContract.First(),
+                    Trouble = troubles.First(),
+                }
+            };
+            var dataTC = troubleByCustomers.AsQueryable();
+
+            var mockTC = new Mock<DbSet<TroubleByCustomer>>();
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.Provider).Returns(dataTC.Provider);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.Expression).Returns(dataTC.Expression);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.ElementType).Returns(dataTC.ElementType);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.GetEnumerator()).Returns(dataTC.GetEnumerator());
+
+
+            var mockRental = new Mock<DbSet<RentalContract>>();
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.Provider).Returns(dataRental.Provider);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.Expression).Returns(dataRental.Expression);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.ElementType).Returns(dataRental.ElementType);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.GetEnumerator()).Returns(dataRental.GetEnumerator());
+
+
+
+
 
             mockTrouble = new Mock<DbSet<Trouble>>();
             mockTrouble.As<IQueryable<Trouble>>().Setup(mockTrouble=>mockTrouble.Provider).Returns(dataTrouble.Provider);
@@ -48,6 +129,9 @@ namespace HotelManagement.Model.Services.Tests
 
             mockEntities = new Mock<HotelManagementEntities>();
             mockEntities.Setup(mockEntities => mockEntities.Troubles).Returns(mockTrouble.Object);
+            mockEntities.Setup(mockEntities => mockEntities.TroubleByCustomers).Returns(mockTC.Object);
+            mockEntities.Setup(mockEntities => mockEntities.RentalContracts).Returns(mockRental.Object);
+            mockEntities.Setup(mockEntities => mockEntities.Rooms).Returns(mockR.Object);
 
             service = new TroubleService(mockEntities.Object);
             
@@ -196,7 +280,7 @@ namespace HotelManagement.Model.Services.Tests
             service = new TroubleService(mockEntities.Object);
             var result = await service.EditTrouble(troubles, null);
             Assert.AreEqual((true, "Chỉnh sửa sự cố thành công"), result);
-            mockEntities.Verify(m => m.SaveChangesAsync(), Times.Once);
+            mockEntities.Verify(m => m.SaveChanges(), Times.Once);
         }
 
 
@@ -320,21 +404,243 @@ namespace HotelManagement.Model.Services.Tests
         }
 
         [TestMethod()]
-        public void GetTroubleByCusTest()
+        public async Task GetTroubleByCusTest_CorrectTestAsync()
         {
+            service = new TroubleService(mockEntities.Object);
+            string rentalContractId = "RC001";
+            List<RentalContract> rentalContract = new List<RentalContract>()
+            {
+                new RentalContract()
+                {
+                    RentalContractId = "RC001",
+                    CustomerId = "C001",
+                },
+                new RentalContract()
+                {
+                    RentalContractId = "RC002",
+                    CustomerId = "C001",
+                }
+            };
+            List<TroubleByCustomerDTO> expected = new List<TroubleByCustomerDTO>()
+            {
+                new TroubleByCustomerDTO()
+                {
+                    TroubleId = "TB001",
+                    RentalContractId = "RC001",
+                    PredictedPrice = 200000,
+                }
+            };
+            List<TroubleByCustomerDTO> actual = await service.GetListTroubleByCustomer(rentalContractId);
 
+            Assert.AreEqual(expected.First().TroubleId, actual.First().TroubleId);
+            Assert.AreEqual(expected.First().RentalContractId, actual.First().RentalContractId);
+            Assert.AreEqual(expected.First().PredictedPriceStr, actual.First().PredictedPriceStr);
         }
 
         [TestMethod()]
-        public void GetListTroubleByCustomerTest()
+        public async Task GetCurrentListRentalContractId()
         {
+            service = new TroubleService(mockEntities.Object);
 
+            List<string> expected = new List<string>()
+            {
+                "RC002",
+            };
+
+            List<string> actual = await service.GetCurrentListRentalContractId();
+            Assert.AreEqual(expected.First(), actual.First());
         }
 
         [TestMethod()]
-        public void GetCurrentListRentalContractIdTest()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task GetTroubleByCusTest_ThrowException()
         {
+            List<TroubleByCustomer> troubleByCustomers = null;
+            var dataTC = troubleByCustomers.AsQueryable();
 
+            var mockTC = new Mock<DbSet<TroubleByCustomer>>();
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.Provider).Returns(dataTC.Provider);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.Expression).Returns(dataTC.Expression);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.ElementType).Returns(dataTC.ElementType);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.GetEnumerator()).Returns(dataTC.GetEnumerator());
+
+            mockEntities.Setup(m => m.TroubleByCustomers).Returns(mockTC.Object);
+
+            service = new TroubleService(mockEntities.Object);
+
+            List<TroubleByCustomerDTO> actual = await service.GetListTroubleByCustomer("RC001");
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task GetTroubleByCusTest_NoTroubleByCustomer_ReturnEmpty()
+        {
+            var dataTrouble = troubles.AsQueryable();
+
+            List<Room> rooms = new List<Room>()
+            {
+                new Room()
+                {
+                    RoomId = "Room001",
+                    RoomStatus = ROOM_STATUS.BOOKED,
+                },
+                new Room()
+                {
+                    RoomId = "Room002",
+                    RoomStatus = ROOM_STATUS.RENTING,
+                },
+                new Room()
+                {
+                    RoomId = "Room003",
+                    RoomStatus = ROOM_STATUS.RENTING,
+                }
+            };
+            var dataR = rooms.AsQueryable();
+
+            var mockR = new Mock<DbSet<Room>>();
+            mockR.As<IQueryable<Room>>().Setup(m => m.Provider).Returns(dataR.Provider);
+            mockR.As<IQueryable<Room>>().Setup(m => m.Expression).Returns(dataR.Expression);
+            mockR.As<IQueryable<Room>>().Setup(m => m.ElementType).Returns(dataR.ElementType);
+
+            List<RentalContract> rentalContract = new List<RentalContract>()
+            {
+                new RentalContract()
+                {
+                    RentalContractId = "RC001",
+                    CustomerId = "C001",
+                    Validated = true,
+                    Room = rooms.First(),
+                },
+                new RentalContract()
+                {
+                    RentalContractId = "RC002",
+                    CustomerId = "C001",
+                    Validated = true,
+                    Room = rooms.ElementAt(1),
+                }
+            };
+
+            var dataRental = rentalContract.AsQueryable();
+
+            List<TroubleByCustomer> troubleByCustomers = new List<TroubleByCustomer>()
+            {
+                new TroubleByCustomer()
+                {
+                    TroubleId = "TB001",
+                    RentalContractId = "RC002",
+                    TroubleByCustomerId = 1,
+                    PredictedPrice = 200000,
+                    RentalContract = rentalContract.ElementAt(1),
+                    Trouble = troubles.First(),
+                }
+            };
+            var dataTC = troubleByCustomers.AsQueryable();
+
+            var mockTC = new Mock<DbSet<TroubleByCustomer>>();
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.Provider).Returns(dataTC.Provider);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.Expression).Returns(dataTC.Expression);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.ElementType).Returns(dataTC.ElementType);
+            mockTC.As<IQueryable<TroubleByCustomer>>().Setup(m => m.GetEnumerator()).Returns(dataTC.GetEnumerator());
+
+            var mockRental = new Mock<DbSet<RentalContract>>();
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.Provider).Returns(dataRental.Provider);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.Expression).Returns(dataRental.Expression);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.ElementType).Returns(dataRental.ElementType);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.GetEnumerator()).Returns(dataRental.GetEnumerator());
+
+            Mock<HotelManagementEntities> entities = new Mock<HotelManagementEntities>();
+            entities.Setup(mockEntities => mockEntities.TroubleByCustomers).Returns(mockTC.Object);
+            entities.Setup(mockEntities => mockEntities.RentalContracts).Returns(mockRental.Object);
+            entities.Setup(mockEntities => mockEntities.Rooms).Returns(mockR.Object);
+            service = new TroubleService(mockEntities.Object);
+
+            List<TroubleByCustomerDTO> actual = await service.GetListTroubleByCustomer("RC003");
+            Assert.AreEqual(0, actual.Count);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task GetCurrentListRentalContractIdTest_NullRentalConTract_ThrowNullException()
+        {
+            List<RentalContract> rentalContract = null;
+
+            var dataRental = rentalContract.AsQueryable();
+            var mockRental = new Mock<DbSet<RentalContract>>();
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.Provider).Returns(dataRental.Provider);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.Expression).Returns(dataRental.Expression);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.ElementType).Returns(dataRental.ElementType);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.GetEnumerator()).Returns(dataRental.GetEnumerator());
+
+            Mock<HotelManagementEntities> nullContext = new Mock<HotelManagementEntities>();
+            mockEntities = new Mock<HotelManagementEntities>();
+            mockEntities.Setup(mockEntities => mockEntities.RentalContracts).Returns(mockRental.Object);
+
+            service = new TroubleService(mockEntities.Object);
+
+            List<string> actual = await service.GetCurrentListRentalContractId();
+        }
+
+        [TestMethod()]
+        public async Task GetCurrentListRentalContractIdTest_NoRentingRoom_ReturnEmpty()
+        {
+            List<Room> rooms = new List<Room>()
+            {
+                new Room()
+                {
+                    RoomId = "Room001",
+                    RoomStatus = ROOM_STATUS.BOOKED,
+                },
+                new Room()
+                {
+                    RoomId = "Room002",
+                    RoomStatus = ROOM_STATUS.READY,
+                },
+                new Room()
+                {
+                    RoomId = "Room003",
+                    RoomStatus = ROOM_STATUS.READY,
+                }
+            };
+            var dataR = rooms.AsQueryable();
+
+            List<RentalContract> rentalContract = new List<RentalContract>()
+            {
+                new RentalContract()
+                {
+                    RentalContractId = "RC001",
+                    CustomerId = "C001",
+                    Validated = true,
+                    Room = rooms.First(),
+                },
+                new RentalContract()
+                {
+                    RentalContractId = "RC002",
+                    CustomerId = "C001",
+                    Validated = true,
+                    Room = rooms.ElementAt(1),
+                }
+            };
+
+            var dataRental = rentalContract.AsQueryable();
+            var mockRental = new Mock<DbSet<RentalContract>>();
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.Provider).Returns(dataRental.Provider);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.Expression).Returns(dataRental.Expression);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.ElementType).Returns(dataRental.ElementType);
+            mockRental.As<IQueryable<RentalContract>>().Setup(m => m.GetEnumerator()).Returns(dataRental.GetEnumerator());
+
+            var mockR = new Mock<DbSet<Room>>();
+            mockR.As<IQueryable<Room>>().Setup(m => m.Provider).Returns(dataR.Provider);
+            mockR.As<IQueryable<Room>>().Setup(m => m.Expression).Returns(dataR.Expression);
+            mockR.As<IQueryable<Room>>().Setup(m => m.ElementType).Returns(dataR.ElementType);
+            mockR.As<IQueryable<Room>>().Setup(m => m.GetEnumerator()).Returns(dataR.GetEnumerator());
+
+            mockEntities.Setup(mockEntities => mockEntities.Rooms).Returns(mockR.Object);
+            mockEntities.Setup(mockEntities => mockEntities.RentalContracts).Returns(mockRental.Object);
+
+            service = new TroubleService(mockEntities.Object);
+
+            List<string> actual = await service.GetCurrentListRentalContractId();
+            Assert.AreEqual(0, actual.Count);
         }
     }
 }

@@ -73,7 +73,7 @@ namespace HotelManagement.Model.Services.Tests
             var result = await service.GetAllRoomType();
 
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected.ToString(), result.ToString());
         }
 
         [TestMethod()]

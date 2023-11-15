@@ -34,7 +34,7 @@ namespace HotelManagement.Model.Services.Tests
                     StaffId = "NV001",
                                      StaffName = "Nhân viên 1",
                                      //PhoneNumber = "0775897337",
-                                     //Email = "21520129@gm.uit.edu.vn",
+                                     Email = "21520129@gm.uit.edu.vn",
                                      //CCCD = "111111111111",
                                      ////DateOfBirth = new DateTime(),
                                      ////dateOfStart = s.dateOfStart,
@@ -50,7 +50,7 @@ namespace HotelManagement.Model.Services.Tests
                     StaffId = "NV002",
                                      StaffName = "Nhân viên 2",
                                      //PhoneNumber = "0775897221",
-                                     //Email = "21521665@gm.uit.edu.vn",
+                                     Email = "21521665@gm.uit.edu.vn",
                                      //CCCD = "111111111117",
                                      ////DateOfBirth = new DateTime(),
                                      ////dateOfStart = s.dateOfStart,
@@ -70,15 +70,6 @@ namespace HotelManagement.Model.Services.Tests
             mockStaff.As<IQueryable<Staff>>().Setup(m => m.ElementType).Returns(dataStaff.ElementType);
             mockStaff.As<IQueryable<Staff>>().Setup(m => m.GetEnumerator()).Returns(dataStaff.GetEnumerator());
 
-            //// Thiết lập behavior cho phương thức Find của mockStaff
-            //mockStaff.Setup(m => m.Find(It.IsAny<object[]>()))
-            //    .Returns<object[]>(ids => staffDTOs.FirstOrDefault(s => s.StaffId == ids[0]));
-
-            //// Thiết lập behavior cho phương thức Add của mockStaff
-            //mockStaff.Setup(m => m.Add(It.IsAny<Staff>()))
-            //    .Callback<Staff>(staff => staffDTOs.Add(staff));
-
-            //mockEntities.Setup(m => m.Staffs.FindAsync(staffId)).ReturnsAsync(new Staff());
             mockEntities = new Mock<HotelManagementEntities>();
             mockEntities.Setup(m => m.Staffs).Returns(mockStaff.Object);
 
@@ -91,7 +82,7 @@ namespace HotelManagement.Model.Services.Tests
         {
             service = new SettingService(mockEntities.Object);
             string staffId = "NV001";
-            string staffName = "Nhân viên 1";
+            string staffName = "Nhân viên 2";
             // Act
             var result = await service.EditName(staffName, staffId);
 
@@ -100,7 +91,7 @@ namespace HotelManagement.Model.Services.Tests
             Assert.AreEqual((true, "Lưu thông tin thành công"), result);
 
             // Verify that the SaveChangesAsync method was called
-            mockEntities.Verify(m => m.SaveChangesAsync(), Times.Once);
+            mockEntities.Verify(m => m.SaveChanges(), Times.Once);
         }
 
         [TestMethod]
@@ -143,7 +134,7 @@ namespace HotelManagement.Model.Services.Tests
             Assert.AreEqual((true, "Lưu thông tin thành công"), result);
 
             // Verify that the SaveChangesAsync method was called
-            mockEntities.Verify(m => m.SaveChangesAsync(), Times.Once);
+            mockEntities.Verify(m => m.SaveChanges(), Times.Once);
         }
 
         [TestMethod]
@@ -157,7 +148,7 @@ namespace HotelManagement.Model.Services.Tests
 
             // Assert
             Assert.IsFalse(result.Item1);
-            Assert.AreEqual("Lỗi không tìm thấy nhân viên", result.Item2);
+            Assert.AreEqual("lỗi hệ thống", result.Item2);
         }
 
         [TestMethod]
@@ -169,7 +160,7 @@ namespace HotelManagement.Model.Services.Tests
 
             // Assert
             Assert.IsFalse(result.Item1);
-            Assert.AreEqual("Lỗi không tìm thấy nhân viên", result.Item2);
+            Assert.AreEqual("lỗi hệ thống", result.Item2);
         }
     }
 }

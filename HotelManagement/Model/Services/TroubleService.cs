@@ -275,21 +275,23 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var listTroubleByCustomer = await context.TroubleByCustomers.Where(x=> x.RentalContractId ==rentalContractId)
-                        .Select(x=> new TroubleByCustomerDTO
-                        {
-                           RentalContractId = x.RentalContractId,
-                           TroubleId=x.TroubleId,
-                           Title = x.Trouble.Title,
-                           PredictedPrice=x.PredictedPrice,
-                           Level = x.Trouble.Level,
-                        }).ToListAsync();
-                    return listTroubleByCustomer;
+                    _context = new HotelManagementEntities();
                 }
+                var listTroubleByCustomer = _context.TroubleByCustomers.Where(x => x.RentalContractId == rentalContractId)
+                    .Select(x => new TroubleByCustomerDTO
+                    {
+                        RentalContractId = x.RentalContractId,
+                        TroubleId = x.TroubleId,
+                        Title = x.Trouble.Title,
+                        PredictedPrice = x.PredictedPrice,
+                        Level = x.Trouble.Level,
+                    }).ToList();
+                return listTroubleByCustomer;
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -299,14 +301,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-
-                   var list = await context.RentalContracts.Where(x=> x.Room.RoomStatus == ROOM_STATUS.RENTING && x.Validated==true).Select(x=> x.RentalContractId).ToListAsync();
-                    return list;
+                    _context = new HotelManagementEntities();
                 }
+
+                var list = _context.RentalContracts.Where(x => x.Room.RoomStatus == ROOM_STATUS.RENTING && x.Validated == true).Select(x => x.RentalContractId).ToList();
+                return list;
             }
-           
+
             catch (Exception)
             {
                 return (null);
