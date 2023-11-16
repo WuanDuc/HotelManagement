@@ -296,7 +296,7 @@ namespace HotelManagement.Model.Services.Tests
             {
                 new RoomDTO
                 {
-                    RoomId = "R001",
+                    RoomId = "R002",
                     RoomNumber = 101,
                     RoomTypeId = "RT001", // Assuming you have a RoomType with this ID
                     Note = "This is a standard single room.",
@@ -338,7 +338,6 @@ namespace HotelManagement.Model.Services.Tests
         [TestMethod()]
         public async Task SaveCustomerTest()
         {
-            var expected = (true, "","C003");
             var test = new CustomerDTO
             {
                 CustomerId = "C003",
@@ -352,6 +351,8 @@ namespace HotelManagement.Model.Services.Tests
                 CustomerAddress = "789 Pine St",
                 IsDeleted = false
             };
+            var expected = (true, "", test.CustomerId);
+
             service = new BookingRoomService(mockEntities.Object);
             var result = await service.SaveCustomer(test);
             Assert.AreEqual(expected, result);
