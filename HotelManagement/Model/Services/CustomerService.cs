@@ -154,7 +154,7 @@ namespace HotelManagement.Model.Services
                 }
                 bool isCccdExist = await entities.Customers.AnyAsync(s => s.CustomerId!=customer.CustomerId && s.CCCD == customer.CCCD);
                     if (isCccdExist) return (false, "CCCD đã tồn tại!");
-                    Customer selectedCus = await entities.Customers.FindAsync(customer.CustomerId);
+                    Customer selectedCus =  entities.Customers.Find(customer.CustomerId);
                     selectedCus.CustomerName = customer.CustomerName;
                     selectedCus.DateOfBirth = customer.DateOfBirth;
                     selectedCus.PhoneNumber = customer.PhoneNumber;
