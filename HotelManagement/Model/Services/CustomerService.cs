@@ -10,6 +10,7 @@ namespace HotelManagement.Model.Services
 {
     public class CustomerService
     {
+        public HotelManagementEntities entities;
         private static CustomerService _ins;
         public static CustomerService Ins
         {
@@ -22,15 +23,25 @@ namespace HotelManagement.Model.Services
             private set { _ins = value; }
         }
         private CustomerService() { }
+        public CustomerService(HotelManagementEntities entities)
+        {
+            this.entities = entities;
+        }
 
         public async Task<List<CustomerDTO>> GetAllCustomer()
         {
             List<CustomerDTO> customerList;
             try
             {
-                using(var context = new HotelManagementEntities())
+                if (entities == null)
                 {
-                    customerList=(from s in context.Customers
+                    entities = new HotelManagementEntities();
+                }
+                if (entities.Customers == null)
+                {
+                    return null;
+                }
+                customerList =(from s in entities.Customers
                                   where s.IsDeleted == false
                                   select new CustomerDTO {
                                         CustomerId = s.CustomerId,
@@ -45,7 +56,7 @@ namespace HotelManagement.Model.Services
                                         IsDeleted= (bool)s.IsDeleted,
 
                                   }).ToList();
-                }
+                
             }
             catch(Exception ex)
             {
@@ -57,11 +68,17 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (entities == null)
                 {
-                    bool isCccdExist = await context.Customers.AnyAsync(s => newCus.CCCD == s.CCCD);
+                    entities = new HotelManagementEntities();
+                }
+                if (entities.Customers == null)
+                {
+                    return (false, "Mất kết nối cơ sở dữ liệu", null);
+                }
+                bool isCccdExist = await entities.Customers.AnyAsync(s => newCus.CCCD == s.CCCD);
                     if(isCccdExist) return (false, "CCCD đã tồn tại!", null);
-                    var maxId = await context.Customers.MaxAsync(s => s.CustomerId );
+                    var maxId = await entities.Customers.MaxAsync(s => s.CustomerId );
                     
                     Customer cus = new Customer();
                     cus.CustomerId = CreateNextCustomerId(maxId);
@@ -76,9 +93,9 @@ namespace HotelManagement.Model.Services
                     cus.IsDeleted=newCus.IsDeleted;
 
                     newCus.CustomerId = cus.CustomerId;
-                    context.Customers.Add(cus);
-                    await context.SaveChangesAsync();
-                }
+                    entities.Customers.Add(cus);
+                    await entities.SaveChangesAsync();
+                
             }
             catch (System.Data.Entity.Core.EntityException)
             {
@@ -94,9 +111,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (entities == null)
                 {
-                    var cus = await context.Customers.FirstOrDefaultAsync(x=> x.CCCD== cccd);
+                    entities = new HotelManagementEntities();
+                }
+                if (entities.Customers == null)
+                {
+                    return null;
+                }
+                var cus = await entities.Customers.FirstOrDefaultAsync(x=> x.CCCD== cccd);
                     return new CustomerDTO
                     {
                         CustomerId = cus.CustomerId,
@@ -109,7 +132,7 @@ namespace HotelManagement.Model.Services
                         CustomerAddress = cus.CustomerAddress,
                         CustomerType = cus.CustomerType,
                     };
-                }
+                
             }
             catch (Exception ex)
             {
@@ -121,11 +144,17 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (entities == null)
                 {
-                    bool isCccdExist = await context.Customers.AnyAsync(s => s.CustomerId!=customer.CustomerId && s.CCCD == customer.CCCD);
+                    entities = new HotelManagementEntities();
+                }
+                if (entities.Customers == null)
+                {
+                    return (false, "Mất kết nối cơ sở dữ liệu");
+                }
+                bool isCccdExist = await entities.Customers.AnyAsync(s => s.CustomerId!=customer.CustomerId && s.CCCD == customer.CCCD);
                     if (isCccdExist) return (false, "CCCD đã tồn tại!");
-                    Customer selectedCus = await context.Customers.FindAsync(customer.CustomerId);
+                    Customer selectedCus =  entities.Customers.Find(customer.CustomerId);
                     selectedCus.CustomerName = customer.CustomerName;
                     selectedCus.DateOfBirth = customer.DateOfBirth;
                     selectedCus.PhoneNumber = customer.PhoneNumber;
@@ -135,8 +164,8 @@ namespace HotelManagement.Model.Services
                     selectedCus.CustomerType = customer.CustomerType;
                     selectedCus.Gender = customer.Gender;
 
-                    await context.SaveChangesAsync();
-                }
+                    await entities.SaveChangesAsync();
+                
             }
             catch (System.Data.Entity.Core.EntityException)
             {
@@ -152,9 +181,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (entities == null)
                 {
-                    Customer selectedCus = await ( from s in context.Customers
+                    entities = new HotelManagementEntities();
+                }
+                if (entities.Customers == null)
+                {
+                    return (false, "Mất kết nối cơ sở dữ liệu");
+                }
+                Customer selectedCus = await ( from s in entities.Customers
                                                    where s.CustomerId==id && s.IsDeleted==false
                                                    select s).FirstOrDefaultAsync();
                     if(selectedCus is null || selectedCus.IsDeleted == true)
@@ -164,8 +199,8 @@ namespace HotelManagement.Model.Services
                     }
                     selectedCus.IsDeleted = true;
 
-                    await context.SaveChangesAsync();
-                }
+                    await entities.SaveChangesAsync();
+                
             }
             catch (System.Data.Entity.Core.EntityException)
             {
