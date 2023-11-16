@@ -14,38 +14,45 @@ namespace HotelManagement.Model.Services
         private static StaffService _ins;
         public static StaffService Ins
         {
-            get { return _ins ?? (_ins = new StaffService()); }
+            get { return _ins ?? (_ins = new StaffService(_context)); }
             private set { _ins = value; }
         }
-        private StaffService() { }
+
+        private static HotelManagementEntities _context;
+        public StaffService(HotelManagementEntities context) {
+            _context = context;
+        }
 
         public async Task<List<StaffDTO>> GetAllStaff()
         {
             List<StaffDTO> staffList;
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    staffList = (from s in context.Staffs
-                                 where s.IsDeleted == false
-                                 select new StaffDTO
-                                 {
-                                     StaffId = s.StaffId,
-                                     StaffName = s.StaffName,
-                                     PhoneNumber = s.PhoneNumber,
-                                     Email = s.Email,
-                                     CCCD = s.CCCD,
-                                     DateOfBirth = s.DateOfBirth,
-                                     dateOfStart = s.dateOfStart,
-                                     StaffAddress = s.StaffAddress,
-                                     Gender = s.Gender,
-                                     Position = s.Position,
-                                     Username = s.Username,
-                                     Password = s.Password,
-                                     Avatar = s.Avatar,
-
-                                 }).ToList();
+                    _context = new HotelManagementEntities();
                 }
+
+                staffList = (from s in _context.Staffs
+                             where s.IsDeleted == false
+                             select new StaffDTO
+                             {
+                                 StaffId = s.StaffId,
+                                 StaffName = s.StaffName,
+                                 PhoneNumber = s.PhoneNumber,
+                                 Email = s.Email,
+                                 CCCD = s.CCCD,
+                                 DateOfBirth = s.DateOfBirth,
+                                 dateOfStart = s.dateOfStart,
+                                 StaffAddress = s.StaffAddress,
+                                 Gender = s.Gender,
+                                 Position = s.Position,
+                                 Username = s.Username,
+                                 Password = s.Password,
+                                 Avatar = s.Avatar,
+
+                             }).ToList();
+
             }
             catch (Exception ex)
             {
@@ -57,41 +64,44 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    bool isCccdExist = await context.Staffs.AnyAsync(s => staff.CCCD == s.CCCD);
-                    if (isCccdExist) return (false, "CCCD đã tồn tại!", null);
-                    bool IsphoneExist = await context.Staffs.AnyAsync(s => staff.PhoneNumber == s.PhoneNumber);
-                    if (IsphoneExist) return (false, "Số điện thoại đã tồn tại!", null);
-                    bool IsUserNameExist = await context.Staffs.AnyAsync(s => staff.Username == s.Username);
-                    if (IsUserNameExist) return (false, "Tên đăng nhập đã tồn tại!", null);
-                    if (staff.Email != null)
-                    {
-                        bool IsemailExist = await context.Staffs.AnyAsync(s => staff.Email == s.Email);
-                        if (IsemailExist) return (false, "Email đã được đăng ký!", null);
-                    }
-                    var maxId = await context.Staffs.MaxAsync(s => s.StaffId);
-
-                    Staff newstaff = new Staff();
-                    newstaff.StaffId = CreateNextStaffId(maxId);
-                    newstaff.StaffName = staff.StaffName;
-                    newstaff.Email = staff.Email;
-                    newstaff.StaffAddress = staff.StaffAddress;
-                    newstaff.PhoneNumber = staff.PhoneNumber;
-                    newstaff.CCCD = staff.CCCD;
-                    newstaff.DateOfBirth = staff.DateOfBirth;
-                    newstaff.dateOfStart = staff.dateOfStart;
-                    newstaff.Gender = staff.Gender;
-                    newstaff.Position = staff.Position;
-                    newstaff.Username = staff.Username;
-                    newstaff.Password = staff.Password;
-                    newstaff.Avatar = staff.Avatar;
-                    newstaff.IsDeleted = false;
-
-                    staff.StaffId = newstaff.StaffId;
-                    context.Staffs.Add(newstaff);
-                    await context.SaveChangesAsync();
+                    _context = new HotelManagementEntities();
                 }
+
+                bool isCccdExist = await _context.Staffs.AnyAsync(s => staff.CCCD == s.CCCD);
+                if (isCccdExist) return (false, "CCCD đã tồn tại!", null);
+                bool IsphoneExist = await _context.Staffs.AnyAsync(s => staff.PhoneNumber == s.PhoneNumber);
+                if (IsphoneExist) return (false, "Số điện thoại đã tồn tại!", null);
+                bool IsUserNameExist = await _context.Staffs.AnyAsync(s => staff.Username == s.Username);
+                if (IsUserNameExist) return (false, "Tên đăng nhập đã tồn tại!", null);
+                if (staff.Email != null)
+                {
+                    bool IsemailExist = await _context.Staffs.AnyAsync(s => staff.Email == s.Email);
+                    if (IsemailExist) return (false, "Email đã được đăng ký!", null);
+                }
+                var maxId = await _context.Staffs.MaxAsync(s => s.StaffId);
+
+                Staff newstaff = new Staff();
+                newstaff.StaffId = CreateNextStaffId(maxId);
+                newstaff.StaffName = staff.StaffName;
+                newstaff.Email = staff.Email;
+                newstaff.StaffAddress = staff.StaffAddress;
+                newstaff.PhoneNumber = staff.PhoneNumber;
+                newstaff.CCCD = staff.CCCD;
+                newstaff.DateOfBirth = staff.DateOfBirth;
+                newstaff.dateOfStart = staff.dateOfStart;
+                newstaff.Gender = staff.Gender;
+                newstaff.Position = staff.Position;
+                newstaff.Username = staff.Username;
+                newstaff.Password = staff.Password;
+                newstaff.Avatar = staff.Avatar;
+                newstaff.IsDeleted = false;
+
+                staff.StaffId = newstaff.StaffId;
+                _context.Staffs.Add(newstaff);
+                await _context.SaveChangesAsync();
+
             }
             catch (System.Data.Entity.Core.EntityException)
             {
@@ -107,34 +117,37 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    bool isCccdExist = await context.Staffs.AnyAsync(s => staff.StaffId != s.StaffId && staff.CCCD == s.CCCD);
-                    if (isCccdExist) return (false, "CCCD đã tồn tại!");
-                    bool IsphoneExist = await context.Staffs.AnyAsync(s => staff.StaffId != s.StaffId && staff.PhoneNumber == s.PhoneNumber);
-                    if (IsphoneExist) return (false, "Số điện thoại đã tồn tại!");
-                    bool IsUserNameExist = await context.Staffs.AnyAsync(s => staff.StaffId != s.StaffId && staff.Username == s.Username);
-                    if (IsUserNameExist) return (false, "Tên đăng nhập đã tồn tại!");
-                    if (staff.Email != null)
-                    {
-                        bool IsemailExist = await context.Staffs.AnyAsync(s => staff.StaffId != s.StaffId && staff.Email == s.Email);
-                        if (IsemailExist) return (false, "Email đã được đăng ký!");
-                    }
-                    var selectStaff = await context.Staffs.FindAsync(staff.StaffId);
-                    selectStaff.StaffName = staff.StaffName;
-                    selectStaff.PhoneNumber = staff.PhoneNumber;
-                    selectStaff.StaffAddress = staff.StaffAddress;
-                    selectStaff.Email = staff.Email;
-                    selectStaff.CCCD = staff.CCCD;
-                    selectStaff.Username = staff.Username;
-                    selectStaff.Position = staff.Position;
-                    selectStaff.Gender = staff.Gender;
-                    selectStaff.dateOfStart = staff.dateOfStart;
-                    selectStaff.DateOfBirth = staff.DateOfBirth;
-                    selectStaff.Avatar = staff.Avatar;
-
-                    await context.SaveChangesAsync();
+                    _context = new HotelManagementEntities();
                 }
+
+                bool isCccdExist = await _context.Staffs.AnyAsync(s => staff.StaffId != s.StaffId && staff.CCCD == s.CCCD);
+                if (isCccdExist) return (false, "CCCD đã tồn tại!");
+                bool IsphoneExist = await _context.Staffs.AnyAsync(s => staff.StaffId != s.StaffId && staff.PhoneNumber == s.PhoneNumber);
+                if (IsphoneExist) return (false, "Số điện thoại đã tồn tại!");
+                bool IsUserNameExist = await _context.Staffs.AnyAsync(s => staff.StaffId != s.StaffId && staff.Username == s.Username);
+                if (IsUserNameExist) return (false, "Tên đăng nhập đã tồn tại!");
+                if (staff.Email != null)
+                {
+                    bool IsemailExist = await _context.Staffs.AnyAsync(s => staff.StaffId != s.StaffId && staff.Email == s.Email);
+                    if (IsemailExist) return (false, "Email đã được đăng ký!");
+                }
+                var selectStaff = await _context.Staffs.FindAsync(staff.StaffId);
+                selectStaff.StaffName = staff.StaffName;
+                selectStaff.PhoneNumber = staff.PhoneNumber;
+                selectStaff.StaffAddress = staff.StaffAddress;
+                selectStaff.Email = staff.Email;
+                selectStaff.CCCD = staff.CCCD;
+                selectStaff.Username = staff.Username;
+                selectStaff.Position = staff.Position;
+                selectStaff.Gender = staff.Gender;
+                selectStaff.dateOfStart = staff.dateOfStart;
+                selectStaff.DateOfBirth = staff.DateOfBirth;
+                selectStaff.Avatar = staff.Avatar;
+
+                await _context.SaveChangesAsync();
+
             }
             catch (System.Data.Entity.Core.EntityException)
             {
@@ -150,19 +163,22 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    Bill bill = context.Bills.FirstOrDefault(item => item.StaffId == id);
-                    if (bill != null)
-                    {
-                        return false;
-                    }
-                    RentalContract rent = context.RentalContracts.FirstOrDefault(item => item.StaffId == id);
-                    if (rent != null)
-                    {
-                        return false;
-                    }
+                    _context = new HotelManagementEntities();
                 }
+
+                Bill bill = _context.Bills.FirstOrDefault(item => item.StaffId == id);
+                if (bill != null)
+                {
+                    return false;
+                }
+                RentalContract rent = _context.RentalContracts.FirstOrDefault(item => item.StaffId == id);
+                if (rent != null)
+                {
+                    return false;
+                }
+
             }
             catch (System.Data.Entity.Core.EntityException)
             {
@@ -178,20 +194,23 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    Staff selectedStaff = await (from s in context.Staffs
-                                                 where s.StaffId == id && s.IsDeleted == false
-                                                 select s).FirstOrDefaultAsync();
-                    if (selectedStaff is null || selectedStaff.IsDeleted == true)
-                    {
-                        return (false, "Nhân viên không tồn tại");
-
-                    }
-                    context.Staffs.Remove(selectedStaff);
-
-                    await context.SaveChangesAsync();
+                    _context = new HotelManagementEntities();
                 }
+
+                Staff selectedStaff = await (from s in _context.Staffs
+                                             where s.StaffId == id && s.IsDeleted == false
+                                             select s).FirstOrDefaultAsync();
+                if (selectedStaff is null || selectedStaff.IsDeleted == true)
+                {
+                    return (false, "Nhân viên không tồn tại");
+
+                }
+                _context.Staffs.Remove(selectedStaff);
+
+                await _context.SaveChangesAsync();
+
             }
             catch (System.Data.Entity.Core.EntityException)
             {
@@ -207,13 +226,16 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var selectStaff = await context.Staffs.FindAsync(staffid);
-                    selectStaff.Password = pass;
-
-                    await context.SaveChangesAsync();
+                    _context = new HotelManagementEntities();
                 }
+
+                var selectStaff = await _context.Staffs.FindAsync(staffid);
+                selectStaff.Password = pass;
+
+                await _context.SaveChangesAsync();
+
             }
             catch (System.Data.Entity.Core.EntityException)
             {
@@ -230,32 +252,35 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    var staff = await (from s in context.Staffs
-                                       where (username == s.Username || username == s.Email) && password == s.Password && s.IsDeleted == false
-                                       select new StaffDTO
-                                       {
-                                           StaffId = s.StaffId,
-                                           StaffName = s.StaffName,
-                                           PhoneNumber = s.PhoneNumber,
-                                           StaffAddress = s.StaffAddress,
-                                           Email = s.Email,
-                                           CCCD = s.CCCD,
-                                           DateOfBirth = s.DateOfBirth,
-                                           Position = s.Position,
-                                           Gender = s.Gender,
-                                           Username = s.Username,
-                                           Password = s.Password,
-                                           Avatar = s.Avatar,
-                                           dateOfStart = s.dateOfStart
-                                       }).FirstOrDefaultAsync();
-                    if (staff == null)
-                    {
-                        return (false, "Sai tài khoản hoặc mật khẩu", null);
-                    }
-                    return (true, "", staff);
+                    _context = new HotelManagementEntities();
                 }
+
+                var staff = await (from s in _context.Staffs
+                                   where (username == s.Username || username == s.Email) && password == s.Password && s.IsDeleted == false
+                                   select new StaffDTO
+                                   {
+                                       StaffId = s.StaffId,
+                                       StaffName = s.StaffName,
+                                       PhoneNumber = s.PhoneNumber,
+                                       StaffAddress = s.StaffAddress,
+                                       Email = s.Email,
+                                       CCCD = s.CCCD,
+                                       DateOfBirth = s.DateOfBirth,
+                                       Position = s.Position,
+                                       Gender = s.Gender,
+                                       Username = s.Username,
+                                       Password = s.Password,
+                                       Avatar = s.Avatar,
+                                       dateOfStart = s.dateOfStart
+                                   }).FirstOrDefaultAsync();
+                if (staff == null)
+                {
+                    return (false, "Sai tài khoản hoặc mật khẩu", null);
+                }
+                return (true, "", staff);
+
             }
             catch (System.Data.Entity.Core.EntityException)
             {
