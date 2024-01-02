@@ -43,7 +43,7 @@ namespace HotelManagement.Model.Services
                 {
                     return (false, "Không có nhân viên");
                 }
-                Staff staff = _context.Staffs.Find(Id);
+                Staff staff = _context.Staffs.Where(s=>s.StaffId == Id).First();
                 if (staff == null)
                     return (false, "Lỗi không tìm thấy nhân viên");
                 staff.StaffName = StaffName;
@@ -68,7 +68,7 @@ namespace HotelManagement.Model.Services
                     _context = new HotelManagementEntities();
                 }
 
-                Staff staff = _context.Staffs.Find(Id);
+                Staff staff = _context.Staffs.Where(s=>s.StaffId == Id).First();
                 if (staff == null)
                     return (false, "lỗi hệ thống");
                 staff.Email = StaffEmail;

@@ -75,29 +75,31 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (_context == null)
                 {
-                    RoomType roomType = context.RoomTypes.Find(updatedRoomType.RoomTypeId);
-
-                    if (roomType is null)
-                    {
-                        return (false, "Loại phòng này không tồn tại!");
-                    }
-
-                    bool IsExistRoomTypeName = context.RoomTypes.Any((RoomType rt) => rt.RoomTypeId != roomType.RoomTypeId && rt.RoomTypeName == updatedRoomType.RoomTypeName);
-                    if (IsExistRoomTypeName)
-                    {
-                        return (false, "Tên loại phòng đã tồn tại!");
-                    }
-
-                    roomType.RoomTypeName = updatedRoomType.RoomTypeName;
-                    roomType.Price = updatedRoomType.RoomTypePrice;
-                    roomType.RoomTypeId = updatedRoomType.RoomTypeId;
-                    roomType.Note = updatedRoomType.RoomTypeNote;
-
-                    await context.SaveChangesAsync();
-                    return (true, "Cập nhật thành công");
+                    _context = new HotelManagementEntities();
                 }
+                RoomType roomType = _context.RoomTypes.Where(r => r.RoomTypeId == updatedRoomType.RoomTypeId).First();
+
+                if (roomType is null)
+                {
+                    return (false, "Loại phòng này không tồn tại!");
+                }
+
+                bool IsExistRoomTypeName = _context.RoomTypes.Any((RoomType rt) => rt.RoomTypeId != roomType.RoomTypeId && rt.RoomTypeName == updatedRoomType.RoomTypeName);
+                if (IsExistRoomTypeName)
+                {
+                    return (false, "Tên loại phòng đã tồn tại!");
+                }
+
+                roomType.RoomTypeName = updatedRoomType.RoomTypeName;
+                roomType.Price = updatedRoomType.RoomTypePrice;
+                roomType.RoomTypeId = updatedRoomType.RoomTypeId;
+                roomType.Note = updatedRoomType.RoomTypeNote;
+
+                await _context.SaveChangesAsync();
+                return (true, "Cập nhật thành công");
+
             }
             catch (DbEntityValidationException)
             {
