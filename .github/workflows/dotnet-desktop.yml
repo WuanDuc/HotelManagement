@@ -77,18 +77,10 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
-    #Execute all unit tests in the solution
+    # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test
-      
-    - name: Dotnet Tests
-      uses: EasyDesk/action-dotnet-test@v1.0.0
 
-    - name: dotnet-tests-report
-      uses: zyborg/dotnet-tests-report@v1.4.4
-
-    - name: stryker dotnet
-      uses: naveen497/actions@0.0.1
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
