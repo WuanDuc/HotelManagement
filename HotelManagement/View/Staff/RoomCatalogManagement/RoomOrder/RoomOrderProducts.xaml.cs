@@ -36,10 +36,7 @@ namespace HotelManagement.View.Staff.RoomCatalogManagement.RoomOrder
         }
         private bool Filter(object item)
         {
-            if (String.IsNullOrEmpty(SearchBox.Text))
                 return true;
-            else
-                return ((item as ServiceDTO).ServiceName.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

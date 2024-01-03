@@ -1,6 +1,5 @@
 ﻿using BitMiracle.LibTiff.Classic;
 using HotelManagement.DTOs;
-using HotelManagement.ViewModel.AdminVM.FurnitureManagementVM;
 using IronXL.Drawing;
 using System;
 using System.Collections.Generic;
@@ -40,14 +39,8 @@ namespace HotelManagement.View.Admin.RoomFurnitureManagement
         }
 
         private bool Filter(object item)
-        {
-            if (String.IsNullOrEmpty(SearchBox.Text))
-                return true;
-            else
-                return ((item as FurnituresRoomDTO).RoomNumber.ToString().IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
-                       || ((item as FurnituresRoomDTO).RoomType.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
-                       || ((item as FurnituresRoomDTO).RoomStatus.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
-                       || ((item as FurnituresRoomDTO).CustomerName.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+        {               
+            return true;
         }
 
         private void AvatarMask_MouseMove(object sender, MouseEventArgs e)

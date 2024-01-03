@@ -13,7 +13,7 @@
         WindowStyle="None"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         x:Name="window"
-        DataContext="{StaticResource RoomCatalogManagementVM}">
+        >
     <Border CornerRadius="15" Background="#F5F5F5" BorderBrush="Gray" BorderThickness="0.3"  Width="480"
             VerticalAlignment="Top">
         <Border.Effect>

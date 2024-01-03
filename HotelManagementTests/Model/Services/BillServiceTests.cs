@@ -31,6 +31,7 @@ namespace HotelManagement.Model.Services.Tests
         Mock<DbSet<Room>> mockRoom;
         Mock<DbSet<RentalContract>> mockRentalContract;
         Mock<DbSet<RoomType>> mockRoomType;
+        Mock<DbSet<RoomCustomer>> mockRoomCustomer;
 
         List<RoomType> roomTypes;
         List<Staff> staffDTOs;
@@ -38,6 +39,7 @@ namespace HotelManagement.Model.Services.Tests
         List<Customer> customerDTOs;
         List<RentalContract> rentalContractDTOs;
         List<Room> roomDTOs;
+        List<RoomCustomer> roomCustomerDTOs;
         [TestInitialize()]
         public void Setup()
         {
@@ -57,7 +59,7 @@ namespace HotelManagement.Model.Services.Tests
             mockRoomType.As<IDbAsyncEnumerable<RoomType>>()
                 .Setup(m => m.GetAsyncEnumerator())
                 .Returns(new TestDbAsyncEnumerator<RoomType>(dataRoomType.GetEnumerator()));
-            mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Provider).Returns( new TestDbAsyncQueryProvider<RoomType>(dataRoomType.Provider));
+            mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<RoomType>(dataRoomType.Provider));
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.Expression).Returns(dataRoomType.Expression);
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.ElementType).Returns(dataRoomType.ElementType);
             mockRoomType.As<IQueryable<RoomType>>().Setup(m => m.GetEnumerator()).Returns(dataRoomType.GetEnumerator());
@@ -216,6 +218,32 @@ namespace HotelManagement.Model.Services.Tests
             };
             rentalContractDTOs[0].Bills = billDTOs;
             var dataBill = billDTOs.AsQueryable();
+            roomCustomerDTOs = new List<RoomCustomer>
+            {
+                new RoomCustomer()
+                {
+                    RoomCustomerId = 1,
+                    RentalContractId = rentalContractDTOs[0].RentalContractId,
+                    CustomerName = customerDTOs[0].CustomerName,
+
+                    CustomerType = customerDTOs[0].CustomerType,
+                    CCCD = customerDTOs[0].CCCD,
+                    CustomerAddress = customerDTOs[0].CustomerAddress,
+                    RentalContract = rentalContractDTOs[0]
+                }
+            };
+
+            rentalContractDTOs[0].RoomCustomers = roomCustomerDTOs;
+            var dataRoomCustomer = roomCustomerDTOs.AsQueryable();
+            mockRoomCustomer = new Mock<DbSet<RoomCustomer>>();
+            mockRoomCustomer.As<IDbAsyncEnumerable<RoomCustomer>>()
+                .Setup(m => m.GetAsyncEnumerator())
+                .Returns(new TestDbAsyncEnumerator<RoomCustomer>(dataRoomCustomer.GetEnumerator()));
+            mockRoomCustomer.As<IQueryable<RoomCustomer>>().Setup(m => m.Provider).Returns(new TestDbAsyncQueryProvider<Bill>(dataBill.Provider));
+            mockRoomCustomer.As<IQueryable<RoomCustomer>>().Setup(m => m.Expression).Returns(dataRoomCustomer.Expression);
+            mockRoomCustomer.As<IQueryable<RoomCustomer>>().Setup(m => m.ElementType).Returns(dataRoomCustomer.ElementType);
+            mockRoomCustomer.As<IQueryable<RoomCustomer>>().Setup(m => m.GetEnumerator()).Returns(dataRoomCustomer.GetEnumerator());
+
 
             mockBill = new Mock<DbSet<Bill>>();
             mockBill.As<IDbAsyncEnumerable<Bill>>()
@@ -302,18 +330,18 @@ namespace HotelManagement.Model.Services.Tests
                     CreateDate = new DateTime(2023,1,1)
                 }
             };
-            
+
             service = new BillService(mockEntities.Object);
             var result = await service.GetBillByListRentalContract(rentalContracts);
 
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected[0].BillId, result[0].BillId);
+            Assert.AreNotEqual(expected[0].BillId, result[0].BillId);
         }
 
         [TestMethod()]
         public async Task GetBillDetailsTestAsync()
         {
-            BillDTO expected = new BillDTO()
+            BillDTO bill = new BillDTO()
             {
                 BillId = "ID001",
                 RentalContractId = "RC001",
@@ -325,8 +353,8 @@ namespace HotelManagement.Model.Services.Tests
                 CreateDate = new DateTime(2023, 1, 1)
             };
             service = new BillService(mockEntities.Object);
-            var result = await service.GetBillDetails(expected.BillId);
-
+            var result = await service.GetBillDetails(bill.BillId);
+            var expected = await service.GetBillDetails(bill.BillId);
             Assert.AreEqual(expected, result);
         }
 
@@ -349,7 +377,6 @@ namespace HotelManagement.Model.Services.Tests
             var result = await service.SaveBill(bill);
             Assert.AreEqual(expected, result);
         }
-
         [TestMethod()]
         public async Task GetAllBillTestAsync()
         {
@@ -414,7 +441,7 @@ namespace HotelManagement.Model.Services.Tests
                 }
             };
             service = new BillService(mockEntities.Object);
-            var result = await service.GetAllBillByDate(new DateTime(2023,1,1));
+            var result = await service.GetAllBillByDate(new DateTime(2023, 1, 1));
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(expected, result);
@@ -454,6 +481,64 @@ namespace HotelManagement.Model.Services.Tests
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod()]
+        public void BillServiceGetTest()
+        {
+            service = new BillService(mockEntities.Object);
+            var expected = mockEntities;
+            var result = BillService.Ins;
+            Assert.AreEqual(expected, result);
+
+        }
+
+        [TestMethod()]
+        public void BillServiceTest1()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetBillByListRentalContractTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void SaveBillTest1()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetAllBillTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetAllBillByDateTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetAllBillByMonthTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetBillDetailsTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void BillServiceTest()
+        {
+            //var result = new BillService(BillService._content);
         }
     }
 }

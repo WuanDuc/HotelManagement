@@ -1,7 +1,6 @@
 ﻿using CinemaManagementProject.Utilities;
 using HotelManagement.DTOs;
 using HotelManagement.ViewModel;
-using HotelManagement.ViewModel.AdminVM.FurnitureManagementVM;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -96,10 +95,7 @@ namespace HotelManagement.View.Admin.FurnitureManagement
         }
         private bool Filter(object item)
         {
-            if (String.IsNullOrEmpty(SearchBox.Text))
-                return true;
-            else
-                return ((item as FurnitureDTO).FurnitureName.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+            return true;
         }
 
     }

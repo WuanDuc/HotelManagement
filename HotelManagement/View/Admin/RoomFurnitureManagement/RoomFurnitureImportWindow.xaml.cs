@@ -47,10 +47,7 @@ namespace HotelManagement.View.Admin.RoomFurnitureManagement
         }
         private bool Filter(object item)
         {
-            if (String.IsNullOrEmpty(SearchBox.Text))
                 return true;
-            else
-                return ((item as FurnitureDTO).FurnitureName.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         private void ItemFurniture_MouseMove(object sender, MouseEventArgs e)

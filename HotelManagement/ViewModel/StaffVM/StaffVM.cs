@@ -4,8 +4,6 @@ using HotelManagement.View.Admin;
 using HotelManagement.View.CustomMessageBoxWindow;
 using HotelManagement.View.Login;
 using HotelManagement.View.Staff;
-using HotelManagement.ViewModel.AdminVM.FurnitureManagementVM;
-using HotelManagement.ViewModel.AdminVM.ServiceManagementVM;
 using System;
 using System.Collections.Generic;
 using System.IO;
