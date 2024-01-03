@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Core;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HotelManagement.Model.Services
 {
+    [ExcludeFromCodeCoverage]
     public class ServiceHelper
     {
         private ServiceHelper() { }

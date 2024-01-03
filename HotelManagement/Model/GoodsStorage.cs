@@ -11,7 +11,9 @@ namespace HotelManagement.Model
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Diagnostics.CodeAnalysis;
+
+    [ExcludeFromCodeCoverage]
     public partial class GoodsStorage
     {
         public string ServiceId { get; set; }

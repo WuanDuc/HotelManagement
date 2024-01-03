@@ -19,9 +19,11 @@ using HotelManagement.View.Admin;
 using HotelManagement.View.Staff;
 using HotelManagement.ViewModel.AdminVM;
 using HotelManagement.ViewModel.StaffVM;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HotelManagement.Model.Services
 {
+    [ExcludeFromCodeCoverage]
     public class FurnitureService
     {
         private FurnitureService() { }

@@ -4,6 +4,7 @@ using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -21,6 +22,7 @@ using System.Windows.Media.Imaging;
 
 namespace HotelManagement.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public class FurnitureDTO : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

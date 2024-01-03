@@ -11,7 +11,9 @@ namespace HotelManagement.Model
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Diagnostics.CodeAnalysis;
+
+    [ExcludeFromCodeCoverage]
     public partial class FurnitureReceipt
     {
         public string FurnitureReceiptId { get; set; }

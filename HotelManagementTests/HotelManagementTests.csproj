@@ -88,6 +88,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="DTOs\RentalContractDTOTests.cs" />
     <Compile Include="Model\IDbTest.cs" />
     <Compile Include="Model\Services\BillServiceTests.cs" />
     <Compile Include="Model\Services\BookingRoomServiceTests.cs" />

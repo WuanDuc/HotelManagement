@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Core;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -15,6 +16,7 @@ using System.Windows;
 
 namespace HotelManagement.Model.Services
 {
+    [ExcludeFromCodeCoverage]
     public class FurnituresRoomService
     {
         private FurnituresRoomService() { }
