@@ -85,7 +85,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
 
     - name: Restore Packages
-      run: nuget restore MySolution.sln
+      run: nuget restore HotelManagement.sln 
 
     # # Restore NuGet packages
     # - name: Installing dependency command
