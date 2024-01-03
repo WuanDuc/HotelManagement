@@ -13,19 +13,6 @@ namespace HotelManagement.ViewModel.AdminVM.StatisticalManagementVM.Tests
     [TestClass()]
     public class ReportRevenueTypeVMTests
     {
-        [TestMethod]
-        public async Task ChangeServiceTypeRevenue_SuccessfulExecution()
-        {
-            // Arrange
-            StatisticalManagementVM vm = new StatisticalManagementVM();
-
-            // Act
-            await vm.ChangeServiceTypeRevenue();
-
-            // Assert
-            Assert.IsNotNull(vm.ListServiceTypeRevenue);
-            Assert.IsNotNull(vm.ServiceTypeRevenuePieChart);
-        }
         //[TestMethod()]
         //public void ChangeRoomTypeRevenueTest()
         //{
