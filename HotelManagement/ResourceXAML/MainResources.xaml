@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:VM1="clr-namespace:HotelManagement.ViewModel.AdminVM"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--xmlns:VM1="clr-namespace:HotelManagement.ViewModel.AdminVM"
                 xmlns:VM2="clr-namespace:HotelManagement.ViewModel.StaffVM"
                 xmlns:VM7="clr-namespace:HotelManagement.ViewModel.SettingVM"
                 xmlns:VM8="clr-namespace:HotelManagement.ViewModel.BookingRoomManagementVM"
@@ -12,9 +12,8 @@
                 xmlns:VM15="clr-namespace:HotelManagement.ViewModel.AdminVM.HistoryManagementVM"
                 xmlns:VM16="clr-namespace:HotelManagement.ViewModel.AdminVM.TroubleManagementVM"
                 xmlns:VM17="clr-namespace:HotelManagement.ViewModel.StaffVM.TroubleReportVM"
-                xmlns:VM18="clr-namespace:HotelManagement.ViewModel.LoginVM"
->
-    <VM1:AdminVM x:Key="AdminVM"/>
+                xmlns:VM18="clr-namespace:HotelManagement.ViewModel.LoginVM"-->
+    <!--<VM1:AdminVM x:Key="AdminVM"/>
     <VM2:StaffVM x:Key="StaffVM"/>
     <VM7:SettingVM x:Key="SettingVM"/>
     <VM8:BookingRoomManagementVM x:Key="BookingRoomManagementVM"/>
@@ -27,6 +26,6 @@
     <VM16:TroubleManagementVM x:Key="TroubleManagementVM"/>
     <VM17:TroubleReportVM x:Key="TroubleReportVM"/>
     <VM18:ForgotPassVM x:Key="ForgotPassVM"/>
-    <VM18:LoginVM x:Key="LoginVM"/>
+    <VM18:LoginVM x:Key="LoginVM"/>-->
 
 </ResourceDictionary>
