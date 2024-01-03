@@ -26,7 +26,7 @@ namespace HotelManagement.Model.Services
             }
             private set { _ins = value; }
         }
-        private HotelManagementEntities _context;
+        public HotelManagementEntities _context;
 
         public BillService(HotelManagementEntities context)
         {
@@ -62,15 +62,6 @@ namespace HotelManagement.Model.Services
                              PersonNumber = x.RoomCustomers.Count(),
                              IsHasForeignPerson = (x.RoomCustomers.Where(t => t.CustomerType == "Nước ngoài").Count() > 0),
                              RoomPrice = x.Room.RoomType.Price,
-                             ListListServicePayment = x.ServiceUsings.Select(t => new ServiceUsingDTO
-                             {
-                                 RentalContractId = t.RentalContractId,
-                                 ServiceId = t.ServiceId,
-                                 ServiceName = t.Service.ServiceName,
-                                 ServiceType = t.Service.ServiceType,
-                                 UnitPrice = t.Service.ServicePrice,
-                                 Quantity = t.Quantity,
-                             }).ToList(),
                              ListTroubleByCustomer = x.TroubleByCustomers.Select(t => new TroubleByCustomerDTO
                              {
                                  RentalContractId = t.RentalContractId,
@@ -82,28 +73,6 @@ namespace HotelManagement.Model.Services
 
                          }).ToListAsync();
 
-                    foreach (var item in list)
-                    {
-                        var listService = (item.ListListServicePayment).Where(x => x.ServiceName != "Giặt sấy")
-                                                            .GroupBy(x => x.ServiceId)
-                                                            .Select(t => new ServiceUsingDTO
-                                                            {
-                                                                RentalContractId = t.First().RentalContractId,
-                                                                ServiceId = t.First().ServiceId,
-                                                                ServiceName = t.First().ServiceName,
-                                                                ServiceType = t.First().ServiceType,
-                                                                UnitPrice = t.First().UnitPrice,
-                                                                Quantity = t.Sum(g => g.Quantity)
-                                                            }).ToList();
-                        foreach (var item2 in item.ListListServicePayment)
-                        {
-                            if (item2.ServiceName == "Giặt sấy")
-                            {
-                                listService.Insert(0, item2);
-                            }
-                        }
-                        item.ListListServicePayment = listService;
-                    }
                     return list;
             }
             catch (Exception ex)
@@ -137,7 +106,7 @@ namespace HotelManagement.Model.Services
                     };
                     _context.Bills.Add(newBill);
                     RentalContract rental = await _context.RentalContracts.FindAsync(bill.RentalContractId);
-                    rental.PersonNumber = rental.RoomCustomers.Count();
+                    //rental.PersonNumber = rental.RoomCustomers.Count();
                     await _context.SaveChangesAsync();
                     return (true, "Thanh toán thành công!");
                 }
@@ -213,15 +182,6 @@ namespace HotelManagement.Model.Services
                                         CheckOutDate = b.RentalContract.CheckOutDate,
                                         StartTime = b.RentalContract.StartTime,
                                         CreateDate = b.CreateDate,
-                                        ListListServicePayment = b.RentalContract.ServiceUsings.Select(t => new ServiceUsingDTO
-                                        {
-                                            RentalContractId = t.RentalContractId,
-                                            ServiceId = t.ServiceId,
-                                            ServiceName = t.Service.ServiceName,
-                                            ServiceType = t.Service.ServiceType,
-                                            UnitPrice = t.Service.ServicePrice,
-                                            Quantity = t.Quantity,
-                                        }).ToList(),
                                         ListTroubleByCustomer = b.RentalContract.TroubleByCustomers.Select(t => new TroubleByCustomerDTO
                                         {
                                             RentalContractId = t.RentalContractId,
@@ -278,15 +238,6 @@ namespace HotelManagement.Model.Services
                                         CheckOutDate = b.RentalContract.CheckOutDate,
                                         StartTime = b.RentalContract.StartTime,
                                         CreateDate = b.CreateDate,
-                                        ListListServicePayment = b.RentalContract.ServiceUsings.Select(t => new ServiceUsingDTO
-                                        {
-                                            RentalContractId = t.RentalContractId,
-                                            ServiceId = t.ServiceId,
-                                            ServiceName = t.Service.ServiceName,
-                                            ServiceType = t.Service.ServiceType,
-                                            UnitPrice = t.Service.ServicePrice,
-                                            Quantity = t.Quantity,
-                                        }).ToList(),
                                         ListTroubleByCustomer = b.RentalContract.TroubleByCustomers.Select(t => new TroubleByCustomerDTO
                                         {
                                             RentalContractId = t.RentalContractId,
@@ -343,15 +294,6 @@ namespace HotelManagement.Model.Services
                                         CheckOutDate = b.RentalContract.CheckOutDate,
                                         StartTime = b.RentalContract.StartTime,
                                         CreateDate = b.CreateDate,
-                                        ListListServicePayment = b.RentalContract.ServiceUsings.Select(t => new ServiceUsingDTO
-                                        {
-                                            RentalContractId = t.RentalContractId,
-                                            ServiceId = t.ServiceId,
-                                            ServiceName = t.Service.ServiceName,
-                                            ServiceType = t.Service.ServiceType,
-                                            UnitPrice = t.Service.ServicePrice,
-                                            Quantity = t.Quantity,
-                                        }).ToList(),
                                         ListTroubleByCustomer = b.RentalContract.TroubleByCustomers.Select(t => new TroubleByCustomerDTO
                                         {
                                             RentalContractId = t.RentalContractId,
@@ -407,15 +349,6 @@ namespace HotelManagement.Model.Services
                         CheckOutDate = b.RentalContract.CheckOutDate,
                         StartTime = b.RentalContract.StartTime,
                         CreateDate = b.CreateDate,
-                        ListListServicePayment = b.RentalContract.ServiceUsings.Select(t => new ServiceUsingDTO
-                        {
-                            RentalContractId = t.RentalContractId,
-                            ServiceId = t.ServiceId,
-                            ServiceName = t.Service.ServiceName,
-                            ServiceType = t.Service.ServiceType,
-                            UnitPrice = t.Service.ServicePrice,
-                            Quantity = t.Quantity,
-                        }).ToList(),
                         ListTroubleByCustomer = b.RentalContract.TroubleByCustomers.Select(t => new TroubleByCustomerDTO
                         {
                             RentalContractId = t.RentalContractId,

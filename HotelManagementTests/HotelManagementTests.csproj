@@ -89,10 +89,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DTOs\RentalContractDTOTests.cs" />
+    <Compile Include="DTOs\BillDTOTests.cs" />
     <Compile Include="Model\IDbTest.cs" />
     <Compile Include="Model\Services\BillServiceTests.cs" />
     <Compile Include="Model\Services\BookingRoomServiceTests.cs" />
     <Compile Include="Model\Services\CustomerServiceTests.cs" />
+    <Compile Include="Model\Services\RentalContractServiceTests.cs" />
     <Compile Include="Model\Services\RoomTypeServiceTests.cs" />
     <Compile Include="Model\Services\SettingServiceTests.cs" />
     <Compile Include="Model\Services\StaffServiceTests.cs" />

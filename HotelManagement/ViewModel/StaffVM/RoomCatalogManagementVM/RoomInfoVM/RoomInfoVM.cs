@@ -83,47 +83,15 @@ namespace HotelManagement.ViewModel.StaffVM.RoomCatalogManagementVM
             get { return _SelectedType; }
             set { _SelectedType = value; OnPropertyChanged(); }
         }
-        private ObservableCollection<RoomFurnituresDetailDTO> _ListRoomFurniture;
-        public ObservableCollection<RoomFurnituresDetailDTO> ListRoomFurniture
-        {
-            get { return _ListRoomFurniture; }
-            set { _ListRoomFurniture = value; OnPropertyChanged(); }
-        }
-        private ObservableCollection<RoomFurnituresDetailDTO> _ListRoomFurnitureTemp;
-        public ObservableCollection<RoomFurnituresDetailDTO> ListRoomFurnitureTemp
-        {
-            get { return _ListRoomFurnitureTemp; }
-            set { _ListRoomFurnitureTemp = value; OnPropertyChanged(); }
-        }
         public async Task ChangeRoomStatusFunc(RoomWindow p)
         {
-
-            (bool isSucceed, string mess) = await RoomService.Ins.ChangeRoomStatus(SelectedRoom.RoomId, SelectedRoom.RentalContractId);
-            if (isSucceed)
-            {
-                CustomMessageBox.ShowOk(mess, "Thông báo", "OK", CustomMessageBoxImage.Success);
                 p.Close();
                 RefreshCM.Execute(MainPage);
-            }
-            else
-            {
-                CustomMessageBox.ShowOk(mess, "Lỗi", "OK", CustomMessageBoxImage.Error);
-            }
         }
         public async Task UpdateRoomInfoFunc(RoomWindow p)
         {
-
-            (bool isSucessed, string mess) = await RoomService.Ins.UpdateRoomInfo(SelectedRoom.RoomId, SelectedRoomCleaningStatus.Content.ToString());
-            if (isSucessed)
-            {
-                CustomMessageBox.ShowOk(mess, "Thông báo", "OK", CustomMessageBoxImage.Success);
                 p.Close();
                 RefreshCM.Execute(MainPage);
-            }
-            else
-            {
-                CustomMessageBox.ShowOk(mess, "Lỗi", "OK", CustomMessageBoxImage.Error);
-            }
         }
         public async Task SaveCustomerFunc(AddCusWindow p)
         {
@@ -235,16 +203,6 @@ namespace HotelManagement.ViewModel.StaffVM.RoomCatalogManagementVM
         }
         private void ChangeListFurnitureType()
         {
-            if (SelectedFurnitureTypeCbbFilter == null) return;
-            ListRoomFurniture = new ObservableCollection<RoomFurnituresDetailDTO>(ListRoomFurnitureTemp);
-            if (SelectedFurnitureTypeCbbFilter == "Tất cả")
-            {
-                return;
-            }
-            else
-            {
-                ListRoomFurniture = new ObservableCollection<RoomFurnituresDetailDTO>(ListRoomFurnitureTemp.Where(x => x.FurnitureType == SelectedFurnitureTypeCbbFilter).ToList());
-            }
         }
 
     }

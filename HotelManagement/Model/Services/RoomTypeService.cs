@@ -79,7 +79,7 @@ namespace HotelManagement.Model.Services
                 {
                     _context = new HotelManagementEntities();
                 }
-                RoomType roomType = _context.RoomTypes.Where(r => r.RoomTypeId ==updatedRoomType.RoomTypeId).First();
+                RoomType roomType = _context.RoomTypes.Where(r => r.RoomTypeId == updatedRoomType.RoomTypeId).First();
 
                 if (roomType is null)
                 {

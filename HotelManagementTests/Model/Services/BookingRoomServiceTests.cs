@@ -355,7 +355,7 @@ namespace HotelManagement.Model.Services.Tests
 
             service = new BookingRoomService(mockEntities.Object);
             var result = await service.SaveCustomer(test);
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected.ToString(), result.ToString());
         }
 
         [TestMethod()]
@@ -421,7 +421,7 @@ namespace HotelManagement.Model.Services.Tests
             service = new BookingRoomService(mockEntities.Object);
             var result = await service.CheckCCCD("123456789");
             var r = (result.Item1, result.Item2.CustomerId);
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, r);
         }
     }
 }

@@ -62,7 +62,6 @@ namespace HotelManagement.DTOs
                 return res;
             }
         }
-        public IList<ServiceUsingDTO> ListListServicePayment { get; set; }
         public IList<TroubleByCustomerDTO> ListTroubleByCustomer { get; set; }
 
         public double ServicePriceTemp
@@ -70,10 +69,6 @@ namespace HotelManagement.DTOs
             get
             {
                 double t = 0;
-                foreach (var item in ListListServicePayment)
-                {
-                    t += item.TotalMoney;
-                }
                 return t;
             }
 

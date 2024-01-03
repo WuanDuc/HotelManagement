@@ -600,7 +600,6 @@ namespace HotelManagement.ViewModel.StaffVM.RoomCatalogManagementVM
                         wd.cbbRoomCleaningStatus.SelectedIndex = 1;
                     }
                     else wd.cbbRoomCleaningStatus.SelectedIndex = 2;
-                    ListService = new ObservableCollection<ServiceUsingDTO>(await ServiceUsingHelper.Ins.GetListUsingService(SelectedRoom.RentalContractId));
                     if (SelectedRoom.RoomStatus == ROOM_STATUS.READY)
                     {
                         wd.btnAddService.Visibility = Visibility.Collapsed;
@@ -699,37 +698,26 @@ namespace HotelManagement.ViewModel.StaffVM.RoomCatalogManagementVM
             });
             LoadRoomFurnitureInfoCM = new RelayCommand<object>((p) => { return true; }, async (p) =>
             {
-                ListRoomFurniture = new ObservableCollection<RoomFurnituresDetailDTO>(await FurnituresRoomService.Ins.GetRoomFurnituresDetail(SelectedRoom.RoomId));
-                ListRoomFurnitureTemp = new ObservableCollection<RoomFurnituresDetailDTO>(await FurnituresRoomService.Ins.GetRoomFurnituresDetail(SelectedRoom.RoomId));
 
 
                 RoomFurnitureInfo wd = new RoomFurnitureInfo();
 
-                List<string> listType = new List<string>(await FurnitureService.Ins.GetAllFurnitureType());
-                ListFurnitureType = new List<string>();
-                for (int i = 0; i < listType.Count; i++)
-                {
-                    if (!ListFurnitureType.Contains(listType[i])) ListFurnitureType.Add(listType[i]);
-                }
                 wd.cbbFurnitureType.SelectedIndex = 0;
                 wd.ShowDialog();
             });
             LoadRoomOrderCleaningCM = new RelayCommand<object>((p) => { return true; }, async (p) =>
             {
                 RoomOrderCleaning wd = new RoomOrderCleaning();
-                CleaningService = await ServiceHelper.Ins.GetCleaningService();
                 wd.ShowDialog();
             });
             LoadRoomOrderLaundryCM = new RelayCommand<object>((p) => { return true; }, async (p) =>
             {
                 RoomOrderLaundry wd = new RoomOrderLaundry();
-                LaundryService = await ServiceHelper.Ins.GetLaundryService();
                 wd.tbKg.Text = "";
                 wd.ShowDialog();
             });
             ConfirmCleaningServiceCM = new RelayCommand<Window>((p) => { return true; }, async (p) =>
             {
-                await SaveUsingCleaningService(p);
 
             });
             ConfirmLaundryServiceCM = new RelayCommand<RoomOrderLaundry>((p) => { return true; }, async (p) =>
@@ -746,7 +734,6 @@ namespace HotelManagement.ViewModel.StaffVM.RoomCatalogManagementVM
                         CustomMessageBox.ShowOk("Số Kg phải lớn hơn 0!", "Thông báo", "Ok", CustomMessageBoxImage.Warning);
                         return;
                     }
-                    await SaveUsingLaundryService(p);
                 }
                 catch (Exception ex)
                 {
@@ -766,60 +753,31 @@ namespace HotelManagement.ViewModel.StaffVM.RoomCatalogManagementVM
             {
                 IsLoad = true;
 
-                await LoadAllProduct();
 
                 IsLoad = false;
             });
             SelectionFilterChangeCM = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                if (SelectedItemFilter != null)
-                {
-                    if (SelectedItemFilter.Tag.ToString() == "All")
-                        ProductList = new ObservableCollection<ServiceDTO>(AllProducts);
-                    else
-                        ProductList = new ObservableCollection<ServiceDTO>(ServiceHelper.Ins.GetAllServiceByType(SelectedItemFilter.Content.ToString(), AllProducts));
-                }
             });
 
             SelectedProductToBillCM = new RelayCommand<ListBox>((p) => { return true; }, (p) =>
             {
-                if (SelectedProduct != null)
-                {
-                    ServiceCache = SelectedProduct;
-                    LoadProductToBill();
-                }
             });
 
             DecreaseQuantityOrderItemCM = new RelayCommand<ListBox>((p) => { return true; }, (p) =>
             {
-                if (SelectedProduct != null)
-                {
-                    ServiceCache = SelectedProduct;
-                    DecreaseProductInBill();
-                }
             });
 
             IncreaseQuantityOrderItemCM = new RelayCommand<ListBox>((p) => { return true; }, (p) =>
             {
-                if (SelectedProduct != null)
-                {
-                    ServiceCache = SelectedProduct;
-                    IncreaseProductInBill();
-                }
             });
 
             DeleteItemInBillStackCM = new RelayCommand<ListBox>((p) => { return true; }, (p) =>
             {
-                if (SelectedProduct != null)
-                {
-                    ServiceCache = SelectedProduct;
-                    DeleteProductInBill();
-                }
             });
 
             CloseOrderProductWindowCM = new RelayCommand<Window>((p) => { return true; }, (p) =>
             {
-                OrderList = null;
                 p.Close();
             });
 
@@ -827,7 +785,6 @@ namespace HotelManagement.ViewModel.StaffVM.RoomCatalogManagementVM
             {
                 IsLoad = true;
 
-                await AddOrderProduct(p);
 
                 IsLoad = false;
             });

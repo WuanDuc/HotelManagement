@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@ namespace HotelManagement.Model.Services
 {
     public class RentalContractService
     {
+        public HotelManagementEntities context;
         private static RentalContractService _ins;
         public static RentalContractService Ins
         {
@@ -25,13 +27,24 @@ namespace HotelManagement.Model.Services
             private set => _ins = value;
         }
         private RentalContractService() { }
+        public RentalContractService(HotelManagementEntities context)
+        {
+            this.context = context;
+        }
+
         public async Task<List<RentalContractDTO>> GetAllRentalContracts()
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
-                    var rentalContractList = await (from r in context.RentalContracts
+                    context = new HotelManagementEntities();
+                }
+                if (context.RentalContracts == null)
+                {
+                    return null;
+                }
+                var rentalContractList = await (from r in context.RentalContracts
 
                                                     select new RentalContractDTO
                                                     {
@@ -46,7 +59,6 @@ namespace HotelManagement.Model.Services
                                           ).ToListAsync();
 
                     return rentalContractList;
-                }
             }
             catch (Exception ex)
             {
@@ -57,9 +69,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
-                    var rentalContractList = await (from r in context.RentalContracts
+                    context = new HotelManagementEntities();
+                }
+                if (context.RentalContracts == null)
+                {
+                    return null;
+                }
+                var rentalContractList = await (from r in context.RentalContracts
 
                                                     select new RentalContractDTO
                                                     {
@@ -75,7 +93,6 @@ namespace HotelManagement.Model.Services
                     rentalContractList = rentalContractList.Where(x => x.CheckOutDate + x.StartTime > DateTime.Today + DateTime.Now.TimeOfDay && x.StartDate + x.StartTime <= DateTime.Today + DateTime.Now.TimeOfDay).ToList();
 
                     return rentalContractList;
-                }
             }
             catch (Exception ex)
             {
@@ -86,9 +103,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
-                    var res = await context.RentalContracts.Select(x => new RentalContractDTO
+                    context = new HotelManagementEntities();
+                }
+                if (context.RentalContracts == null)
+                {
+                    return null;
+                }
+                var res = await context.RentalContracts.Select(x => new RentalContractDTO
                     {
                         RentalContractId = x.RentalContractId,
                         RoomId = x.RoomId,
@@ -102,7 +125,6 @@ namespace HotelManagement.Model.Services
                         Validated = x.Validated,
                     }).FirstAsync(x => x.RentalContractId == rentalContractId);
                     return res;
-                }
             }
             catch (Exception ex)
             {
@@ -113,10 +135,15 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
-
-                    var list = await context.RentalContracts.Where(x => x.CustomerId == customerId && x.Room.RoomStatus == ROOM_STATUS.RENTING && x.Validated == true).Select(x => new RentalContractDTO
+                    context = new HotelManagementEntities();
+                }
+                if (context.RentalContracts == null)
+                {
+                    return null;
+                }
+                var list = await context.RentalContracts.Where(x => x.CustomerId == customerId && x.Room.RoomStatus == ROOM_STATUS.RENTING && x.Validated == true).Select(x => new RentalContractDTO
                     {
                         RentalContractId = x.RentalContractId,
                         RoomId = x.RoomId,
@@ -134,7 +161,6 @@ namespace HotelManagement.Model.Services
                     }).ToListAsync();
                     return list;
 
-                }
             }
             catch (Exception ex)
             {

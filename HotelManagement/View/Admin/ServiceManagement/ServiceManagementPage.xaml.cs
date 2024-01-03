@@ -1,5 +1,4 @@
 ﻿using HotelManagement.DTOs;
-using HotelManagement.ViewModel.AdminVM.FurnitureManagementVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,10 +37,7 @@ namespace HotelManagement.View.Admin.ServiceManagement
         }
         private bool Filter(object item)
         {
-            if (String.IsNullOrEmpty(SearchBox.Text))
                 return true;
-            else
-                return ((item as ServiceDTO).ServiceName.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)

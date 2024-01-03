@@ -23,12 +23,6 @@ namespace HotelManagement.ViewModel.AdminVM.HistoryManagementVM
     public class HistoryManagementVM : BaseVM
     {
         private int SelectedView = 0;
-        private ObservableCollection<ImportProductDTO> importList;
-        public ObservableCollection<ImportProductDTO> ImportList
-        {
-            get { return importList; }
-            set { importList = value; OnPropertyChanged(); }
-        }
         private ObservableCollection<BillDTO> billExportList;
         public ObservableCollection<BillDTO> BillExportList
         {
@@ -85,12 +79,6 @@ namespace HotelManagement.ViewModel.AdminVM.HistoryManagementVM
             get { return _billDetail; }
             set { _billDetail = value; OnPropertyChanged(); }
         }
-        private ObservableCollection<ServiceUsingDTO> _ListServicePayment;
-        public ObservableCollection<ServiceUsingDTO> ListServicePayment
-        {
-            get { return _ListServicePayment; }
-            set { _ListServicePayment = value; OnPropertyChanged(); }
-        }
         public ICommand LoadImportPageCM { get; set; }
         public ICommand LoadExportPageCM { get; set; }
         public ICommand CheckImportItemFilterCM { get; set; }
@@ -111,7 +99,6 @@ namespace HotelManagement.ViewModel.AdminVM.HistoryManagementVM
             LoadImportPageCM = new RelayCommand<Frame>((p) => { return true; }, async (p) =>
             {
                 SelectedView = 0;
-                await GetImportListSource();
                 ImportManagementPage page = new ImportManagementPage();
                 p.Content = page;
             });
@@ -130,19 +117,13 @@ namespace HotelManagement.ViewModel.AdminVM.HistoryManagementVM
                 {
                     case "Toàn bộ":
                         {
-                            await GetImportListSource("");
                             return;
                         }
                     case "Theo tháng":
                         {
-                            await GetImportListSource("month");
                             return;
                         }
                 }
-            });
-            SelectedImportMonthCM = new RelayCommand<System.Windows.Controls.ComboBox>((p) => { return true; }, async (p) =>
-            {
-                await GetListImportByMonth();
             });
             ExportFileCM = new RelayCommand<Search>((p) => { return true; }, (p) =>
             {
@@ -151,67 +132,6 @@ namespace HotelManagement.ViewModel.AdminVM.HistoryManagementVM
             SelectedDateExportListCM = new RelayCommand<DatePicker>(p => true, async p =>
             {
                 await GetExportListSource("date");
-            });
-            FilterListImportCM = new RelayCommand<ComboBox>(p => true, async p =>
-            {
-                switch (SelectedFilterImportItem.Tag.ToString())
-                {
-                    case "Toàn bộ":
-                        {
-                            ObservableCollection<ImportProductDTO> iplist = new ObservableCollection<ImportProductDTO>();
-                            ObservableCollection<ImportProductDTO> importserviceList = new ObservableCollection<ImportProductDTO>(await ServiceHelper.Ins.GetListImportService());
-                            ObservableCollection<ImportProductDTO> importFunitureList = new ObservableCollection<ImportProductDTO>(await FurnitureService.Ins.GetListImportFuniture());
-                            foreach (var item in importserviceList)
-                            {
-                                iplist.Add(item);
-                            }
-                            foreach (var item in importFunitureList)
-                            {
-                                iplist.Add(item);
-                            }
-                            if (FilterImportList == 0)
-                            {
-                                ImportList = new ObservableCollection<ImportProductDTO>(iplist);
-                            }
-                            if (FilterImportList == 1)
-                            {
-                                ImportList = new ObservableCollection<ImportProductDTO>(iplist.Where(ip => ip.typeimport == 0));
-                            }
-                            if (FilterImportList == 2)
-                            {
-                                ImportList = new ObservableCollection<ImportProductDTO>(iplist.Where(ip => ip.typeimport == 1));
-                            }
-                            return;
-                        }
-                    case "Theo tháng":
-                        {
-                            ObservableCollection<ImportProductDTO> iplist = new ObservableCollection<ImportProductDTO>();
-
-                            ObservableCollection<ImportProductDTO> importserviceList = new ObservableCollection<ImportProductDTO>(await ServiceHelper.Ins.GetListImportService(SelectedMonthImportItem + 1));
-                            ObservableCollection<ImportProductDTO> importFunitureList = new ObservableCollection<ImportProductDTO>(await FurnitureService.Ins.GetListImportFuniture(SelectedMonthImportItem + 1));
-                            foreach (var item in importserviceList)
-                            {
-                                iplist.Add(item);
-                            }
-                            foreach (var item in importFunitureList)
-                            {
-                                iplist.Add(item);
-                            }
-                            if (FilterImportList == 0)
-                            {
-                                ImportList = new ObservableCollection<ImportProductDTO>(iplist);
-                            }
-                            if (FilterImportList == 1)
-                            {
-                                ImportList = new ObservableCollection<ImportProductDTO>(iplist.Where(ip => ip.typeimport == 0));
-                            }
-                            if (FilterImportList == 2)
-                            {
-                                ImportList = new ObservableCollection<ImportProductDTO>(iplist.Where(ip => ip.typeimport == 1));
-                            }
-                            return;
-                        }
-                }
             });
             CheckItemFilterCM = new RelayCommand<System.Windows.Controls.ComboBox>((p) => { return true; }, async (p) =>
             {
@@ -261,43 +181,7 @@ namespace HotelManagement.ViewModel.AdminVM.HistoryManagementVM
             });
             FirstLoadRoomBillCM = new RelayCommand<Window>(p => true, async p =>
             {
-                ListServicePayment = new ObservableCollection<ServiceUsingDTO>(BillDetail.ListListServicePayment);
-                ListServicePayment.Insert(0, new ServiceUsingDTO
-                {
-                    ServiceName = BillDetail.RoomName,
-                    UnitPrice = BillDetail.RoomPrice,
-                    Quantity = BillDetail.DayNumber,
-                });
             });
-        }
-
-        private async Task GetListImportByMonth()
-        {
-            ImportList = new ObservableCollection<ImportProductDTO>();
-            try
-            {
-                ObservableCollection<ImportProductDTO> importserviceList = new ObservableCollection<ImportProductDTO>(await ServiceHelper.Ins.GetListImportService(SelectedMonthImportItem + 1));
-                ObservableCollection<ImportProductDTO> importFunitureList = new ObservableCollection<ImportProductDTO>(await FurnitureService.Ins.GetListImportFuniture(SelectedMonthImportItem + 1));
-                foreach (var item in importserviceList)
-                {
-                    ImportList.Add(item);
-                }
-                foreach (var item in importFunitureList)
-                {
-                    ImportList.Add(item);
-                }
-                return;
-            }
-            catch (System.Data.Entity.Core.EntityException e)
-            {
-                CustomMessageBox.ShowOk("Mất kết nối cơ sở dữ liệu", "Lỗi", "OK", CustomMessageBoxImage.Error);
-                throw;
-            }
-            catch (Exception e)
-            {
-                CustomMessageBox.ShowOk("Lỗi hệ thống", "Lỗi", "OK", CustomMessageBoxImage.Error);
-                throw;
-            }
         }
 
         private async Task GetExportListSource(string v)
@@ -370,47 +254,6 @@ namespace HotelManagement.ViewModel.AdminVM.HistoryManagementVM
 
         }
 
-
-        private async Task GetImportListSource(string v = "")
-        {
-            ImportList = new ObservableCollection<ImportProductDTO>();
-            switch (v)
-            {
-                case "":
-                    {
-                        try
-                        {
-                            ObservableCollection<ImportProductDTO> importserviceList = new ObservableCollection<ImportProductDTO>(await ServiceHelper.Ins.GetListImportService());
-                            ObservableCollection<ImportProductDTO> importFunitureList = new ObservableCollection<ImportProductDTO>(await FurnitureService.Ins.GetListImportFuniture());
-                            foreach (var item in importserviceList)
-                            {
-                                ImportList.Add(item);
-                            }
-                            foreach (var item in importFunitureList)
-                            {
-                                ImportList.Add(item);
-                            }
-                            return;
-                        }
-                        catch (System.Data.Entity.Core.EntityException e)
-                        {
-                            CustomMessageBox.ShowOk("Mất kết nối cơ sở dữ liệu", "Lỗi", "OK", CustomMessageBoxImage.Error);
-                            throw;
-                        }
-                        catch (Exception e)
-                        {
-                            CustomMessageBox.ShowOk("Lỗi hệ thống", "Lỗi", "OK", CustomMessageBoxImage.Error);
-                            throw;
-                        }
-
-                    }
-                case "month":
-                    {
-                        await GetListImportByMonth();
-                        return;
-                    }
-            }
-        }
         public void ExportToFileFunc(string search)
         {
             //switch (SelectedView)

@@ -81,14 +81,10 @@ namespace HotelManagement.ViewModel.AdminVM
         public static AdminVM adminVM;
    
         public ICommand FirstLoadCM { get; set; }
-        private void Furniture(object obj) => CurrentView = new FurnitureManagementVM.FurnitureManagementVM();
-        private void Service(object obj) => CurrentView = new ServiceManagementVM.ServiceManagementVM();
-        private void RoomFurniture(object obj) => CurrentView = new RoomFurnitureManagementVM.RoomFurnitureManagementVM();
         private void Setting(object obj) => CurrentView = new SettingVM.SettingVM();
         private void BookingRoom(object obj) => CurrentView = new BookingRoomManagementVM.BookingRoomManagementVM();
         private void Room(object obj) => CurrentView = new RoomManagementVM.RoomManagementVM();
         private void RoomType(object obj) => CurrentView = new RoomTypeManagementVM.RoomTypeManagementVM();
-        private void Statiscal(object obj) => CurrentView = new StatisticalManagementVM.StatisticalManagementVM();
         private void HelpScreen(object obj) => CurrentView = new HelpScreenVM.HelpScreenVM();
         private void Customer(object obj) => CurrentView = new CustomerManagementVM.CustomerManagementVM();
         private void Staff(object obj) => CurrentView = new StaffManagementVM.StaffManagementVM();
@@ -118,18 +114,12 @@ namespace HotelManagement.ViewModel.AdminVM
             adminVM = this;
             FurnitureCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                Furniture(p);
-                NameTypeMenuBind = "QUẢN LÍ TIỆN NGHI";
             });
             ServiceCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                Service(p);
-                NameTypeMenuBind = "QUẢN LÍ DỊCH VỤ - SẢN PHẨM";
             });
             RoomFurnitureCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                RoomFurniture(p);
-                NameTypeMenuBind = "TIỆN NGHI TRONG PHÒNG";
             });
             SettingCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
@@ -153,8 +143,6 @@ namespace HotelManagement.ViewModel.AdminVM
             });
             StatiscalCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                Statiscal(p);
-                NameTypeMenuBind = "TỔNG QUAN";
             });
             HelpScreenCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
@@ -188,7 +176,7 @@ namespace HotelManagement.ViewModel.AdminVM
             });
             FirstLoadCM = new RelayCommand<Rectangle>((p) => { return true; }, (p) =>
             {
-                CurrentView = new StatisticalManagementVM.StatisticalManagementVM();
+                CurrentView = new BookingRoomManagementVM.BookingRoomManagementVM();
                 StaffName = CurrentStaff.StaffName;
                 NameTypeMenuBind = "TỔNG QUAN";
                 SetAvatarName(StaffName);

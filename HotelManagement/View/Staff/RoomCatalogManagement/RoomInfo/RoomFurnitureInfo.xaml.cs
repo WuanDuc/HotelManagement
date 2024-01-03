@@ -44,11 +44,7 @@ namespace HotelManagement.View.Staff.RoomCatalogManagement.RoomInfo
         }
         private bool Filter(object item)
         {
-            if (String.IsNullOrEmpty(SearchBox.Text))
                 return true;
-            else
-                return ((item as RoomFurnituresDetailDTO).FurnitureName.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0
-                    || (item as RoomFurnituresDetailDTO).FurnitureType.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
 
 
         }
