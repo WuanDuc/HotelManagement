@@ -131,7 +131,6 @@ namespace HotelManagement.Model.Services.Tests
             List<StaffDTO> actual = await service.GetAllStaff();
 
             Assert.AreEqual(0, actual.Count);
-            Assert.IsNull(actual[0]);
         }
 
         [TestMethod()]

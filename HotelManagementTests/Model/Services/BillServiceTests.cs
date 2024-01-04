@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using HotelManagement.DTOs;
-using HotelManagement.ViewModel.StaffVM;
+//using HotelManagement.ViewModel.StaffVM;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Remoting.Contexts;
 using HotelManagement.Model.Services;

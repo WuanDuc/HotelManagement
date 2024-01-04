@@ -1,6 +1,6 @@
 ﻿using HotelManagement.DTOs;
 using HotelManagement.Utils;
-using HotelManagement.ViewModel.StaffVM;
+//using HotelManagement.ViewModel.StaffVM;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

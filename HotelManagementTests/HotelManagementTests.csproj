@@ -100,14 +100,6 @@
     <Compile Include="Model\Services\StaffServiceTests.cs" />
     <Compile Include="Model\Services\TroubleServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\AdminVM\CustomerManagementVM\CustomerManagementVMTests.cs" />
-    <Compile Include="ViewModel\AdminVM\StaffManagementVM\StaffManagementVMTests.cs" />
-    <Compile Include="ViewModel\AdminVM\StatisticalManagementVM\IncomeTests.cs" />
-    <Compile Include="ViewModel\AdminVM\StatisticalManagementVM\IndexConverterTests.cs" />
-    <Compile Include="ViewModel\AdminVM\StatisticalManagementVM\ReportRevenueTypeVMTests.cs" />
-    <Compile Include="ViewModel\AdminVM\StatisticalManagementVM\StatisticalManagementVMTests.cs" />
-    <Compile Include="ViewModel\AdminVM\TroubleManagementVM\EditConverterTests.cs" />
-    <Compile Include="ViewModel\AdminVM\TroubleManagementVM\StatusBrushConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

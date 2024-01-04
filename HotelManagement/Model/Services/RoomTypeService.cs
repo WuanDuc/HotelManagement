@@ -24,7 +24,7 @@ namespace HotelManagement.Model.Services
                     _ins = new RoomTypeService(new HotelManagementEntities());
                 return _ins;
             }
-            private set { _ins = value; }
+            //private set { _ins = value; }
         }
 
         private HotelManagementEntities _context;

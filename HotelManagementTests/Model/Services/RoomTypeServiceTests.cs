@@ -30,8 +30,8 @@ namespace HotelManagement.Model.Services.Tests
                 {
                     RoomTypeId = "RT001",
                     RoomTypeName = "Room Type 1",
-                    Price = 100000,
-                    Note = "Note",
+                    Price = 1000000,
+                    Note = "Notes",
                 },
 
                 new RoomType()
@@ -90,17 +90,20 @@ namespace HotelManagement.Model.Services.Tests
         [TestMethod()]
         public async Task UpdateRoomTypeTest_UpdateSuccessfully()
         {
+            service = new RoomTypeService(mockEntities.Object);
+
             RoomTypeDTO rt = new RoomTypeDTO()
             {
-                RoomTypeId = "RT002",
-                RoomTypeName = "Room Type 2",
-                RoomTypePrice = 200000,
+                RoomTypeId = "RT001",
+                RoomTypeName = "Room Type 3",
+                RoomTypePrice = 100000,
                 RoomTypeNote = "Note",
             };
-            service = new RoomTypeService(mockEntities.Object);
+
             var result = await service.UpdateRoomType(rt);
 
             Assert.AreEqual((true, "Cập nhật thành công"), result);
+
         }
         [TestMethod()]
         public async Task UpdateRoomTypeTest_UpdateSuccessfullyCheck()
@@ -121,34 +124,39 @@ namespace HotelManagement.Model.Services.Tests
         [TestMethod()]
         public async Task UpdateRoomTypeTest_ExistName()
         {
+            service = new RoomTypeService(mockEntities.Object);
+
             RoomTypeDTO rt = new RoomTypeDTO()
             {
-                RoomTypeId = "RT002",
-                RoomTypeName = "Room Type 1",
-                RoomTypePrice = 200000,
+                RoomTypeId = "RT001",
+                RoomTypeName = "Room Type 2",
+                RoomTypePrice = 100000,
                 RoomTypeNote = "Note",
             };
-            service = new RoomTypeService(mockEntities.Object);
+
             var result = await service.UpdateRoomType(rt);
 
             Assert.AreEqual((false, "Tên loại phòng đã tồn tại!"), result);
         }
 
         [TestMethod()]
-        public async Task UpdateRoomTypeTest_NotExistRoom()
+        public async Task UpdateRoomTypeTest_RoomNotExist_ReturnFalse()
         {
+            service = new RoomTypeService(mockEntities.Object);
+
             RoomTypeDTO rt = new RoomTypeDTO()
             {
                 RoomTypeId = "RT004",
-                RoomTypeName = "Room Type 1",
-                RoomTypePrice = 200000,
+                RoomTypeName = "Room Type 2",
+                RoomTypePrice = 100000,
                 RoomTypeNote = "Note",
             };
-            service = new RoomTypeService(mockEntities.Object);
+
             var result = await service.UpdateRoomType(rt);
 
             Assert.AreEqual((false, "Loại phòng này không tồn tại!"), result);
         }
+
         [TestMethod()]
         public void TestIns_NullValue_returnRTS()
         {
@@ -164,6 +172,8 @@ namespace HotelManagement.Model.Services.Tests
             service = new RoomTypeService(null);
             await service.GetRoomTypeID("Room Type 2");
         }
+
+        [TestMethod()]
         public async Task GetAllRoomTypeTest_CorrectTest()
         {
             List<RoomTypeDTO> expected = new List<RoomTypeDTO>()
