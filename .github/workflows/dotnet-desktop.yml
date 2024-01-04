@@ -36,87 +36,53 @@
 # For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
 # refer to https://github.com/microsoft/github-actions-for-desktop-apps
 
-name: .NET Core Desktop
+name: GithubActions
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
 jobs:
-
   build:
-
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        configuration: [Debug, Release]
-        dotnet-version: [2.0.x, 3.0.x, 4.0.x]
-        
-    name: Test
-    runs-on: windows-2019  # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-    env:
-      Solution_Name: HotelManagement.sln                       # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: HotelManagementTests\HotelManagementTests.csproj                # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
-      Wap_Project_Directory: your-wap-project-directory-name    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
-      Wap_Project_Path: your-wap-project-path                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+        os: [windows-latest]
+        dotnet-version: ['6.0']
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
       with:
-        fetch-depth: 0
+        dotnet-version: ${{ matrix.dotnet-version }}
 
-    # # Install the .NET Core workload
-    # - name: Install .NET 
-    #   uses: actions/setup-dotnet@v3
-    #   with:
-    #     dotnet-version: ${{ matrix.dotnet-version }}
-        
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1
-
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.5
-
-    - name: setup-msbuild
-      uses: microsoft/setup-msbuild@v1.1
-
-    - name: Restore Packages
-      run: nuget restore HotelManagement.sln 
-
-    # # Restore NuGet packages
-    # - name: Installing dependency command
-    #   run: dotnet restore
-
-    # Execute all unit tests in the solution
-    - name: Execute unit tests
-      run: dotnet test
-
-    # Execute mutation testing
-    - name: Run mutation testing
+    - name: Restore NuGet Packages
       run: |
+        dotnet restore HotelManagement.sln
+        nuget restore HotelManagement.sln
+
+    # - name: Build
+    #   run: |
+    #     dotnet build StudentManagement.sln
+
+    - name: Run Tests
+      run: |
+        dotnet test HotelManagementTests/HotelManagementTests.csproj
+
+    - name: Install Stryker.NET
+      run: |
+        dotnet tool install --global dotnet-stryker --version 3.12.0
+
+    - name: Mutation Testing
+      run: |
+        cd D:\a\HotelManagement\HotelManagement\HotelManagement
         dotnet tool restore
+        cd D:\a\SchoolManagement\SchoolManagement
         dotnet stryker
-
-    # # Build command
-    # - name: Build command
-    #   run: dotnet build
-    - name: Build solution
-      run: msbuild MySolution.sln -t:rebuild -property:Configuration=Release
-
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: MSIX Package
-        path: ${{ env.Wap_Project_Directory }}\AppPackages
-
