@@ -10,7 +10,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using HotelManagement.DTOs;
 using Castle.Core.Resource;
-using HotelManagement.ViewModel.StaffVM;
+//using HotelManagement.ViewModel.StaffVM;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices.ComTypes;
 using HotelManagementTests.Model;

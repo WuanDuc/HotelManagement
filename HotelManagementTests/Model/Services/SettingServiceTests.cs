@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Moq;
 using System.Data.Entity;
 using HotelManagement.DTOs;
-using HotelManagement.ViewModel.StaffVM;
+//using HotelManagement.ViewModel.StaffVM;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Remoting.Contexts;
 

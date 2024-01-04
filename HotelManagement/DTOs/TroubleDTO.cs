@@ -26,10 +26,10 @@ namespace HotelManagement.DTOs
         public string Status { get; set; }
         public string StaffId { get; set; }
         public string Level { get; set; }
-        public ImageSource ImagesourgeTrouble 
-        { 
-            get { return Helper.LoadBitmapImage(Avatar); }
-            set { ImagesourgeTrouble = value; }
-        }
+        //public ImageSource ImagesourgeTrouble 
+        //{ 
+        //    get { return Helper.LoadBitmapImage(Avatar); }
+        //    set { ImagesourgeTrouble = value; }
+        //}
     }
 }
