@@ -107,6 +107,7 @@ namespace HotelManagement.Model.Services
                     DateTime start = StartDate + StartTime.TimeOfDay;
                     DateTime end = CheckOutDate + StartTime.TimeOfDay;
 
+
                     var listBusyRoomId = listRentalContract.Where(x =>
                     (x.CheckOutDate + x.StartTime >= start && x.CheckOutDate + x.StartTime < end && x.Validated==true) ||
                     (x.StartDate + x.StartTime >= start && x.StartDate + x.StartTime < end && x.Validated == true) ||
@@ -273,11 +274,6 @@ namespace HotelManagement.Model.Services
                     {
                         return (false, "Phiếu thuê phòng này không tồn tại!");
                     }
-
-                    List<ServiceUsing> serviceUsing = await Entities.ServiceUsings.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
-
-                    if(serviceUsing != null)
-                        Entities.ServiceUsings.RemoveRange(serviceUsing);
 
                     List<Bill> bill = await Entities.Bills.Where(s => s.RentalContractId == rental.RentalContractId).ToListAsync();
 

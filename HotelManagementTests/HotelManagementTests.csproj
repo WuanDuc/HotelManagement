@@ -94,6 +94,7 @@
     <Compile Include="Model\Services\BookingRoomServiceTests.cs" />
     <Compile Include="Model\Services\CustomerServiceTests.cs" />
     <Compile Include="Model\Services\RentalContractServiceTests.cs" />
+    <Compile Include="Model\Services\RoomCustomerServiceTests.cs" />
     <Compile Include="Model\Services\RoomTypeServiceTests.cs" />
     <Compile Include="Model\Services\SettingServiceTests.cs" />
     <Compile Include="Model\Services\StaffServiceTests.cs" />

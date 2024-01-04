@@ -164,6 +164,55 @@ namespace HotelManagement.Model.Services.Tests
         }
 
         [TestMethod()]
+        public async Task AddExistCustomerTestAsync()
+        {
+            var cus = new CustomerDTO()
+            {
+                CustomerId = "C001",
+                CustomerName = "John Doe",
+                PhoneNumber = "123456789",
+                Email = "john.doe@example.com",
+                CCCD = "123456789",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Gender = "Male",
+                CustomerType = "Regular",
+                CustomerAddress = "123 Main St",
+                IsDeleted = false,
+            };
+
+            var expected = (false, "CCCD đã tồn tại!");
+            service = new CustomerService(mockEntities.Object);
+            var result = await service.AddCustomer(cus);
+            Assert.AreEqual(result.Item1, expected.Item1);
+            Assert.AreEqual(result.Item2, expected.Item2);
+        }
+        [TestMethod()]
+        public async Task AddCustomerTestCheckAsync()
+        {
+            var cus = new CustomerDTO()
+            {
+                CustomerId = "C001",
+                CustomerName = "John Doe",
+                PhoneNumber = "123456789",
+                Email = "john.doe@example.com",
+                CCCD = "123456789",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Gender = "Male",
+                CustomerType = "Regular",
+                CustomerAddress = "123 Main St",
+                IsDeleted = false,
+            };
+
+            service = new CustomerService(mockEntities.Object);
+            var expected = await service.GetAllCustomer();
+            var e = expected.Count();
+            await service.AddCustomer(cus);
+            var result = await service.GetAllCustomer();
+            var r = result.Count();
+            Assert.AreNotEqual(e, r);
+        }
+
+        [TestMethod()]
         public async Task GetCustomerByCCCDTest()
         {
             var expected = "C001";
@@ -175,26 +224,23 @@ namespace HotelManagement.Model.Services.Tests
         [TestMethod()]
         public async Task UpdateCustomerInfoTest()
         {
-            var cus = new CustomerDTO()
-            {
-                CustomerId = "C001",
-                CustomerName = "John Hoas",
-                PhoneNumber = "123456789",
-                Email = "john.doe@example.com",
-                CCCD = "123456789",
-                DateOfBirth = new DateTime(1990, 1, 1),
-                Gender = "Male",
-                CustomerType = "Regular",
-                CustomerAddress = "123 Main St",
-                IsDeleted = false,
-            };
+            service = new CustomerService(mockEntities.Object);
+            var cus = await service.GetCustomerByCCCD("C001");
 
             var expected = (true, "Chỉnh sửa thông tin khách hàng thành công");
-            service = new CustomerService(mockEntities.Object);
             var result = await service.UpdateCustomerInfo(cus);
             Assert.AreEqual(result, expected);
         }
+        [TestMethod()]
+        public async Task UpdateCustomerInfoTestCheck()
+        {
+            service = new CustomerService(mockEntities.Object);
+            var cus = await service.GetCustomerByCCCD("C001");
 
+            await service.UpdateCustomerInfo(cus);
+            var result = await service.GetCustomerByCCCD("C001"); 
+            Assert.AreEqual(result, cus);
+        }
         [TestMethod()]
         public async Task DeleteCustomerTest()
         {
@@ -218,5 +264,55 @@ namespace HotelManagement.Model.Services.Tests
             Assert.AreEqual(result, expected);
 
         }
+        [TestMethod()]
+        public async Task DeleteCustomerTestCheck()
+        {
+            var cus = new CustomerDTO()
+            {
+                CustomerId = "C001",
+                CustomerName = "John Hoas",
+                PhoneNumber = "123456789",
+                Email = "john.doe@example.com",
+                CCCD = "123456789",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Gender = "Male",
+                CustomerType = "Regular",
+                CustomerAddress = "123 Main St",
+                IsDeleted = false,
+            };
+
+            service = new CustomerService(mockEntities.Object);
+            var expected = await service.GetAllCustomer();
+            var e = expected.Count();
+            await service.DeleteCustomer(cus.CustomerId);
+            var result = await service.GetAllCustomer();
+            var r = expected.Count();
+            Assert.AreNotEqual(e, r);
+
+        }
+        [TestMethod()]
+        public async Task DeleteCustomerNotExistTest()
+        {
+            var expected = (false, "Mất kết nối cơ sở dữ liệu");
+            var cus = new CustomerDTO()
+            {
+                CustomerId = "C101",
+                CustomerName = "John Hoas",
+                PhoneNumber = "123456789",
+                Email = "john.doe@example.com",
+                CCCD = "123456789",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Gender = "Male",
+                CustomerType = "Regular",
+                CustomerAddress = "123 Main St",
+                IsDeleted = false,
+            };
+
+            service = new CustomerService(mockEntities.Object);
+            var result = await service.DeleteCustomer(cus.CustomerId);
+            Assert.AreEqual(result, expected);
+
+        }
     }
+
 }

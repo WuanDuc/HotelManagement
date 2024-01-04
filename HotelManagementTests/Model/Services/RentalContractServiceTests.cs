@@ -63,7 +63,7 @@ namespace HotelManagement.Model.Services.Tests
                     RoomNumber = 101,
                     RoomTypeId = "RT001", // Assuming you have a RoomType with this ID
                     Note = "This is a standard single room.",
-                    RoomStatus = "Có sẵn",
+                    RoomStatus = "Phòng đang thuê",
                     RoomCleaningStatus = "Đã dọn dẹp",
                     RoomType = roomTypes[0]
                 }
@@ -122,6 +122,7 @@ namespace HotelManagement.Model.Services.Tests
                     CustomerType = "Regular",
                     CustomerAddress = "123 Main St",
                     IsDeleted = false,
+
                 },
 
                 new Customer
@@ -181,6 +182,8 @@ namespace HotelManagement.Model.Services.Tests
                     Room = roomDTOs[0]
                 }
             };
+            customerDTOs[0].RentalContracts = rentalContractDTOs;
+            
             billDTOs = new List<Bill>()
             {
                 new Bill()
@@ -279,6 +282,8 @@ namespace HotelManagement.Model.Services.Tests
         [TestMethod()]
         public async Task GetRentalContractByCustomerTest_Exist()
         {
+            service = new RentalContractService(mockEntities.Object);
+
             var expected = new List<RentalContractDTO>() {
                 new RentalContractDTO
                 {
@@ -294,9 +299,7 @@ namespace HotelManagement.Model.Services.Tests
                 }
             };
 
-            service = new RentalContractService(mockEntities.Object);
-            var result = await service.GetRentalContractByCustomer(expected[0].CustomerId);
-
+            var result = await service.GetRentalContractByCustomer("C001");
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(expected[0].RentalContractId, result[0].RentalContractId);
         }
@@ -308,12 +311,15 @@ namespace HotelManagement.Model.Services.Tests
             service = new RentalContractService(mockEntities.Object);
             var result = await service.GetRentalContractByCustomer("KH009");
 
-            Assert.AreEqual(null, result);
+            Assert.AreEqual(0, result.Count);
         }
         [TestMethod()]
-        public void GetRentalContractsNowTest()
+        public async Task GetRentalContractsNowTest()
         {
-            Assert.Fail();
+            service = new RentalContractService(mockEntities.Object);
+            var result = await service.GetRentalContractsNow();
+
+            Assert.AreEqual(0, result.Count);
         }
 
         [TestMethod()]
@@ -337,6 +343,7 @@ namespace HotelManagement.Model.Services.Tests
             var result = await service.GetRentalContractById(expected.RentalContractId);
 
             Assert.AreEqual(expected.ToString(), result.ToString());
+            Assert.AreEqual(expected.PersonNumber, result.PersonNumber);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace HotelManagement.Model.Services
                 }
                 return _ins;
             }
-            private set { _ins = value; }
+            set { _ins = value; }
         }
         public HotelManagementEntities _context;
 

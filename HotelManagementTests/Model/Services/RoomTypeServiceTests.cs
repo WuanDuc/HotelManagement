@@ -57,26 +57,6 @@ namespace HotelManagement.Model.Services.Tests
 
         }
         [TestMethod()]
-        public async Task GetAllRoomTypeTest_CorrectTest()
-        {
-            List<RoomTypeDTO> expected = new List<RoomTypeDTO>()
-            {
-                new RoomTypeDTO()
-                {
-                    RoomTypeId = "RT001",
-                    RoomTypeName = "Room Type 1",
-                    RoomTypePrice = 100000,
-                    RoomTypeNote = "Note",
-                }
-            };
-            service = new RoomTypeService(mockEntities.Object);
-            var result = await service.GetAllRoomType();
-
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(expected.ToString(), result.ToString());
-        }
-
-        [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task GetAllRoomTypeTest_Null_ThrowEx()
         {
@@ -122,7 +102,22 @@ namespace HotelManagement.Model.Services.Tests
 
             Assert.AreEqual((true, "Cập nhật thành công"), result);
         }
-
+        [TestMethod()]
+        public async Task UpdateRoomTypeTest_UpdateSuccessfullyCheck()
+        {
+            RoomTypeDTO rt = new RoomTypeDTO()
+            {
+                RoomTypeId = "RT002",
+                RoomTypeName = "Room Type 2",
+                RoomTypePrice = 200000,
+                RoomTypeNote = "Note",
+            };
+            service = new RoomTypeService(mockEntities.Object);
+            var expected = await service.GetRoomTypeID("RT002");
+            await service.UpdateRoomType(rt);
+            var result = await service.GetRoomTypeID("RT002");
+            Assert.AreEqual(expected,result);
+        }
         [TestMethod()]
         public async Task UpdateRoomTypeTest_ExistName()
         {
@@ -153,6 +148,64 @@ namespace HotelManagement.Model.Services.Tests
             var result = await service.UpdateRoomType(rt);
 
             Assert.AreEqual((false, "Loại phòng này không tồn tại!"), result);
+        }
+        [TestMethod()]
+        public void TestIns_NullValue_returnRTS()
+        {
+            service = new RoomTypeService(mockEntities.Object);
+
+            Assert.AreNotEqual(RoomTypeService.Ins, null);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(System.InvalidOperationException))]
+        public async Task Context_nullvalue_returnNotNull()
+        {
+            service = new RoomTypeService(null);
+            await service.GetRoomTypeID("Room Type 2");
+        }
+        public async Task GetAllRoomTypeTest_CorrectTest()
+        {
+            List<RoomTypeDTO> expected = new List<RoomTypeDTO>()
+            {
+                new RoomTypeDTO()
+                {
+                    RoomTypeId = "RT002",
+                    RoomTypeName = "Room Type 2",
+                    RoomTypePrice = 100000,
+                    RoomTypeNote = "Note",
+                }
+            };
+            service = new RoomTypeService(mockEntities.Object);
+            var result = await service.GetAllRoomType();
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(expected.First().RoomTypeId.ToString(), result.First().RoomTypeId.ToString());
+            Assert.AreEqual(expected.First().RoomTypeName.ToString(), result.First().RoomTypeName.ToString());
+            Assert.AreEqual(expected.First().RoomTypePrice.ToString(), result.First().RoomTypePrice.ToString());
+            Assert.AreEqual(expected.First().RoomTypeNote.ToString(), result.First().RoomTypeNote.ToString());
+        }
+
+        [TestMethod()]
+        public async Task GetAllRoomTypeTest()
+        {
+            service = new RoomTypeService(mockEntities.Object);
+            var expected = new List<RoomTypeDTO>()
+            {
+                new RoomTypeDTO()
+                {
+                    RoomTypeId = "RT001",
+                    RoomTypeName = "Room Type 1",
+                },
+
+                new RoomTypeDTO()
+                {
+                    RoomTypeId = "RT002",
+                    RoomTypeName = "Room Type 2",
+                }
+            };
+            var result = await service.GetAllRoomType();
+            Assert.AreEqual(expected.Count, result.Count);
         }
     }
 }

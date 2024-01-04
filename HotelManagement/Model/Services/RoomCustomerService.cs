@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace HotelManagement.Model.Services
 {
     public class RoomCustomerService
     {
+        public HotelManagementEntities context;
+
         private static RoomCustomerService _ins;
         public static RoomCustomerService Ins
         {
@@ -24,15 +27,24 @@ namespace HotelManagement.Model.Services
             private set => _ins = value;
         }
         private RoomCustomerService() { }
-
+        public RoomCustomerService(HotelManagementEntities context)
+        {
+            this.context = context;
+        }
         public async Task<List<RoomCustomerDTO>> GetCustomersOfRoom(string RentalContractId)
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
+                    context = new HotelManagementEntities();
+                }
+                if (context.RoomCustomers == null)
+                {
+                    return null;
+                }
 
-                    var listCustomer = await context.RoomCustomers.Where(x => x.RentalContractId == RentalContractId).Select(x => new RoomCustomerDTO
+                var listCustomer = await context.RoomCustomers.Where(x => x.RentalContractId == RentalContractId).Select(x => new RoomCustomerDTO
                     {
                         CustomerName = x.CustomerName,
                         CustomerType = x.CustomerType,
@@ -49,7 +61,7 @@ namespace HotelManagement.Model.Services
                     return listCustomer;
 
 
-                }
+                
             }
             catch (Exception ex)
             {
@@ -61,12 +73,14 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
-                    var customerList = await context.RoomCustomers.Where(x => x.RentalContractId == rentalContractId).CountAsync();
+                    context = new HotelManagementEntities();
+                }
+                var customerList = await context.RoomCustomers.Where(x => x.RentalContractId == rentalContractId).CountAsync();
 
                     return customerList;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -78,9 +92,11 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
-                    var listCCCD = await context.RoomCustomers.Where(x => x.RentalContractId == roomCustomer.RentalContractId).Select(x => x.CCCD).ToListAsync();
+                    context = new HotelManagementEntities();
+                }
+                var listCCCD = await context.RoomCustomers.Where(x => x.RentalContractId == roomCustomer.RentalContractId).Select(x => x.CCCD).ToListAsync();
                     if (listCCCD != null)
                     {
                         if (listCCCD.Contains(roomCustomer.CCCD))
@@ -115,7 +131,7 @@ namespace HotelManagement.Model.Services
                     }
 
                     return (true, "Thêm khách ở thành công!", listCustomer);
-                }
+                
             }
             catch (Exception ex)
             {
@@ -126,10 +142,11 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
-
-                    RoomCustomer cus = await context.RoomCustomers.Where(x => x.RoomCustomerId == roomCustomer.RoomCustomerId).FirstOrDefaultAsync();
+                    context = new HotelManagementEntities();
+                }
+                RoomCustomer cus = await context.RoomCustomers.Where(x => x.RoomCustomerId == roomCustomer.RoomCustomerId).FirstOrDefaultAsync();
                     var listCCCD = await context.RoomCustomers.Where(x => x.RentalContractId == roomCustomer.RentalContractId && x.RoomCustomerId != cus.RoomCustomerId).Select(x => x.CCCD).ToListAsync();
                     if (listCCCD != null)
                     {
@@ -159,7 +176,7 @@ namespace HotelManagement.Model.Services
                         listCustomer[i].STT = i + 1;
                     }
                     return (true, "Cập nhật thông tin khách ở thành công!", listCustomer);
-                }
+                
             }
             catch (Exception ex)
             {
@@ -170,9 +187,12 @@ namespace HotelManagement.Model.Services
         {
             try
             {
-                using (var context = new HotelManagementEntities())
+                if (context == null)
                 {
-                    RoomCustomer cus = await context.RoomCustomers.Where(x => x.RoomCustomerId == roomCustomer.RoomCustomerId).FirstOrDefaultAsync();
+                    context = new HotelManagementEntities();
+                }
+
+                RoomCustomer cus = await context.RoomCustomers.Where(x => x.RoomCustomerId == roomCustomer.RoomCustomerId).FirstOrDefaultAsync();
                     context.RoomCustomers.Remove(cus);
                     await context.SaveChangesAsync();
 
@@ -190,7 +210,7 @@ namespace HotelManagement.Model.Services
                         listCustomer[i].STT = i + 1;
                     }
                     return (true, "Cập nhật thông tin khách ở thành công!", listCustomer);
-                }
+                
             }
             catch (Exception ex)
             {
