@@ -84,5 +84,5 @@ jobs:
       run: |
         cd D:\a\HotelManagement\HotelManagement\HotelManagement
         dotnet tool restore
-        cd D:\a\SchoolManagement\SchoolManagement
+        cd D:\a\HotelManagement\HotelManagement
         dotnet stryker
